@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: elasticsearch-master
+  namespace: default
+  labels:
+    app: elasticsearch-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch-master
+  template:
+    metadata:
+      name: elasticsearch-master
+      labels:
+        app: elasticsearch-master
+    spec:
+      containers:
+      - name: elasticsearch-master
+        image: registry.edcop.sealingtech.org:5000/registry/edcop-elasticsearch
+        imagePullPolicy: Never
+        securityContext:
+          privileged: true
+        volumeMounts: 
+        - mountPath: /usr/share/elasticsearch/data
+          name: esdata
+      volumes:
+      - name: esdata
+        hostPath:
+          path: /esdata
+            
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: master

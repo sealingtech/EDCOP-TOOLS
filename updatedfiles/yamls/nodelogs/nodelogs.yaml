@@ -1,0 +1,95 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: nodelogs
+  namespace: default
+  labels:
+    app: nodelogs
+spec:
+  selector:
+    matchLabels:
+      app: nodelogs
+  template:
+    metadata:
+      name: nodelogs
+      labels:
+        app: nodelogs
+        component: elasticsearch
+        type: master 
+      annotations:
+        networks: '[
+        { "name": "flannel" },
+        { "name": "ovs-plugin" }
+      ]'
+    spec:
+      serviceAccount: elasticsearch
+      serviceAccountName: elasticsearch
+      containers:
+      - name: elasticsearch
+        image: edcop-master:5000/registry/edcop-elasticsearch 
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        env:
+          - name: "SERVICE"
+            value: "elasticsearch-cluster"
+          - name: "KUBERNETES_NAMESPACE"
+            valueFrom:
+              fieldRef:
+                fieldPath: "metadata.namespace"
+          - name: "NODE_MASTER"
+            value: "false"
+        ports:
+        - name: cport-9200
+          containerPort: 9200
+        - name: cport-9300
+          containerPort: 9300
+        volumeMounts: 
+        - mountPath: /usr/share/elasticsearch/data
+          name: esdata
+      
+      - name: redis
+        image: edcop-master:5000/registry/edcop-redis
+        imagePullPolicy: Always
+        ports:
+        - name: cport-6379
+          containerPort: 6379
+          
+      - name: logstash
+        image: edcop-master:5000/registry/edcop-logstash
+        imagePullPolicy: Always
+        ports:
+        - name: cport-5044
+          containerPort: 5044
+       
+      - name: filebeat
+        image: edcop-master:5000/registry/edcop-filebeat
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /var/log
+          name: logs
+        - mountPath: /data/suricata
+          name: suricata-logs
+        - mountPath: /data/bro
+          name: bro-logs
+          
+      volumes:
+      - name: esdata
+        hostPath:
+          path: /esdata 
+      - name: logs
+        hostPath:
+          path: /var/log 
+      - name: suricata-logs
+        hostPath:
+          path: /data/suricata
+      - name: bro-logs
+        hostPath: 
+          path: /data/bro       
+          
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: worker
