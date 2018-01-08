@@ -52,7 +52,7 @@ rule-files:
  - botcc.rules
  - ciarmy.rules
  - compromised.rules
- - drop.rules
+# - drop.rules
  - dshield.rules
 # - emerging-activex.rules
  - emerging-attack_response.rules
@@ -207,9 +207,9 @@ outputs:
             # force logging of checksums, available hash functions are md5,
             # sha1 and sha256
             #force-hash: [md5]
-        #- drop:
-        #    alerts: yes      # log alerts that caused drops
-        #    flows: all       # start or all: 'start' logs only a single drop
+        - drop:
+            alerts: yes      # log alerts that caused drops
+            flows: all       # start or all: 'start' logs only a single drop
         #                     # per flow direction. All logs each dropped pkt.
         - smtp:
             #extended: yes # enable this for extended logging information
@@ -297,7 +297,7 @@ outputs:
 
   # a line based log of DNS requests and/or replies (no alerts)
   - dns-log:
-      enabled: no
+      enabled: yes
       filename: dns.log
       append: yes
       #filetype: regular # 'regular', 'unix_stream' or 'unix_dgram'
@@ -389,7 +389,7 @@ outputs:
 
   # a line based information for dropped packets in IPS mode
   - drop:
-      enabled: no
+      enabled: yes 
       filename: drop.log
       append: yes
       #filetype: regular # 'regular', 'unix_stream' or 'unix_dgram'
@@ -512,7 +512,7 @@ logging:
 # Linux high speed capture support
 af-packet:
   - interface: net0
-    threads: 4
+    threads: 8
     defrag: yes
     cluster-type: cluster_flow
     cluster-id: 98
@@ -520,8 +520,9 @@ af-packet:
     copy-iface: net1
     buffer-size: 64535
     use-mmap: yes
+    tpacket-v3: yes
   - interface: net1
-    threads: 4
+    threads: 8
     cluster-id: 97
     defrag: yes
     cluster-type: cluster_flow
@@ -529,6 +530,7 @@ af-packet:
     copy-iface: net0
     buffer-size: 64535
     use-mmap: yes
+    tpacket-v3: yes
 
   # Put default values here. These will be used for an interface that is not
   # in the list above.
@@ -865,7 +867,7 @@ host-mode: auto
 # If you are using the CUDA pattern matcher (mpm-algo: ac-cuda), different rules
 # apply. In that case try something like 60000 or more. This is because the CUDA
 # pattern matcher buffers and scans as many packets as possible in parallel.
-#max-pending-packets: 1024
+max-pending-packets: 5000
 
 # Runmode the engine should use. Please check --list-runmodes to get the available
 # runmodes for each packet acquisition method. Defaults to "autofp" (auto flow pinned
@@ -887,7 +889,7 @@ host-mode: auto
 # Preallocated size for packet. Default is 1514 which is the classical
 # size for pcap on ethernet. You should adjust this value to the highest
 # packet size (MTU + hardware header) on your system.
-#default-packet-size: 1514
+default-packet-size: 1600
 
 # Unix command socket can be used to pass commands to suricata.
 # An external tool can then connect to get information from suricata
@@ -966,7 +968,7 @@ host-os-policy:
 # Defrag settings:
 
 defrag:
-  memcap: 32mb
+  memcap: 1gb
   hash-size: 65536
   trackers: 65535 # number of defragmented flows to follow
   max-frags: 65535 # number of fragments to keep (higher than trackers)
@@ -1008,9 +1010,9 @@ defrag:
 # in bytes.
 
 flow:
-  memcap: 128mb
+  memcap: 1gb
   hash-size: 65536
-  prealloc: 10000
+  prealloc: 20000
   emergency-recovery: 30
   #managers: 1 # default to one flow manager
   #recyclers: 1 # default to one flow recycler thread
@@ -1136,11 +1138,12 @@ flow-timeouts:
 #                               # on directly.
 #
 stream:
-  memcap: 64mb
+  memcap: 3gb
   checksum-validation: yes      # reject wrong csums
   inline: auto                  # auto will use inline mode in IPS mode, yes or no set it statically
+  prealloc-sessions: 5000
   reassembly:
-    memcap: 256mb
+    memcap: 3gb
     depth: 1mb                  # reassemble 1mb into a stream
     toserver-chunk-size: 2560
     toclient-chunk-size: 2560
@@ -1173,8 +1176,8 @@ stream:
 #
 host:
   hash-size: 4096
-  prealloc: 1000
-  memcap: 32mb
+  prealloc: 2000
+  memcap: 2gb
 
 # IP Pair table:
 #
@@ -1210,11 +1213,11 @@ host:
 # If the argument specified is 0, the engine uses an internally defined
 # default limit.  On not specifying a value, we use no limits on the recursion.
 detect:
-  profile: medium
+  profile: custom
   custom-values:
-    toclient-groups: 3
-    toserver-groups: 25
-  sgh-mpm-context: auto
+    toclient-groups: 400
+    toserver-groups: 400
+  sgh-mpm-context: full
   inspection-recursion-limit: 3000
   # If set to yes, the loading of signatures will be made after the capture
   # is started. This will limit the downtime in IPS mode.
@@ -1296,25 +1299,25 @@ threading:
   #
   cpu-affinity:
     - management-cpu-set:
-        cpu: [ "2","17" ]  # include only these cpus in affinity settings
+        cpu: [ "19" ]  # include only these cpus in affinity settings
         mode: "balanced"
         prio:
         default: "low"
     - receive-cpu-set:
-        cpu: [ "2","17" ]  # include only these cpus in affinity settings
+        cpu: [ "19" ]  # include only these cpus in affinity settings
     - worker-cpu-set:
-        cpu: [ "3-6","19-21" ]
+        cpu: [ "20-27" ]
         mode: "exclusive"
         # Use explicitely 3 threads and don't compute number by using
         # detect-thread-ratio variable:
-        # threads: 3
+        threads: 16
         prio:
           low: [ 0 ]
           medium: [ "1-2" ]
           high: [ 3 ]
           default: "medium"
     - verdict-cpu-set:
-        cpu: [ "2","17" ]
+        cpu: [ "19" ]
         prio:
           default: "high"
   #
@@ -1326,7 +1329,7 @@ threading:
   # thread being created. Regardless of the setting at a minimum 1 detect
   # thread will always be created.
   #
-  detect-thread-ratio: 1.0
+  #detect-thread-ratio: 2.0
 
 # Luajit has a strange memory requirement, it's 'states' need to be in the
 # first 2G of the process' memory.
