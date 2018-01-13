@@ -17,18 +17,30 @@ spec:
         app: kibana
       annotations:
         networks: '[
+<<<<<<< HEAD
         { "name": "calico" },
+=======
+        { "name": "flannel" },
+>>>>>>> 1af9ea75bbdd693f134599c754dbdebee4f7b9b0
         { "name": "ovs-plugin" },
       ]'
     spec:
       containers:
       - name: kibana
+<<<<<<< HEAD
         image: edcop-master:5000/registry/edcop-kibana
         imagePullPolicy: Always
         ports:
         - containerPort: 5601
+=======
+        image: kibana
+        imagePullPolicy: Never
+>>>>>>> 1af9ea75bbdd693f134599c754dbdebee4f7b9b0
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       nodeSelector:
         nodetype: master
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1af9ea75bbdd693f134599c754dbdebee4f7b9b0

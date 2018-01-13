@@ -5,7 +5,11 @@ metadata:
 plugin: sriov
 args: '[
        {
+<<<<<<< HEAD
                 "if0": "pas0",
+=======
+                "if0": "eth5",
+>>>>>>> 1af9ea75bbdd693f134599c754dbdebee4f7b9b0
                 "vf": 0,
                 "ipam": {
                   "type": "host-local",

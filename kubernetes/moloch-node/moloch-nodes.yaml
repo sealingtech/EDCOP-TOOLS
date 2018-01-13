@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: moloch-nodes
+  namespace: default
+  labels:
+    app: moloch-nodes
+spec:
+  selector:
+    matchLabels:
+      app: moloch-nodes
+  template:
+    metadata:
+      name: moloch-nodes
+      labels:
+        app: moloch-nodes
+    spec:
+      hostNetwork: true
+      containers:
+      - name: moloch-nodes
+        image: moloch
+        imagePullPolicy: Never
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 8005
+        volumeMounts: 
+        - mountPath: /data/moloch/logs
+          name: molochlogs 
+        - mountPath: /data/moloch/raw
+          name: molochraw
+      volumes:
+      - name: molochlogs
+        hostPath:
+          path: /data/moloch/logs
+      - name: molochraw
+        hostPath:
+          path: /data/moloch/raw
+      restartPolicy: Always
+      nodeSelector:
+        nodetype: worker

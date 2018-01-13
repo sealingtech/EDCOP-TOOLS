@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 apiVersion: v1
 kind: Service
 metadata:
@@ -16,3 +17,23 @@ spec:
     app: kibana
   type: LoadBalancer
   sessionAffinity: None
+=======
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  namespace: default
+  labels:
+    app: kibana
+spec:
+  ports:
+  - name: tcp-5601-5601
+    protocol: TCP
+    port: 5601
+    targetPort: 5601
+    nodePort: 30002
+  selector:
+    app: kibana
+  type: LoadBalancer
+  sessionAffinity: None
+>>>>>>> 1af9ea75bbdd693f134599c754dbdebee4f7b9b0
