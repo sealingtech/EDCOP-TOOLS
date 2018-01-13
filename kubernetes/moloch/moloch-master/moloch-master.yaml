@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: moloch-master
+  namespace: default
+  labels:
+    app: moloch-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moloch-master
+  template:
+    metadata:
+      name: moloch-master
+      labels:
+        app: moloch-master
+    spec:
+      hostNetwork: true
+      containers:
+      - name: moloch-master
+        image: registry.edcop.sealingtech.org:5000/registry/edcop-moloch
+        imagePullPolicy: Never
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 8005
+        volumeMounts: 
+        - mountPath: /data/moloch/logs
+          name: molochlogs 
+        - mountPath: /data/moloch/raw
+          name: molochraw
+      volumes:
+      - name: molochlogs
+        hostPath:
+          path: /data/moloch/logs
+      - name: molochraw
+        hostPath:
+          path: /data/moloch/raw
+      restartPolicy: Always
+      nodeSelector:
+        nodetype: master

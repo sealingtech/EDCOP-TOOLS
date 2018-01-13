@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: bro
+  namespace: default
+  labels:
+    app: bro
+spec:
+  selector:
+    matchLabels:
+      app: bro
+  template:
+    metadata:
+      annotations:
+        networks: '[
+        { "name": "flannel" },
+        { "name": "ovs-plugin" },
+        { "name": "sriov-vlan-199" }
+      ]'
+      name: bro
+      labels:
+        app: bro
+    spec:      
+      containers:
+      - name: bro
+        image: registry.edcop.sealingtech.org:5000/registry/edcop-bro
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - NET_ADMIN
+        volumeMounts: 
+        - mountPath: /usr/local/bro/logs/
+          name: brologs 
+      volumes:
+      - name: brologs
+        hostPath:
+          path: /data/bro
+      restartPolicy: Always
+      nodeSelector:
+        nodetype: worker

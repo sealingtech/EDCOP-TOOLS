@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: default
+  labels:
+    app: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      name: kibana
+      labels:
+        app: kibana
+      annotations:
+        networks: '[
+        { "name": "calico" },
+        { "name": "ovs-plugin" },
+      ]'
+    spec:
+      containers:
+      - name: kibana
+        image: edcop-master:5000/registry/edcop-kibana
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5601
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: master
+

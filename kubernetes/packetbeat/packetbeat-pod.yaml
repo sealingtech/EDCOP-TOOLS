@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: packetbeat-pod
+  namespace: default
+  labels:
+    app: packetbeat-pod
+spec:
+  selector:
+    matchLabels:
+      app: packetbeat-pod
+  template:
+    metadata:
+      name: packetbeat-pod
+      labels:
+        app: packetbeat-pod 
+      annotations:
+        networks: '[
+        { "name": "calico" },
+        { "name": "sriov-passive-novlan-packetbeat" }
+      ]'
+    spec:
+      containers:
+      - name: packetbeat
+        image: edcop-master:5000/registry/edcop-packetbeat
+        imagePullPolicy: Always
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+
+      - name: redis
+        image: edcop-master:5000/registry/edcop-redis
+        imagePullPolicy: Always
+        ports:
+        - name: cport-6379
+          containerPort: 6379
+          
+      - name: logstash
+        image: edcop-master:5000/registry/edcop-logstash
+        imagePullPolicy: Always
+        ports:
+        - name: cport-5044
+          containerPort: 5044   
+        resources:
+          limits:
+            cpu: "2"
+        volumeMounts:
+        - mountPath: /usr/share/logstash/pipeline/packetbeat.conf
+          subPath: packetbeat.conf
+          name: logstash-packetbeat-config
+      
+      volumes:
+      - name: logstash-packetbeat-config
+        configMap:
+          name: logstash-packetbeat-config
+
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: worker
