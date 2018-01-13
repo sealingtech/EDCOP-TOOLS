@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  bro.conf: "input {\n  redis {\n    host => \"localhost\"\n    key => \"filebeat\"\n
+    \   data_type => \"list\"\n    codec => json\n  }\n}\n\nfilter {\n  json {\n    source
+    => \"message\"\n  }\n\n  mutate {\n    replace => { \"type\" => \"bro\" }\n    #need
+    to rename the following because Elastic assumes they are objects and fails\n    rename
+    => {\n      \"id\" => \"bro_id\"\n      \"id.resp_p\" => \"id_resp_p\"\n      \"id.resp_h\"
+    => \"id_resp_h\"\n      \"id.orig_p\" => \"id_orig_p\"\n      \"id.orig_h\" =>
+    \"id_orig_h\"\n    }\n  }\n  \n  geoip {\n    source => \"id_orig_h\"\n    target
+    => \"[@meta][geoip_orig]\"\n  }\n  geoip {\n    source => \"id_resp_h\"\n    target
+    => \"[@meta][geoip_resp]\"\n  }\n}\n\noutput {\n  elasticsearch {\n    hosts =>
+    \"elasticsearch:9200\" \n    manage_template => false\n    index => \"bro-%{+YYYY.MM.dd}\"\n
+    \   document_type => \"%{[@metadata][type]}\"\n    codec => json\n    #user =>
+    logstash_internal\n    #password => changeme\n  }\n}\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: logstash-bro-config
+  selfLink: /api/v1/namespaces/default/configmaps/logstash-bro-config

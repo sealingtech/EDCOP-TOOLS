@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  packetbeat.conf: "input {\n  redis {\n    host => \"localhost\"\n    key => \"packetbeat\"\n
+    \   data_type => \"list\"\n    codec => json\n    add_field => {\"tool\" => \"packetbeat\"}\n
+    \ }\n}\n\noutput {\n  elasticsearch {\n    hosts => \"elasticsearch:9200\"\n    manage_template
+    => false\n    index => \"packetbeat-%{+YYYY.MM.dd}\" \n    document_type => \"%{[@metadata][type]}\"\n
+    \   #user => logstash_internal\n    #password => changeme\n  }\n}\n\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: logstash-packetbeat-config
+  selfLink: /api/v1/namespaces/default/configmaps/logstash-packetbeat-config
