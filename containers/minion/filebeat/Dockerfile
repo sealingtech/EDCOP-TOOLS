@@ -1,6 +1,8 @@
-FROM docker.elastic.co/beats/filebeat:5.6.0
+FROM docker.elastic.co/beats/filebeat:6.1.1
 
-VOLUME /data
+VOLUME /var/EDCOP/logs
+
+#ADD filebeat.yml /usr/share/filebeat/filebeat.yml
 
 USER root
 RUN chown filebeat /usr/share/filebeat/filebeat.yml && \
@@ -8,6 +10,6 @@ RUN chown filebeat /usr/share/filebeat/filebeat.yml && \
 	yum -y install net-tools && \
 	yum -y clean all
 
-#USER filebeat
+USER filebeat
 
-ADD filebeat.yml /usr/share/filebeat/filebeat.yml
+

@@ -1,4 +1,4 @@
-FROM docker.elastic.co/logstash/logstash:5.6.0
+FROM docker.elastic.co/logstash/logstash:6.1.1
 
 RUN rm -f /usr/share/logstash/pipeline/logstash.conf
 
@@ -9,7 +9,7 @@ RUN yum -y update && \
 	yum -y clean all
 USER logstash
 
-ADD pipeline /usr/share/logstash/pipeline/
+#ADD pipeline /usr/share/logstash/pipeline/
 ADD logstash.yml /usr/share/logstash/config/logstash.yml
 
 EXPOSE 5044

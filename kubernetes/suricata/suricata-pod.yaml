@@ -17,15 +17,14 @@ spec:
       annotations:
         networks: '[
         { "name": "calico" },
-        { "name": "sriov-no-vlan-in" },
-        { "name": "sriov-no-vlan-out" }
+        { "name": "inline-1" },
+        { "name": "inline-2" }
       ]'
     spec:
       containers:
       - name: suricata
-        image: "edcop-master:5000/edcop-suricata"
+        image: "edcop-master:5000/suricata"
         stdin: true
-        #command: ["suricata","--af-packet -vvv"]
         command: ["docker-entrypoint.sh"]
         tty: true
         securityContext:
@@ -40,31 +39,29 @@ spec:
             name: suricata-logs
 
       - name: redis
-        image: edcop-master:5000/registry/edcop-redis
+        image: edcop-master:5000/edcop-redis
         imagePullPolicy: Always
         ports:
         - name: cport-6379
           containerPort: 6379
           
       - name: logstash
-        image: edcop-master:5000/registry/edcop-logstash
+        image: edcop-master:5000/edcop-logstash
         imagePullPolicy: Always
         ports:
         - name: cport-5044
           containerPort: 5044
         resources:
           limits:
-            cpu: "8"
+            cpu: "2"
         volumeMounts:
-          - mountPath: /usr/share/logstash/pipeline/suricata.conf
-            subPath: suricata.conf
+          - mountPath: /usr/share/logstash/pipeline/
+            name: logstash-suricata-pipeline
+          - mountPath: /usr/share/logstash/config
             name: logstash-suricata-config
-          - mountPath: /usr/share/logstash/config/jvm.options
-            subPath: jvm.options 
-            name: logstash-suricata-jvm 
-       
+ 
       - name: filebeat
-        image: edcop-master:5000/registry/edcop-filebeat
+        image: edcop-master:5000/edcop-filebeat
         imagePullPolicy: Always
         securityContext:
           privileged: true
@@ -78,7 +75,7 @@ spec:
       volumes:
       - name: suricata-logs
         hostPath:
-          path: /var/EDCOP/logs/suricata    
+          path: /var/EDCOP/data/logs/suricata    
       - name: suricata-config
         configMap:
           name: suricata-config
@@ -88,9 +85,9 @@ spec:
       - name: logstash-suricata-config
         configMap:
           name: logstash-suricata-config
-      - name: logstash-suricata-jvm 
+      - name: logstash-suricata-pipeline
         configMap:
-          name: logstash-suricata-jvm
+          name: logstash-suricata-pipeline
           
       restartPolicy: Always
       dnsPolicy: ClusterFirst

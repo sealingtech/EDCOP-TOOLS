@@ -5,7 +5,6 @@ metadata:
   namespace: default
   labels:
     component: elasticsearch
-    role: client
 spec:
   ports:
   - name: tcp-9200
@@ -14,4 +13,3 @@ spec:
     targetPort: 9200
   selector:
     component: elasticsearch
-    role: client

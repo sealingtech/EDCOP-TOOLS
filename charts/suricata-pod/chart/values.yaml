@@ -1,0 +1,19 @@
+# EDCOP Suricata Chart values
+image:
+  repository: edcop-master:5000
+resources:
+  limits:
+    cpu: 2
+networks:
+  # Overlay is the name of the default cni network
+  overlaynet: calico
+  # Net 1 is the name of the first sriov interface
+  net1: inline-1
+  # Net 2 is the name of the second sriov interface
+  net2: inline-2
+volumes:
+  # Persistent data location on the host to store suricata's logs
+  logs:
+    hostPath: /var/EDCOP/data/logs/suricata
+nodeSelector:
+  nodetype: worker

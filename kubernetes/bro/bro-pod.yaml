@@ -17,12 +17,12 @@ spec:
       annotations:
         networks: '[
         { "name": "calico" },
-        { "name": "sriov-passive-novlan" }
+        { "name": "passive" }
       ]'
     spec:
       containers:
       - name: bro
-        image: edcop-master:5000/edcop-bro
+        image: edcop-master:5000/bro
         imagePullPolicy: Always
         securityContext:
           capabilities:
@@ -40,31 +40,29 @@ spec:
           name: bro-spool
       
       - name: redis
-        image: edcop-master:5000/registry/edcop-redis
+        image: edcop-master:5000/edcop-redis
         imagePullPolicy: Always
         ports:
         - name: cport-6379
           containerPort: 6379
           
       - name: logstash
-        image: edcop-master:5000/registry/edcop-logstash
+        image: edcop-master:5000/edcop-logstash
         imagePullPolicy: Always
         ports:
         - name: cport-5044
           containerPort: 5044
         resources:
           limits:
-            cpu: "8"
+            cpu: "2"
         volumeMounts:
-        - mountPath: /usr/share/logstash/pipeline/bro.conf
-          subPath: bro.conf
+        - mountPath: /usr/share/logstash/pipeline/
+          name: logstash-bro-pipeline
+        - mountPath: /usr/share/logstash/config/
           name: logstash-bro-config
-        - mountPath: /usr/share/logstash/config/jvm.options
-          subPath: jvm.options
-          name: logstash-bro-jvm
 
       - name: filebeat
-        image: edcop-master:5000/registry/edcop-filebeat
+        image: edcop-master:5000/edcop-filebeat
         imagePullPolicy: Always
         securityContext:
           privileged: true
@@ -78,7 +76,7 @@ spec:
       volumes:
       - name: bro-logs
         hostPath: 
-          path: /var/EDCOP/logs/bro/logs       
+          path: /var/EDCOP/data/logs/bro/logs       
       - name: bro-etc-config
         configMap:
           name: bro-etc-config
@@ -87,16 +85,16 @@ spec:
           name: bro-site-config
       - name: bro-spool
         hostPath: 
-          path: /var/EDCOP/logs/bro/spool
+          path: /var/EDCOP/data/logs/bro/spool
       - name: filebeat-bro-config
         configMap:
           name: filebeat-bro-config
       - name: logstash-bro-config
         configMap:
           name: logstash-bro-config
-      - name: logstash-bro-jvm
+      - name: logstash-bro-pipeline
         configMap:
-          name: logstash-bro-jvm
+          name: logstash-bro-pipeline
           
       restartPolicy: Always
       dnsPolicy: ClusterFirst

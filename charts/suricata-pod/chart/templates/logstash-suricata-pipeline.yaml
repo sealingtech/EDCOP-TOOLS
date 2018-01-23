@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-{{ template "suricata.fullname" . }}-pipeline
+data:
+  suricata.conf: "input {\n  redis {\n    host => \"localhost\"\n    key => \"suricata\"\n
+    \   data_type => \"list\"\n    codec => json\n    batch_count => 2500\n    threads
+    => 4\n  }\n}\n\noutput {\n  elasticsearch {\n    hosts => \"elasticsearch:9200\"
+    \n    manage_template => false\n    index => \"suricata-%{+YYYY.MM.dd}\"\n    document_type
+    => \"%{[@metadata][type]}\"\n    codec => json\n    #user => logstash_internal\n
+    \   #password => changeme\n  }\n}\n"

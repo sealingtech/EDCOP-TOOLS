@@ -1,0 +1,32 @@
+apiVersion: v1
+data:
+  monocular.yaml: |-
+    cacheRefreshInterval: 3600
+    cors:
+      allowed_headers:
+      - content-type
+      - x-xsrf-token
+      allowed_origins:
+      - ""
+    releasesEnabled: true
+    repos:
+    - name: stable
+      source: https://github.com/kubernetes/charts/tree/master/stable
+      url: https://kubernetes-charts.storage.googleapis.com
+    - name: incubator
+      source: https://github.com/kubernetes/charts/tree/master/incubator
+      url: https://kubernetes-charts-incubator.storage.googleapis.com
+    tillerNamespace: kube-system
+    mongodb:
+      url: alternating-badger-mongodb:27017
+      database: monocular
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app: alternating-badger-monocular
+    chart: monocular-0.5.0
+    heritage: Tiller
+    release: alternating-badger
+  name: alternating-badger-monocular-api-config
+  selfLink: /api/v1/namespaces/default/configmaps/alternating-badger-monocular-api-config

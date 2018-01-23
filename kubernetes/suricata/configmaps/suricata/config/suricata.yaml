@@ -1299,14 +1299,14 @@ threading:
   #
   cpu-affinity:
     - management-cpu-set:
-        cpu: [ "19" ]  # include only these cpus in affinity settings
+        cpu: [ "21" ]  # include only these cpus in affinity settings
         mode: "balanced"
         prio:
         default: "low"
     - receive-cpu-set:
-        cpu: [ "19" ]  # include only these cpus in affinity settings
+        cpu: [ "21" ]  # include only these cpus in affinity settings
     - worker-cpu-set:
-        cpu: [ "20-24" ]
+        cpu: [ "22-26" ]
         mode: "exclusive"
         # Use explicitely 3 threads and don't compute number by using
         # detect-thread-ratio variable:

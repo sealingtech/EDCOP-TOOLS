@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: es-master
-        image: edcop-master:5000/registry/edcop-elasticsearch
+        image: edcop-master:5000/elasticsearch
         env:
         - name: NAMESPACE
           valueFrom:
@@ -29,6 +29,8 @@ spec:
           value: edcop
         - name: NODE_MASTER
           value: "true"
+        - name: NODE_DATA
+          value: "false"
         - name: NETWORK_HOST
           value: _eth0_,_lo_
         - name: ES_JAVA_OPTS
@@ -40,16 +42,15 @@ spec:
           containerPort: 9300
         resources:
           limits:
-            cpu: "16"
+            cpu: "32"
             memory: "32Gi"
         imagePullPolicy: Always
         volumeMounts: 
         - mountPath: /usr/share/elasticsearch/data
           name: esdata
-        volumeMounts:
-          - mountPath: /usr/share/elasticsearch/config/jvm.options
-            subPath: jvm.options
-            name: elasticsearch-jvm
+        - mountPath: /usr/share/elasticsearch/config/jvm.options
+          subPath: jvm.options
+          name: elasticsearch-jvm
       volumes:
       - name: esdata
         hostPath:
