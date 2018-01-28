@@ -17,8 +17,7 @@ spec:
         app: kibana
       annotations:
         networks: '[
-        { "name": "calico" },
-        { "name": "ovs-plugin" },
+        { "name": "calico" }
       ]'
     spec:
       containers:

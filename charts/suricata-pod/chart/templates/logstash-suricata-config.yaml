@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: filebeat-{{ template "suricata.fullname" . }}-config
+  name: logstash-{{ template "suricata.fullname" . }}-config
 data:
   jvm.options: |
     ## JVM configuration
@@ -9,8 +9,8 @@ data:
     # Xms represents the initial size of total heap space
     # Xmx represents the maximum size of total heap space
 
-    -Xms8g
-    -Xmx8g
+    -Xms{{  .Values.logstashConfig.initialJvmHeap }}
+    -Xmx{{  .Values.logstashConfig.maxJvmHeap }}
 
     ################################################################
     ## Expert settings

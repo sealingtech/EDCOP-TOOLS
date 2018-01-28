@@ -1,9 +1,6 @@
 # EDCOP Suricata Chart values
 image:
   repository: edcop-master:5000
-resources:
-  limits:
-    cpu: 2
 networks:
   # Overlay is the name of the default cni network
   overlaynet: calico
@@ -17,3 +14,26 @@ volumes:
     hostPath: /var/EDCOP/data/logs/suricata
 nodeSelector:
   nodetype: worker
+suricataConfig:
+  net0Threads: 1
+  net1Threads: 1
+  setCpuAffinity: no
+  managementCpuSet: 1
+  receiveCpuSet: 1
+  workerCpuSet: 1
+  verdictCpuSet: 1
+  limits:
+    cpu: 2
+    memory: 2G
+logstashConfig:
+  threads: 1
+  batchCount: 150
+  initialJvmHeap: 1g
+  maxJvmHeap: 1g
+  limits:
+    cpu: 2
+    memory: 2G
+redisConfig:
+  limits:
+    cpu: 2
+    memory: 4G

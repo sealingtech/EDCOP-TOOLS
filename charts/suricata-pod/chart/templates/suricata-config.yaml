@@ -1,7 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: filebeat-{{ template "suricata.fullname" . }}-config
+  name: {{ template "suricata.fullname" . }}-config
+apiVersion: v1
 data:
   classification.config: "# $Id$\n# classification.config taken from Snort 2.8.5.3.
     Snort is governed by the GPLv2\n#\n# The following includes information for prioritizing
@@ -300,10 +301,10 @@ data:
     \"[%i] <%d> -- \"\n      # type: json\n\n\n##\n## Step 4: configure common capture
     settings\n##\n## See \"Advanced Capture Options\" below for more options, including
     NETMAP\n## and PF_RING.\n##\n\n# Linux high speed capture support\naf-packet:\n
-    \ - interface: net0\n    threads: 8\n    defrag: yes\n    cluster-type: cluster_flow\n
+    \ - interface: net0\n    threads: {{  .Values.suricataConfig.net0Threads }}\n    defrag: yes\n    cluster-type: cluster_flow\n
     \   cluster-id: 98\n    copy-mode: ips\n    copy-iface: net1\n    buffer-size:
     64535\n    use-mmap: yes\n    tpacket-v3: yes\n  - interface: net1\n    threads:
-    8\n    cluster-id: 97\n    defrag: yes\n    cluster-type: cluster_flow\n    copy-mode:
+    {{  .Values.suricataConfig.net1Threads }}\n    cluster-id: 97\n    defrag: yes\n    cluster-type: cluster_flow\n    copy-mode:
     ips\n    copy-iface: net0\n    buffer-size: 64535\n    use-mmap: yes\n    tpacket-v3:
     yes\n\n  # Put default values here. These will be used for an interface that is
     not\n  # in the list above.\n  - interface: default\n    #threads: auto\n    #use-mmap:
@@ -663,20 +664,20 @@ data:
     (Boyer-Moore) and \"hs\" (Hyperscan, only\n# available if Suricata has been built
     with Hyperscan support).\n#\n# The default of \"auto\" will use \"hs\" if available,
     otherwise \"bm\".\n\nspm-algo: auto\n\n# Suricata is multi-threaded. Here the
-    threading can be influenced.\nthreading:\n  set-cpu-affinity: yes\n  # Tune cpu
+    threading can be influenced.\nthreading:\n  set-cpu-affinity: {{  .Values.suricataConfig.setCpuAffinity }}\n  # Tune cpu
     affinity of threads. Each family of threads can be bound\n  # on specific CPUs.\n
     \ #\n  # These 2 apply to the all runmodes:\n  # management-cpu-set is used for
     flow timeout handling, counters\n  # worker-cpu-set is used for 'worker' threads\n
     \ #\n  # Additionally, for autofp these apply:\n  # receive-cpu-set is used for
     capture threads\n  # verdict-cpu-set is used for IPS verdict threads\n  #\n  cpu-affinity:\n
-    \   - management-cpu-set:\n        cpu: [ \"19\" ]  # include only these cpus
+    \   - management-cpu-set:\n        cpu: [ \"{{  .Values.suricataConfig.managementCpuSet }}\" ]  # include only these cpus
     in affinity settings\n        mode: \"balanced\"\n        prio:\n        default:
-    \"low\"\n    - receive-cpu-set:\n        cpu: [ \"19\" ]  # include only these
-    cpus in affinity settings\n    - worker-cpu-set:\n        cpu: [ \"20-26\" ]\n
+    \"low\"\n    - receive-cpu-set:\n        cpu: [ \"{{  .Values.suricataConfig.receiveCpuSet }}\" ]  # include only these
+    cpus in affinity settings\n    - worker-cpu-set:\n        cpu: [ \"{{  .Values.suricataConfig.workerCpuSet }}\" ]\n
     \       mode: \"exclusive\"\n        # Use explicitely 3 threads and don't compute
     number by using\n        # detect-thread-ratio variable:\n        threads: 6 \n
     \       prio:\n          low: [ 0 ]\n          medium: [ \"1-2\" ]\n          high:
-    [ 3 ]\n          default: \"medium\"\n    - verdict-cpu-set:\n        cpu: [ \"19\"
+    [ 3 ]\n          default: \"medium\"\n    - verdict-cpu-set:\n        cpu: [ \"{{  .Values.suricataConfig.verdictCpuSet }}\"
     ]\n        prio:\n          default: \"high\"\n  #\n  # By default Suricata creates
     one \"detect\" thread per available CPU/CPU core.\n  # This setting allows controlling
     this behaviour. A ratio setting of 2 will\n  # create 2 detect threads for each
@@ -864,4 +865,3 @@ data:
     #suppress gen_id 1, sig_id 2009557, track by_src, ip 217.110.97.128/25
     #suppress gen_id 1, sig_id 2012086, track by_src, ip 217.110.97.128/25
     #suppress gen_id 1, sig_id 2003614, track by_src, ip 217.110.97.128/25
-
