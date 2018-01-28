@@ -66,9 +66,9 @@ data:
     the comments describing all\n# options in this file, full documentation can be
     found at:\n# https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Suricatayaml\n\n##\n##
     Step 1: inform Suricata about your network\n##\n\nvars:\n  # more specifc is better
-    for alert accuracy and performance\n  address-groups:\n    HOME_NET: \"[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]\"\n
+    for alert accuracy and performance\n  address-groups:\n    HOME_NET: \"{{  .Values.suricataConfig.homeNet }}\"\n
     \   #HOME_NET: \"[192.168.0.0/16]\"\n    #HOME_NET: \"[10.0.0.0/8]\"\n    #HOME_NET:
-    \"[172.16.0.0/12]\"\n    #HOME_NET: \"any\"\n\n    EXTERNAL_NET: \"!$HOME_NET\"\n
+    \"[172.16.0.0/12]\"\n    #HOME_NET: \"any\"\n\n    EXTERNAL_NET: \"{{  .Values.suricataConfig.externalNet }}\"\n
     \   #EXTERNAL_NET: \"any\"\n\n    HTTP_SERVERS: \"$HOME_NET\"\n    SMTP_SERVERS:
     \"$HOME_NET\"\n    SQL_SERVERS: \"$HOME_NET\"\n    DNS_SERVERS: \"$HOME_NET\"\n
     \   TELNET_SERVERS: \"$HOME_NET\"\n    AIM_SERVERS: \"$EXTERNAL_NET\"\n    DNP3_SERVER:

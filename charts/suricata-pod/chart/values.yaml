@@ -15,6 +15,8 @@ volumes:
 nodeSelector:
   nodetype: worker
 suricataConfig:
+  homeNet: '[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]'
+  externalNet: '!$HOME_NET'
   net0Threads: 1
   net1Threads: 1
   setCpuAffinity: no
