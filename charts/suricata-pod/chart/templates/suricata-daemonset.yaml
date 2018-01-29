@@ -86,8 +86,7 @@ spec:
 
       volumes:
       - name: suricata-logs
-        hostPath:
-          path: {{ .Values.volumes.logs.hostPath }}
+        emptyDir: {}
       - name: suricata-config
         configMap:
           name: {{ template "suricata.fullname" . }}-config

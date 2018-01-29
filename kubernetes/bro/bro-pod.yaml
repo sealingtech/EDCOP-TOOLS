@@ -75,8 +75,7 @@ spec:
           
       volumes:
       - name: bro-logs
-        hostPath: 
-          path: /var/EDCOP/data/logs/bro/logs       
+        emptyDir: {}
       - name: bro-etc-config
         configMap:
           name: bro-etc-config

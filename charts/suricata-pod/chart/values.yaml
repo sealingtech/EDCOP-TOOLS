@@ -27,18 +27,18 @@ suricataConfig:
   verdictCpuSet: 1
   limits:
     cpu: 2
-    memory: 2G
+    memory: 4G
 logstashConfig:
-  threads: 1
-  batchCount: 150
-  initialJvmHeap: 1g
-  maxJvmHeap: 1g
-  pipelineOutputWorkers: 1 
+  threads: 2 
+  batchCount: 250
+  initialJvmHeap: 4g
+  maxJvmHeap: 4g
+  pipelineOutputWorkers: 2 
   pipelineBatchSize: 150  
   limits:
     cpu: 2
-    memory: 2G
+    memory: 8G
 redisConfig:
   limits:
     cpu: 2
-    memory: 4G
+    memory: 8G

@@ -74,8 +74,7 @@ spec:
 
       volumes:
       - name: suricata-logs
-        hostPath:
-          path: /var/EDCOP/data/logs/suricata    
+        emptyDir: {}
       - name: suricata-config
         configMap:
           name: suricata-config
