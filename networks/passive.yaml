@@ -6,7 +6,6 @@ plugin: sriov
 args: '[
        {
                 "if0": "pas0",
-                "vf": 0,
                 "ipam": {
                   "type": "host-local",
                   "subnet": "10.51.0.0/16",

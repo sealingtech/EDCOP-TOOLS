@@ -5,7 +5,7 @@ networks:
   # Overlay is the name of the default cni network
   overlaynet: calico
   # Net 1 is the name of the first sriov interface
-  net1: inline-1 
+  net1: passive 
   # Net 2 is the name of the second sriov interface  This will be ignored in passive
   net2: inline-2
 volumes:
@@ -15,7 +15,7 @@ volumes:
 nodeSelector:
   nodetype: worker
 suricataConfig:
-  inline: true 
+  inline: false 
   homeNet: '[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]'
   externalNet: '!$HOME_NET'
   net0Threads: 1
