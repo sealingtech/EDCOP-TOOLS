@@ -2,10 +2,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: logstash-{{ template "suricata.fullname" . }}-config
+apiVersion: v1
 data:
   jvm.options: |
     ## JVM configuration
-
     # Xms represents the initial size of total heap space
     # Xmx represents the maximum size of total heap space
 
@@ -84,7 +84,7 @@ data:
 
     # Entropy source for randomness
     -Djava.security.egd=file:/dev/urandom
-  log4j2.properties: |
+  log4j2.properties : |
     status = error
     name = LogstashPropertiesConfig
 
@@ -101,14 +101,14 @@ data:
 
     rootLogger.level = ${sys:ls.log.level}
     rootLogger.appenderRef.console.ref = ${sys:ls.log.format}_console
-  logstash.yml: |
+  logstash.yml : |
     http.host: "0.0.0.0"
     path.config: /usr/share/logstash/pipeline
     xpack.monitoring.enabled: true
     xpack.monitoring.elasticsearch.url: http://elasticsearch:9200
     xpack.monitoring.elasticsearch.username: logstash_system
     xpack.monitoring.elasticsearch.password: changeme
-  pipelines.yml: |
+  pipelines.yml : |
     # List of pipelines to be loaded by Logstash
     #
     # This document must be a list of dictionaries/hashes, where the keys/values are pipeline settings.
@@ -138,16 +138,16 @@ data:
     #
     #   # How many worker threads execute the Filters+Outputs stage of the pipeline
     #   pipeline.workers: 1 (actually defaults to number of CPUs)
-    pipeline.workers: {{  .Values.logstashConfig.pipelineOutputWorkers }} 
+    pipeline.workers: {{  .Values.logstashConfig.pipelineWorkers }}
     #
     #   # How many events to retrieve from inputs before sending to filters+workers
-    pipeline.batch.size: {{  .Values.logstashConfig.pipelineBatchSize }} 
+    pipeline.batch.size: {{  .Values.logstashConfig.pipelineWorkers }}
     #
     #   # How long to wait before dispatching an undersized batch to filters+workers
     #   pipeline.batch.delay: 5
     #
     #   # How many workers should be used per output plugin instance
-    pipeline.output.workers: 4
+    pipeline.output.workers:  {{  .Values.logstashConfig.pipelineOutputWorkers }}
     #
     #   # Internal queuing model, "memory" for legacy in-memory based queuing and
     #   # "persisted" for disk-based acked queueing. Defaults is memory
@@ -189,7 +189,7 @@ data:
     #   Default is path.data/dead_letter_queue
     #
     #   path.dead_letter_queue:
-  startup.options: |
+  startup.options : |
     ################################################################################
     # These settings are ONLY used by $LS_HOME/bin/system-install to create a custom
     # startup script for Logstash and is not used by Logstash itself. It should

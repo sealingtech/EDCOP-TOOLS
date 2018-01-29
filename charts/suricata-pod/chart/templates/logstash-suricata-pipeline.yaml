@@ -2,10 +2,28 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: logstash-{{ template "suricata.fullname" . }}-pipeline
+apiVersion: v1
 data:
-  suricata.conf: "input {\n  redis {\n    host => \"localhost\"\n    key => \"suricata\"\n
-    \   data_type => \"list\"\n    codec => json\n    batch_count => {{  .Values.logstashConfig.batchCount }}\n    threads
-    => {{  .Values.logstashConfig.threads }}\n  }\n}\n\noutput {\n  elasticsearch {\n    hosts => \"elasticsearch:9200\"
-    \n    manage_template => false\n    index => \"suricata-%{+YYYY.MM.dd}\"\n    document_type
-    => \"%{[@metadata][type]}\"\n    codec => json\n    #user => logstash_internal\n
-    \   #password => changeme\n  }\n}\n"
+  suricata.conf: |
+    input {
+      redis {
+        host => "localhost"
+        key => "suricata"
+        data_type => "list"
+        codec => json
+        batch_count => {{  .Values.logstashConfig.batchCount }}
+        threads => 4
+      }
+    }
+
+    output {
+      elasticsearch {
+        hosts => "elasticsearch:9200"
+        manage_template => false
+        index => "suricata-%{+YYYY.MM.dd}"
+        document_type => "event"
+        codec => json
+        #user => logstash_internal
+        #password => changeme
+      }
+    }

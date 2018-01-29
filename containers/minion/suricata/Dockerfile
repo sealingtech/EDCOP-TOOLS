@@ -4,7 +4,7 @@ MAINTAINER Ed Sealing <ed.sealing@sealingtech.org>
 #Install required libraries
 RUN yum -y update && \
         yum -y install epel-release && \
-        yum -y install GeoIP file libpcap htop net-tools vim libnet libtool libedit libarchive libmnl libmpc libnfnetlink libyaml lzo rsync libnetfilter_queue jansson tcpdump && \
+        yum -y install GeoIP file libpcap htop net-tools vim libnet libtool libedit libarchive libmnl libmpc libnfnetlink libyaml lzo rsync libnetfilter_queue jansson tcpdump hiredis.x86_64 hiredis-devel.x86_64&& \
         yum -y install automake autoconf git libtool make gcc gcc-c++ libyaml-devel libpcap-devel pcre-devel file-devel zlib-devel jansson-devel nss-devel libcap-ng-devel libnet-devel libnetfilter_queue-devel lua-devel which bzip2-devel GeoIP-devel python-pyelftools GeoIP-devel cmake rpm-build ruby ruby-libs ruby-irb rubygems ruby-devel sqlite-devel && \
         gem install fpm && \
         mkdir /tmp/{build,hyperscan,ragel,boost-1.64,suricata,rpms} && \
@@ -36,7 +36,7 @@ RUN yum -y update && \
         curl -L -O https://www.openinfosecfoundation.org/download/suricata-4.0.1.tar.gz && \
         tar xzf suricata-4.0.1.tar.gz && \
         cd suricata-4.0.1 && \
-        ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --enable-nfqueue --with-libhs-libraries=/usr/lib/ --with-libhs-includes=/usr/include/hs/ --enable-lua --enable-geoip && \
+        ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --enable-hiredis --enable-nfqueue --with-libhs-libraries=/usr/lib/ --with-libhs-includes=/usr/include/hs/ --enable-lua --enable-geoip && \
         make && \
         make install-full DESTDIR=/tmp/suricata && \
         fpm --prefix=/ -s dir -t rpm -n suricata -v 4.0.1 -C /tmp/suricata/ -p /tmp/rpms/ && \
@@ -54,5 +54,6 @@ RUN yum -y install wget
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x docker-entrypoint.sh
 RUN cp docker-entrypoint.sh /bin
+RUN mkdir -p /logs/suricata
 
 ENTRYPOINT ["docker-entrypoint.sh"]

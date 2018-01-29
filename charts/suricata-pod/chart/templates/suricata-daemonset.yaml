@@ -72,27 +72,12 @@ spec:
           - mountPath: /usr/share/logstash/config
             name: logstash-suricata-config
 
-      - name: filebeat
-        image: {{ .Values.image.repository }}/filebeat
-        imagePullPolicy: Always
-        securityContext:
-          privileged: true
-        volumeMounts:
-        - mountPath: /suricata
-          name: suricata-logs
-        - mountPath: /usr/share/filebeat/filebeat.yml
-          subPath: filebeat.yml
-          name: filebeat-suricata-config
-
       volumes:
       - name: suricata-logs
         emptyDir: {}
       - name: suricata-config
         configMap:
           name: {{ template "suricata.fullname" . }}-config
-      - name: filebeat-suricata-config
-        configMap:
-          name: filebeat-{{ template "suricata.fullname" . }}-config
       - name: logstash-suricata-config
         configMap:
           name: logstash-{{ template "suricata.fullname" . }}-config
