@@ -18,11 +18,18 @@ spec:
       labels:
         app: {{ template "suricata.name" . }}
       annotations:
+      {{ if .Values.suricataConfig.inline }}
         networks: '[
         { "name": "{{  .Values.networks.overlaynet }}" },
         { "name": "{{  .Values.networks.net1 }}" },
         { "name": "{{  .Values.networks.net2 }}" }
       ]'
+      {{ else }}
+        networks: '[
+        { "name": "{{  .Values.networks.overlaynet }}" },
+        { "name": "{{  .Values.networks.net1 }}" }
+      ]'
+      {{ end }}
     spec:
       containers:
       - name: suricata

@@ -517,6 +517,7 @@ data:
     ##
 
     # Linux high speed capture support
+    {{ if .Values.suricataConfig.inline }}
     af-packet:
       - interface: net0
         threads: {{  .Values.suricataConfig.net0Threads }}
@@ -538,7 +539,17 @@ data:
         buffer-size: 64535
         use-mmap: yes
         tpacket-v3: yes
-
+    {{ else }}
+    af-packet:
+      - interface: net0
+        threads: {{  .Values.suricataConfig.net0Threads }}
+        defrag: yes
+        cluster-type: cluster_flow
+        cluster-id: 98
+        copy-mode: tap
+        buffer-size: 64535
+        use-mmap: yes
+        tpacket-v3: yes
       # Put default values here. These will be used for an interface that is not
       # in the list above.
       - interface: default
@@ -546,7 +557,7 @@ data:
         #use-mmap: no
         #rollover: yes
         #tpacket-v3: yes
-
+    {{ end }}
     # Cross platform libpcap capture support
     pcap:
       - interface: eth0
