@@ -675,7 +675,7 @@ data:
     \"low\"\n    - receive-cpu-set:\n        cpu: [ \"{{  .Values.suricataConfig.receiveCpuSet }}\" ]  # include only these
     cpus in affinity settings\n    - worker-cpu-set:\n        cpu: [ \"{{  .Values.suricataConfig.workerCpuSet }}\" ]\n
     \       mode: \"exclusive\"\n        # Use explicitely 3 threads and don't compute
-    number by using\n        # detect-thread-ratio variable:\n        threads: 6 \n
+    number by using\n        # detect-thread-ratio variable:\n        threads: {{  .Values.suricataConfig.workerThreads }} \n
     \       prio:\n          low: [ 0 ]\n          medium: [ \"1-2\" ]\n          high:
     [ 3 ]\n          default: \"medium\"\n    - verdict-cpu-set:\n        cpu: [ \"{{  .Values.suricataConfig.verdictCpuSet }}\"
     ]\n        prio:\n          default: \"high\"\n  #\n  # By default Suricata creates

@@ -23,6 +23,7 @@ suricataConfig:
   managementCpuSet: 1
   receiveCpuSet: 1
   workerCpuSet: 1
+  workerThreads: 1
   verdictCpuSet: 1
   limits:
     cpu: 2
@@ -32,6 +33,8 @@ logstashConfig:
   batchCount: 150
   initialJvmHeap: 1g
   maxJvmHeap: 1g
+  pipelineOutputWorkers: 1 
+  pipelineBatchSize: 150  
   limits:
     cpu: 2
     memory: 2G

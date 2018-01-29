@@ -138,10 +138,10 @@ data:
     #
     #   # How many worker threads execute the Filters+Outputs stage of the pipeline
     #   pipeline.workers: 1 (actually defaults to number of CPUs)
-    pipeline.workers: 8
+    pipeline.workers: {{  .Values.logstashConfig.pipelineOutputWorkers }} 
     #
     #   # How many events to retrieve from inputs before sending to filters+workers
-    pipeline.batch.size: 250
+    pipeline.batch.size: {{  .Values.logstashConfig.pipelineBatchSize }} 
     #
     #   # How long to wait before dispatching an undersized batch to filters+workers
     #   pipeline.batch.delay: 5
