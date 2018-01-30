@@ -2,10 +2,10 @@
 The following process is considered best practice for creating new capabilities inside of EDCOP.
 
 The general process for developing capabilities inside of EDCOP are as follows:
-..* Plan Design
-..* Build Docker container
-..* Create Helm Package
-..* Test
+  * Plan Design
+  * Build Docker container
+  * Create Helm Package
+ * Test
 
 ## Plan Design
 The first step is to understand what your goals are for creating this capability and what components will be needed.  Often a capability will need multiple containers to function properly.  See the Design Guide for information on how pods should be structured.  Some things to bear in mind:
