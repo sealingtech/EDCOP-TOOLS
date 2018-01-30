@@ -181,6 +181,7 @@ All settings should have a comment above the setting about what it does.  In pod
 
 
 The convention these tools will follow are:
+
 ```
 image:
   repository: edcop-master:5000
