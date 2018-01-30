@@ -7,7 +7,7 @@ The general process for developing capabilities inside of EDCOP are as follows:
 -Create Helm Package
 -Test
 
-# Plan Design
+## Plan Design
 The first step is to understand what your goals are for creating this capability and what components will be needed.  Often a capability will need multiple containers to function properly.  See the Design Guide for information on how pods should be structured.  Some things to bear in mind:
 1. Containers should only carry software.  Kubernetes will lay down all configurations.  Any user configurations will be done using Helm.  More on this in later steps.  This will allow containers to be reused in different pods across the architecture.  
 2. Each container should only have a single process in it.  For sharing information between containers the preffered mechanism is using network to localhosts.  It is also possible to share volumes between pods so one container writes and the other containers picks up these files.  http://blog.kubernetes.io/2015/06/the-distributed-system-toolkit-patterns.html
@@ -19,7 +19,7 @@ The first step is to understand what your goals are for creating this capability
 
 In Kubernetes it is assumed that containers will be forever shifting and moving around.  Upgrades no longer take place, instead we simply replace the containers.  In cases where we require persistence care must be made to ensure data isn't lost.  This can come from persistent volumes or using HostVolumes.  When HostVolumes are used, take care to ensure that containers come up on the same host each time (Daemonsets are good for accomplishing this).  See the design guide for information on options for this.
 
-#Building Docker Containers
+## Building Docker Containers
 A container is needed to start this process.  There are some rules that must be followed to maintain standardization across the platform. 
 
 First step is to build the container.  It is necessary to first start with a particular base image.  When building from scratch we reccomend the Centos container.  It is possible to use Docker Hub, but bear in mind that the source of images should be looked at.  If questions arise, talk it through with the rest of the team.  The container must be built in a manner that is automated using Dockerfiles.   
@@ -121,7 +121,7 @@ docker push edcop-master:5000/<tool name>
 
 Note: At some point we will probably change how the repository is handled.
 
-# Create Helm Package
+## Create Helm Package
 Helm will be the tool that will deploy and configure containers inside the cluster.  Follow the pod design as closely as possible but generally a helm package will require the following:
 1. A pod (of type deployment, a daemonset or a replicaset)
 2. A service if the pod needs to be addressable by the outside world
