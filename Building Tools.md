@@ -1,4 +1,4 @@
-#High Level Process of Building Capabilities Inside EDCOP
+# High Level Process of Building Capabilities Inside EDCOP
 The following process is considered best practice for creating new capabilities inside of EDCOP.
 
 The general process for developing capabilities inside of EDCOP are as follows:
@@ -7,7 +7,7 @@ The general process for developing capabilities inside of EDCOP are as follows:
 -Create Helm Package
 -Test
 
-#Plan Design
+# Plan Design
 The first step is to understand what your goals are for creating this capability and what components will be needed.  Often a capability will need multiple containers to function properly.  See the Design Guide for information on how pods should be structured.  Some things to bear in mind:
 1. Containers should only carry software.  Kubernetes will lay down all configurations.  Any user configurations will be done using Helm.  More on this in later steps.  This will allow containers to be reused in different pods across the architecture.  
 2. Each container should only have a single process in it.  For sharing information between containers the preffered mechanism is using network to localhosts.  It is also possible to share volumes between pods so one container writes and the other containers picks up these files.  http://blog.kubernetes.io/2015/06/the-distributed-system-toolkit-patterns.html
@@ -121,7 +121,7 @@ docker push edcop-master:5000/<tool name>
 
 Note: At some point we will probably change how the repository is handled.
 
-# Create Helm
+# Create Helm Package
 Helm will be the tool that will deploy and configure containers inside the cluster.  Follow the pod design as closely as possible but generally a helm package will require the following:
 1. A pod (of type deployment, a daemonset or a replicaset)
 2. A service if the pod needs to be addressable by the outside world
