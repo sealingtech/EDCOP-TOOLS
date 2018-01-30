@@ -91,7 +91,8 @@ RUN chmod +x docker-entrypoint.sh
 RUN cp docker-entrypoint.sh /bin
 RUN mkdir -p /logs/suricata
 
-ENTRYPOINT ["docker-entrypoint.sh"]```
+ENTRYPOINT ["docker-entrypoint.sh"]
+```
 
 
 
@@ -123,7 +124,79 @@ Helm will be the tool that will deploy and configure containers inside the clust
 
 In Github repository start in charts and create a new directory with the name of the tool.
 charts
+
+Some notes about best practices that must be followed:
+1. Tabs must be two spaces.  This is to keep things consistent.  Space matters in Kubernetes.  It is a good idea to use a text editor that lets you set this.
+2. Value names should be camelCase. This is reccomended by Hlem, best to keep it consistent.
+3. Always provide defaults designed for a small, single node deployment.  Large scale deployments will need care to properly size these containers and will need to be done on a case by case basis.
 Create the helm directory structure using the command:
 ```helm create <tool name>```
-First create the pod.  This will call the 
+Edit the following files:
+Chart-Yaml
+```
+apiVersion: v1
+name: suricata
+home: https://github.com/sealingtech/EDCOP
+version: 0.1.0
+description: EDCOP Suricata Chart
+details:
+  This Chart provides an inline Suricata daemonset for use with the EDCOP project.
+```
+
+Add a useful name, version, description, details and home.  
+
+See the helm developers guide as this document will not detail all the steps required: https://docs.helm.sh/chart_template_guide/#the-chart-template-developer-s-guide
+
+Next delete the sample Values.yaml and anything in the templates directory.  Those are just samples.  Add a pod (see sample):
+https://github.com/sealingtech/EDCOP-TOOLS/blob/master/charts/suricata-pod/chart/templates/suricata-daemonset.yaml
+
+Add configmaps:
+For configmap sample: 
+https://github.com/sealingtech/EDCOP-TOOLS/blob/master/charts/suricata-pod/chart/templates/suricata-config.yaml
+
+Once this is done, ensure that your pods can deploy using "helm install ." from the chart directory.  Test to ensure this works.  Next step is to allow users to configure templates.  To do this, use the Helm markup language and values.  Look at samples of how it is done plus the developers guide. https://github.com/sealingtech/EDCOP-TOOLS/blob/master/charts/suricata-pod/chart/values.yaml
+
+Some values that must be configurable for all tools per EDCOP (with sane defaults specified in the design guide):
+- CPU and memory limits for all containers
+- Kubernetes networks
+- Node Selectors
+- Environment variables
+- repository
+- Hostpath and persistent volumes
+
+All settings should have a comment above the setting about what it does.  In pods containing multiple containers, seperate these by by the container names.
+
+
+The convention these tools will follow are:
+```
+image:
+  repository: edcop-master:5000
+networks:
+  # Overlay is the name of the default cni network
+  overlayNet: calico
+  # Net 1 is the name of the first sriov interface
+  net1: passive 
+  # Net 2 is the name of the second sriov interface  This will be ignored in passive
+  net2: inline-2
+volumes:
+  # Persistent data location on the host to store suricata's logs
+  logs:
+    hostPath: /var/EDCOP/data/logs/suricata
+
+nodeSelector:
+  sensor: true
+  environment: Default
+Container1:
+  #This value does XYZ....
+  valueOne: false 
+Container2:
+  #This value does XYZ
+  valueOne: false
+
+```
+
+
+
+  
+
 
