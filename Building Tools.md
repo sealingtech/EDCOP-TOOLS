@@ -152,6 +152,7 @@ Next delete the sample Values.yaml and anything in the templates directory.  Tho
 https://github.com/sealingtech/EDCOP-TOOLS/blob/master/charts/suricata-pod/chart/templates/suricata-daemonset.yaml
 
 To create configmaps, the best method I have found was to manually create these by hand.  To to do this for volume containing multiple config files.:
+
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -160,8 +161,9 @@ metadata:
 apiVersion: v1
 data:
   <file name in directory>: |
-  Config file here.....
+  Config file here
 ```
+
 Take the configuration and then paste the information into the configmap.  Ensure that you are using two spaces at all times. Add your necessarry markup as needed.
 
 For configmap sample: 
