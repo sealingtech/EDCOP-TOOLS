@@ -103,15 +103,21 @@ One thing to note at this stage, we are not concerned with configuration, that w
 
 To build the container start in the same directory as the filename and run the command:
 
-```docker build -t edcop-master:5000/<name of container>```
+```
+docker build -t edcop-master:5000/<name of container>
+```
 
 This will build the container and place it in the local docker repository.  Next push it to the shared repository, this is to make the container available to all hosts.  Note, that if you are outside of the cluster you must be able to DNS lookup the edcop-master hostname.  /etc/hosts is a good way to do this.
-```docker push edcop-master:5000/<name of container>```
+```
+docker push edcop-master:5000/<name of container>
+```
 
 If you want to use a container from Docker Hub with no changes (don't need to do anything to the configuration).  Follow these steps:
-```docker pull <docker container name>
+```
+docker pull <docker container name>
 docker tag <docker container name> edcop-master:5000/<tool name>
-docker push edcop-master:5000/<tool name>```
+docker push edcop-master:5000/<tool name>
+```
 
 Note: At some point we will probably change how the repository is handled.
 
@@ -130,7 +136,9 @@ Some notes about best practices that must be followed:
 2. Value names should be camelCase. This is reccomended by Hlem, best to keep it consistent.
 3. Always provide defaults designed for a small, single node deployment.  Large scale deployments will need care to properly size these containers and will need to be done on a case by case basis.
 Create the helm directory structure using the command:
-```helm create <tool name>```
+```
+helm create <tool name>
+```
 Edit the following files:
 Chart-Yaml
 
