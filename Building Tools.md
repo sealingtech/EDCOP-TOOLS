@@ -160,7 +160,6 @@ apiVersion: v1
 data:
   <file name in directory>: |
   Config file here.....
-  
 ```
 Take the configuration and then paste the information into the configmap.  Ensure that you are using two spaces at all times. Add your necessarry markup as needed.
 
