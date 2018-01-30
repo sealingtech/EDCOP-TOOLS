@@ -1,0 +1,9 @@
+#High Level Process of Building Capabilities Inside EDCOP
+The following process is considered best practice for creating new capabilities inside of EDCOP.
+
+The general process for developing capabilities inside of EDCOP are as follows:
+-Build Docker container
+-Create Helm Package
+-Test
+
+
