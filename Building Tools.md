@@ -150,7 +150,20 @@ See the helm developers guide as this document will not detail all the steps req
 Next delete the sample Values.yaml and anything in the templates directory.  Those are just samples.  Add a pod (see sample):
 https://github.com/sealingtech/EDCOP-TOOLS/blob/master/charts/suricata-pod/chart/templates/suricata-daemonset.yaml
 
-Add configmaps:
+To create configmaps, the best method I have found was to manually create these by hand.  To to do this for volume containing multiple config files.:
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-{{ template "suricata.fullname" . }}-<tool name>
+apiVersion: v1
+data:
+  <file name in directory>: |
+  Config file here.....
+  
+```
+Take the configuration and then paste the information into the configmap.  Ensure that you are using two spaces at all times. Add your necessarry markup as needed.
+
 For configmap sample: 
 https://github.com/sealingtech/EDCOP-TOOLS/blob/master/charts/suricata-pod/chart/templates/suricata-config.yaml
 
