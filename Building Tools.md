@@ -17,7 +17,7 @@ The first step is to understand what your goals are for creating this capability
 
 -source: http://cloudscaling.com/blog/cloud-computing/the-history-of-pets-vs-cattle/
 
-In Kubernetes it is assumed that containers will be forever shifting and moving around.  Upgrades no longer take place, instead we simply replace the containers.  In cases where we require persistence care must be made to ensure data isn't lost.  This can come from persistent volumes.  See the design guide for information on options for this.
+In Kubernetes it is assumed that containers will be forever shifting and moving around.  Upgrades no longer take place, instead we simply replace the containers.  In cases where we require persistence care must be made to ensure data isn't lost.  This can come from persistent volumes or using HostVolumes.  When HostVolumes are used, take care to ensure that containers come up on the same host each time (Daemonsets are good for accomplishing this).  See the design guide for information on options for this.
 
 #Building Docker Containers
 A container is needed to start this process.  There are some rules that must be followed to maintain standardization across the platform. 
