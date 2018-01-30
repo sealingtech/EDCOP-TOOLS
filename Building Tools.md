@@ -133,6 +133,7 @@ Create the helm directory structure using the command:
 ```helm create <tool name>```
 Edit the following files:
 Chart-Yaml
+
 ```
 apiVersion: v1
 name: suricata
@@ -169,18 +170,17 @@ https://github.com/sealingtech/EDCOP-TOOLS/blob/master/charts/suricata-pod/chart
 Once this is done, ensure that your pods can deploy using "helm install ." from the chart directory.  Test to ensure this works.  Next step is to allow users to configure templates.  To do this, use the Helm markup language and values.  Look at samples of how it is done plus the developers guide. https://github.com/sealingtech/EDCOP-TOOLS/blob/master/charts/suricata-pod/chart/values.yaml
 
 Some values that must be configurable for all tools per EDCOP (with sane defaults specified in the design guide):
-- CPU and memory limits for all containers
-- Kubernetes networks
-- Node Selectors
-- Environment variables
-- repository
-- Hostpath and persistent volumes
+CPU and memory limits for all containers
+Kubernetes networks
+Node Selectors
+Environment variables
+Repository
+Hostpath and persistent volumes
 
 All settings should have a comment above the setting about what it does.  In pods containing multiple containers, seperate these by by the container names.
 
 
 The convention these tools will follow are:
-
 ```
 image:
   repository: edcop-master:5000
