@@ -2,8 +2,22 @@
 The following process is considered best practice for creating new capabilities inside of EDCOP.
 
 The general process for developing capabilities inside of EDCOP are as follows:
+-Plan Design
 -Build Docker container
 -Create Helm Package
 -Test
 
+#Plan Design
+The first step is to understand what your goals are for creating this capability and what components will be needed.  Often a capability will need multiple containers to function properly.  See the Design Guide for information on how pods should be structured.  Some things to bear in mind:
+1. Containers should only carry software.  Kubernetes will lay down all configurations.  Any user configurations will be done using Helm.  More on this in later steps.
+2. Each container should only have a single process in it.  For sharing information between containers the preffered mechanism is using network to localhosts.  It is also possible to share volumes between pods so one container writes and the other containers picks up these files.  http://blog.kubernetes.io/2015/06/the-distributed-system-toolkit-patterns.html
+3. Containers should be designed to be short lived.  This should be bared in mind where possible:
+
+```"In the old way of doing things, we treat our servers like pets, for example Bob the mail server. If Bob goes down, it’s all hands on deck. The CEO can’t get his email and it’s the end of the world. In the new way, servers are numbered, like cattle in a herd. For example, www001 to www100. When one server goes down, it’s taken out back, shot, and replaced on the line."```
+-source: http://cloudscaling.com/blog/cloud-computing/the-history-of-pets-vs-cattle/
+
+In Kubernetes it is assumed that containers will be forever shifting and moving around.  Upgrades no longer take place, instead we simply replace the containers.  In cases where we require persistence care must be made to ensure data isn't lost.  This can come from persistent volumes.  See the design guide for information on options for this.
+
+#Building Docker Containers
+A container is needed to start this process.  There are some rules that must be followed to maintain standardization across the platform. 
 
