@@ -1,0 +1,38 @@
+# EDCOP Bro Chart values
+image:
+  repository: edcop-master:5000
+networks:
+  # Overlay is the name of the default cni network
+  overlay-net: calico
+  # passive-net is the name of the sriov interface
+  passive-net: passive
+volumes:
+  # Persistent data location on the host to store suricata's logs
+  logs:
+    spool: 
+      hostPath: /var/EDCOP/data/logs/bro/spool
+    logs: 
+      hostPath: /var/EDCOP/data/logs/bro/logs    
+nodeSelector:
+  nodetype: worker
+broConfig:
+  limits:
+    cpu: 2
+    memory: 4G
+    # CPU pinning depends on your NUMA node configuration. 
+    # Separate cores by commas in ascending order without spaces.
+    pin-cpus: 27,28,29,30,31,32,33,34
+logstashConfig:
+  threads: 2 
+  batchCount: 250
+  initialJvmHeap: 4g
+  maxJvmHeap: 4g
+  pipelineOutputWorkers: 2 
+  pipelineBatchSize: 150  
+  limits:
+    cpu: 2
+    memory: 8G
+redisConfig:
+  limits:
+    cpu: 2
+    memory: 8G
