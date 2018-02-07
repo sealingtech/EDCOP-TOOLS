@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  creationTimestamp: null
-  name: suricata-bro-config
-  selfLink: /api/v1/namespaces/default/configmaps/suricata-bro-config
