@@ -1,0 +1,98 @@
+apiVersion: v1
+data:
+  broccoli.conf: "# This is the Broccoli system-wide configuration file. \n#\n# The
+    config file is structured into sections. The settings in each\n# section are called
+    a domain. Each domain is identified as follows:\n#\n# [ name ]\n# \n# where \"name\"
+    is a single word consisting of alphanumeric letters\n# without whitespace. The
+    beginning of the document can contain\n# additional settings, these comprise the
+    default domain. It will be\n# used when bro_conf_set_domain() is never used.\n#\n#
+    Entries are of the form <identifier> <value>, where the identifier\n# is a sequence
+    of letters, and value can be a string (including\n# whitespace), and floating
+    point or integer numbers. Comments start\n# with a \"#\" and go to the end of
+    the line. For boolean values, you\n# may also use \"yes\", \"on\", \"true\", \"no\",
+    \"off\", or \"false\".\n# Strings may contain whitespace, but need to be surrounded
+    by\n# double quotes '\"'.\n#\n# You can name identifiers any way you like, but
+    to keep things\n# organized we recommend a hierarchical structure. Case matters.\n#\n#
+    Examples:\n#\n# Foo/PeerName\t\tmybro.securesite.com\n# Foo/PortNum\t\t123\n#
+    Bar/SomeFloat\t\t1.23443543\n# Bar/SomeLongStr\t\"Hello World\"\n#\n\n# Debugging
+    output\n# ----------------\n#/broccoli/debug_messages\tyes\n#/broccoli/debug_calltrace\tyes\n\n#
+    Encryption setup\n# ----------------\n#\n# In order to configure encrypted communications,
+    you have to point\n# these two entries to this agent's certificate + private key
+    and\n# the trusted CA's certificate, respectively. You can optionally\n# store
+    the passphrase for this agent's private key in the config\n# file as well, but
+    you should obviously only do so when the config\n# file has appropriate access
+    restrictions. Check the manual for\n# details.\n#\n# use_ssl is the main switch
+    to control whether the SSL settings\n# are used (yes/on/1) or not (no/false/0).
+    When use_ssl is not\n# present, SSL is attempted if certificates are configured,
+    other-\n# wise cleartext connections are used. When it is present and enabled,\n#
+    then setup is aborted if certificates are not found. In no case\n# does an SSL
+    setup ever fall back to a cleartext one.\n#\n#/broccoli/use_ssl      yes\n#/broccoli/ca_cert
+    \     <path>/ca_cert.pem\n#/broccoli/host_cert    <path>/bro_cert.pem\n#/broccoli/host_pass
+    \   foo\n\n# Your settings below\n# -------------------\n"
+  broctl.cfg: "## Global BroControl configuration file.\n\n###############################################\n#
+    Mail Options\n\n# Recipient address for all emails sent out by Bro and BroControl.\nMailTo
+    = root@localhost\n\n# Mail connection summary reports each log rotation interval.
+    \ A value of 1\n# means mail connection summaries, and a value of 0 means do not
+    mail\n# connection summaries.  This option has no effect if the trace-summary\n#
+    script is not available.\nMailConnectionSummary = 1\n\n# Lower threshold (in percentage
+    of disk space) for space available on the\n# disk that holds SpoolDir. If less
+    space is available, \"broctl cron\" starts\n# sending out warning emails.  A value
+    of 0 disables this feature.\nMinDiskSpace = 5\n\n# Send mail when \"broctl cron\"
+    notices the availability of a host in the\n# cluster to have changed.  A value
+    of 1 means send mail when a host status\n# changes, and a value of 0 means do
+    not send mail.\nMailHostUpDown = 1\n\n###############################################\n#
+    Logging Options\n\n# Rotation interval in seconds for log files on manager (or
+    standalone) node.\n# A value of 0 disables log rotation.\nLogRotationInterval
+    = 3600\n\n# Expiration interval for archived log files in LogDir.  Files older
+    than this\n# will be deleted by \"broctl cron\".  The interval is an integer followed
+    by\n# one of these time units:  day, hr, min.  A value of 0 means that logs\n#
+    never expire.\nLogExpireInterval = 0\n\n# Enable BroControl to write statistics
+    to the stats.log file.  A value of 1\n# means write to stats.log, and a value
+    of 0 means do not write to stats.log.\nStatsLogEnable = 1\n\n# Number of days
+    that entries in the stats.log file are kept.  Entries older\n# than this many
+    days will be removed upon running \"broctl cron\".  A value of 0\n# means that
+    entries never expire.\nStatsLogExpireInterval = 0\n\n###############################################\n#
+    Other Options\n\n# Show all output of the broctl status command.  If set to 1,
+    then all output\n# is shown.  If set to 0, then broctl status will not collect
+    or show the peer\n# information (and the command will run faster).\nStatusCmdShowAll
+    = 0\n\n# Site-specific policy script to load. Bro will look for this in\n# $PREFIX/share/bro/site.
+    A default local.bro comes preinstalled\n# and can be customized as desired.\nSitePolicyScripts
+    = local.bro\n\n# Location of the log directory where log files will be archived
+    each rotation\n# interval.\nLogDir = /usr/local/bro/logs/\n\n# Location of the
+    spool directory where files and data that are currently being\n# written are stored.\nSpoolDir
+    = /usr/local/bro/spool/ \n\n# Location of other configuration files that can be
+    used to customize\n# BroControl operation (e.g. local networks, nodes).\nCfgDir
+    = /usr/local/bro/etc\n\n"
+  networks.cfg: |
+    # List of local networks in CIDR notation, optionally followed by a
+    # descriptive tag.
+    # For example, "10.0.0.0/8" or "fe80::/64" are valid prefixes.
+
+    10.0.0.0/8          Private IP space
+    172.16.0.0/12       Private IP space
+    192.168.0.0/16      Private IP space
+  node.cfg: |
+    [logger]
+    type=logger
+    host=localhost
+    #
+    [manager]
+    type=manager
+    host=localhost
+    #
+    [proxy-1]
+    type=proxy
+    host=localhost
+    #
+    [worker-1]
+    type=worker
+    host=localhost
+    interface=af_packet::net0
+    lb_method=custom
+    lb_procs=8
+    pin_cpus=27,28,29,30,31,32,33,34
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: bro-etc-config
+  selfLink: /api/v1/namespaces/default/configmaps/bro-etc-config

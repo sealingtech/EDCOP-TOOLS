@@ -1,0 +1,65 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: es-master
+  labels:
+    component: elasticsearch
+    role: master
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: elasticsearch
+        role: master
+      annotations:
+        networks: '[
+        { "name": "calico" }
+      ]'
+    spec:
+      containers:
+      - name: es-master
+        image: edcop-master:5000/elasticsearch
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: CLUSTER_NAME
+          value: edcop
+        - name: NODE_MASTER
+          value: "true"
+        - name: NODE_DATA
+          value: "false"
+        - name: NETWORK_HOST
+          value: _eth0_,_lo_
+        - name: ES_JAVA_OPTS
+          value: "-Xms16g -Xmx16g"
+        ports:
+        - name: cport-9200
+          containerPort: 9200
+        - name: cport-9300  
+          containerPort: 9300
+        resources:
+          limits:
+            cpu: "32"
+            memory: "32Gi"
+        imagePullPolicy: Always
+        volumeMounts: 
+        - mountPath: /usr/share/elasticsearch/data
+          name: esdata
+        - mountPath: /usr/share/elasticsearch/config/jvm.options
+          subPath: jvm.options
+          name: elasticsearch-jvm
+      volumes:
+      - name: esdata
+        hostPath:
+          path: /var/EDCOP/data/esdata
+      - name: elasticsearch-jvm
+        configMap:
+          name: elasticsearch-jvm
+            
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: master

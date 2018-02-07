@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: elasticsearch
+  namespace: default
+  labels:
+    app: elasticsearch
+spec:
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      name: elasticsearch
+      labels:
+        app: elasticsearch
+      annotations:
+        networks: '[
+        { "name": "flannel" },
+        { "name": "ovs-plugin" }
+      ]'
+    spec:
+      serviceAccount: elasticsearch
+      serviceAccountName: elasticsearch
+      containers:
+      - name: elasticsearch
+        image: edcop-master:5000/registry/edcop-elasticsearch
+        env:
+        - name: SERVICE
+          value: elasticsearch
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        ports:
+        - name: cport-9200
+          containerPort: 9200
+        - name: cport-9300  
+          containerPort: 9300
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        volumeMounts: 
+        - mountPath: /usr/share/elasticsearch/data
+          name: esdata
+      volumes:
+      - name: esdata
+        hostPath:
+          path: /esdata
+            
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+

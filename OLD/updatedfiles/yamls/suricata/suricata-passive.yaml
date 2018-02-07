@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: suricata-passive
+  namespace: default
+  labels:
+    app: suricata-passive
+spec:
+  selector:
+    matchLabels:
+      app: suricata-passive
+  template:
+    metadata:
+      name: suricata-passive
+      labels:
+        app: suricata-passive
+      annotations:
+        networks: '[
+        { "name": "flannel" },
+        { "name": "ovs-plugin" },
+        { "name": "sriov-no-vlan-passive" }
+      ]'
+    spec:
+      containers:
+      - name: suricata-passive
+        image: suricata-passive
+        imagePullPolicy: Never
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - NET_ADMIN
+        volumeMounts:
+        - mountPath: /var/log/suricata
+          name: suricatalogs
+      volumes:
+      - name: suricatalogs
+        hostPath:
+          path: /data/suricata/passive
+      restartPolicy: Always
+      nodeSelector:
+        nodetype: worker

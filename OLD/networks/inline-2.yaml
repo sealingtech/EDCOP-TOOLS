@@ -1,0 +1,18 @@
+apiVersion: "kubernetes.com/v1"
+kind: Network
+metadata:
+  name: inline-2 
+plugin: sriov
+args: '[
+       {
+                "if0": "inl1",
+                "vf": 0,
+                "ipam": {
+                  "type": "host-local",
+                  "subnet": "10.4.0.0/16",
+                  "rangeStart": "10.4.0.10",
+                  "rangeEnd": "10.4.0.150"
+                }
+        }
+        ]'
+

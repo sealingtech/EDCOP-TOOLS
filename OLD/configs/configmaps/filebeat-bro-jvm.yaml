@@ -1,0 +1,91 @@
+apiVersion: v1
+data:
+  jvm.options: |
+    ## JVM configuration
+
+    # Xms represents the initial size of total heap space
+    # Xmx represents the maximum size of total heap space
+
+    -Xms8g
+    -Xmx8g
+
+    ################################################################
+    ## Expert settings
+    ################################################################
+    ##
+    ## All settings below this section are considered
+    ## expert settings. Don't tamper with them unless
+    ## you understand what you are doing
+    ##
+    ################################################################
+
+    ## GC configuration
+    -XX:+UseParNewGC
+    -XX:+UseConcMarkSweepGC
+    -XX:CMSInitiatingOccupancyFraction=75
+    -XX:+UseCMSInitiatingOccupancyOnly
+
+    ## optimizations
+
+    # disable calls to System#gc
+    -XX:+DisableExplicitGC
+
+    ## Locale
+    # Set the locale language
+    #-Duser.language=en
+
+    # Set the locale country
+    #-Duser.country=US
+
+    # Set the locale variant, if any
+    #-Duser.variant=
+
+    ## basic
+
+    # set the I/O temp directory
+    #-Djava.io.tmpdir=$HOME
+
+    # set to headless, just in case
+    -Djava.awt.headless=true
+
+    # ensure UTF-8 encoding by default (e.g. filenames)
+    -Dfile.encoding=UTF-8
+
+    # use our provided JNA always versus the system one
+    #-Djna.nosys=true
+
+    # Turn on JRuby invokedynamic
+    # -Djruby.compile.invokedynamic=true
+
+    ## heap dumps
+
+    # generate a heap dump when an allocation from the Java heap fails
+    # heap dumps are created in the working directory of the JVM
+    -XX:+HeapDumpOnOutOfMemoryError
+
+    # specify an alternative path for heap dumps
+    # ensure the directory exists and has sufficient space
+    #-XX:HeapDumpPath=${LOGSTASH_HOME}/heapdump.hprof
+
+    ## GC logging
+    #-XX:+PrintGCDetails
+    #-XX:+PrintGCTimeStamps
+    #-XX:+PrintGCDateStamps
+    #-XX:+PrintClassHistogram
+    #-XX:+PrintTenuringDistribution
+    #-XX:+PrintGCApplicationStoppedTime
+
+    # log GC status to a file with time stamps
+    # ensure the directory exists
+    #-Xloggc:${LS_GC_LOG_FILE}
+
+    # Entropy source for randomness
+    -Djava.security.egd=file:/dev/urandom
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"jvm.options":"## JVM configuration\n\n# Xms represents the initial size of total heap space\n# Xmx represents the maximum size of total heap space\n\n-Xms8g\n-Xmx8g\n\n################################################################\n## Expert settings\n################################################################\n##\n## All settings below this section are considered\n## expert settings. Don't tamper with them unless\n## you understand what you are doing\n##\n################################################################\n\n## GC configuration\n-XX:+UseParNewGC\n-XX:+UseConcMarkSweepGC\n-XX:CMSInitiatingOccupancyFraction=75\n-XX:+UseCMSInitiatingOccupancyOnly\n\n## optimizations\n\n# disable calls to System#gc\n-XX:+DisableExplicitGC\n\n## Locale\n# Set the locale language\n#-Duser.language=en\n\n# Set the locale country\n#-Duser.country=US\n\n# Set the locale variant, if any\n#-Duser.variant=\n\n## basic\n\n# set the I/O temp directory\n#-Djava.io.tmpdir=$HOME\n\n# set to headless, just in case\n-Djava.awt.headless=true\n\n# ensure UTF-8 encoding by default (e.g. filenames)\n-Dfile.encoding=UTF-8\n\n# use our provided JNA always versus the system one\n#-Djna.nosys=true\n\n# Turn on JRuby invokedynamic\n# -Djruby.compile.invokedynamic=true\n\n## heap dumps\n\n# generate a heap dump when an allocation from the Java heap fails\n# heap dumps are created in the working directory of the JVM\n-XX:+HeapDumpOnOutOfMemoryError\n\n# specify an alternative path for heap dumps\n# ensure the directory exists and has sufficient space\n#-XX:HeapDumpPath=${LOGSTASH_HOME}/heapdump.hprof\n\n## GC logging\n#-XX:+PrintGCDetails\n#-XX:+PrintGCTimeStamps\n#-XX:+PrintGCDateStamps\n#-XX:+PrintClassHistogram\n#-XX:+PrintTenuringDistribution\n#-XX:+PrintGCApplicationStoppedTime\n\n# log GC status to a file with time stamps\n# ensure the directory exists\n#-Xloggc:${LS_GC_LOG_FILE}\n\n# Entropy source for randomness\n-Djava.security.egd=file:/dev/urandom\n"},"kind":"ConfigMap","metadata":{"annotations":{},"creationTimestamp":null,"name":"filebeat-bro-jvm","namespace":"default","selfLink":"/api/v1/namespaces/default/configmaps/filebeat-bro-jvm"}}
+  creationTimestamp: null
+  name: filebeat-bro-jvm
+  selfLink: /api/v1/namespaces/default/configmaps/filebeat-bro-jvm
