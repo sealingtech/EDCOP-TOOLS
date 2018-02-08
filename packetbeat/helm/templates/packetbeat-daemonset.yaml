@@ -1,0 +1,73 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: {{ template "packetbeat.fullname" . }}
+  namespace: default
+  labels:
+    app: {{ template "packetbeat.name" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "packetbeat.name" . }}
+  template:
+    metadata:
+      name: {{ template "packetbeat.name" . }}
+      labels:
+        app: {{ template "packetbeat.name" . }}
+        release: {{ .Release.Name }}
+      annotations:
+        networks: '[
+        { "name": "{{ .Values.networks.overlay-net }}" },
+        { "name": "{{ .Values.networks.passive-net }}" }
+      ]'
+    spec:
+      containers:
+      - name: packetbeat
+        image: {{ .Values.image.repository }}/packetbeat
+        imagePullPolicy: Always
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+
+      - name: redis
+        image: {{ .Values.image.repository }}/redis
+        imagePullPolicy: Always
+        ports:
+        - name: cport-6379
+          containerPort: 6379
+        resources:
+          limits:
+            cpu: "{{ .Values.redisConfig.limits.cpu }}"
+            memory: "{{ .Values.redisConfig.limits.memory }}"
+          
+      - name: logstash
+        image: {{ .Values.image.repository }}/logstash
+        imagePullPolicy: Always
+        ports:
+        - name: cport-5044
+          containerPort: 5044   
+        resources:
+          limits:
+            cpu: "{{ .Values.logstashConfig.limits.cpu }}"
+            memory: "{{ .Values.logstashConfig.limits.memory }}"
+        volumeMounts:
+          - mountPath: /usr/share/logstash/pipeline/
+            name: logstash-packetbeat-pipeline
+          - mountPath: /usr/share/logstash/config
+            name: logstash-packetbeat-config
+      
+      volumes:
+      - name: logstash-packetbeat-config
+        configMap:
+          name: logstash-{{ template "packetbeat.fullname" . }}-config
+      - name: logstash-packetbeat-pipeline
+        configMap:
+          name: logstash-{{ template "packetbeat.fullname" . }}-pipeline
+
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: {{ .Values.nodeSelector.nodetype }}

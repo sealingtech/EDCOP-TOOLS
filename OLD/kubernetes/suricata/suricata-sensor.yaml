@@ -1,0 +1,58 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: suricata-sensor
+  namespace: default
+  labels:
+    app: suricata-sensor
+spec:
+  selector:
+    matchLabels:
+      app: suricata-sensor
+  template:
+    metadata:
+      name: suricata-sensor
+      labels:
+        app: suricata-sensor
+      annotations:
+        networks: '[
+        { "name": "calico" },
+        { "name": "inline-1" },
+        { "name": "inline-2" }
+      ]'
+    spec:
+      containers:
+      - name: suricata
+        image: "edcop-master:5000/suricata"
+        stdin: true
+        command: ["docker-entrypoint.sh"]
+        tty: true
+        securityContext:
+          capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_NICE #Needed for CPU pinning
+        volumeMounts:
+          - mountPath: /etc/suricata
+            name: suricata-config
+          - mountPath: /data/suricata
+            name: suricata-logs
+
+      - name: redis
+        image: edcop-master:5000/edcop-redis
+        imagePullPolicy: Always
+        ports:
+        - name: cport-6379
+          containerPort: 6379
+      
+      volumes:
+      - name: suricata-logs
+        emptyDir: {}
+      - name: suricata-config
+        configMap:
+          name: suricata-config
+          
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: worker

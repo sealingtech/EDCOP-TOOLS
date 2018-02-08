@@ -1,0 +1,30 @@
+# EDCOP Packetbeat Chart values
+image:
+  repository: edcop-master:5000
+networks:
+  # Overlay is the name of the default cni network
+  overlay-net: calico
+  # passive-net is the name of the sriov interface
+  passive-net: passive
+volumes:
+  
+nodeSelector:
+  nodetype: worker
+packetbeatConfig:
+  limits:
+    cpu: 2
+    memory: 4G
+logstashConfig:
+  threads: 2 
+  batchCount: 250
+  initialJvmHeap: 4g
+  maxJvmHeap: 4g
+  pipelineOutputWorkers: 2 
+  pipelineBatchSize: 150  
+  limits:
+    cpu: 2
+    memory: 8G
+redisConfig:
+  limits:
+    cpu: 2
+    memory: 8G

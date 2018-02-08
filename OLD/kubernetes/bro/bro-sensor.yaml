@@ -1,0 +1,65 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: bro-sensor
+  namespace: default
+  labels:
+    app: bro-sensor
+spec:
+  selector:
+    matchLabels:
+      app: bro-sensor
+  template:
+    metadata:
+      name: bro-sensor
+      labels:
+        app: bro-sensor
+      annotations:
+        networks: '[
+        { "name": "calico" },
+        { "name": "passive" }
+      ]'
+    spec:
+      containers:
+      - name: bro
+        image: edcop-master:5000/bro
+        imagePullPolicy: Always
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN 
+              - SYS_NICE #Used for CPU pinning
+        volumeMounts:
+        - mountPath: /usr/local/bro/logs/
+          name: bro-logs 
+        - mountPath: /usr/local/bro/etc/
+          name: bro-etc-config 
+        - mountPath: /usr/local/bro/share/bro/site/
+          name: bro-site-config 
+        - mountPath: /usr/local/bro/spool/
+          name: bro-spool
+      
+      - name: redis
+        image: edcop-master:5000/edcop-redis
+        imagePullPolicy: Always
+        ports:
+        - name: cport-6379
+          containerPort: 6379
+          
+      volumes:
+      - name: bro-logs
+        emptyDir: {}
+      - name: bro-etc-config
+        configMap:
+          name: bro-etc-config
+      - name: bro-site-config
+        configMap:
+          name: bro-site-config
+      - name: bro-spool
+        hostPath: 
+          path: /var/EDCOP/data/logs/bro/spool
+      
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: sensor
