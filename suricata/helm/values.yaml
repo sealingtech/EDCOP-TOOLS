@@ -1,0 +1,54 @@
+# EDCOP Suricata Chart values
+image:
+  repository: edcop-master:5000
+networks:
+  # Overlay is the name of the default cni network
+  overlaynet: 'calico'
+  # Net 1 is the name of the first sriov interface
+  net1: 'inline-1'
+  # Net 2 is the name of the second sriov interface  This will be ignored in passive
+  net2: 'inline-2'
+volumes:
+  # Persistent data location on the host to store suricata's logs
+  logs:
+    hostPath: /var/EDCOP/data/logs/suricata
+nodeSelector:
+  nodetype: 'worker'
+deploymentOptions:
+  #The three options for deployment are standalone, cluster and external.  Please see the documentation for definitions and special considerations.
+  deployment: 'standalone'
+  #Below options are only used in external mode when sending to a Redis queue outside of the cluster
+  externalOptions:
+    externalHost: 172.31.20.90
+    externalPort: 6379
+suricataConfig:
+  inline: true 
+  homeNet: '[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]'
+  externalNet: '!$HOME_NET'
+  net0Threads: 1
+  net1Threads: 1
+  setCpuAffinity: no
+  managementCpuSet: 1
+  receiveCpuSet: 1
+  workerCpuSet: 1
+  workerThreads: 1
+  verdictCpuSet: 1
+  limits:
+    cpu: 2
+    memory: 4G
+
+#Logstash values will be ignored if standalone is set to true
+logstashConfig:
+  threads: 2 
+  batchCount: 250
+  initialJvmHeap: 4g
+  maxJvmHeap: 4g
+  pipelineOutputWorkers: 2 
+  pipelineBatchSize: 150  
+  limits:
+    cpu: 2
+    memory: 8G
+redisConfig:
+  limits:
+    cpu: 2
+    memory: 8G

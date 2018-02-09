@@ -1,0 +1,30 @@
+{{ if ne .Values.deploymentOptions.deployment "standalone"  }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ template "suricata.fullname" . }}-redis-suricata"
+spec:
+  ports:
+    -
+      name: "redis-suricata"
+      protocol: "TCP"
+      port: {{ .Values.deploymentOptions.externalOptions.externalPort }}
+      targetPort: {{ .Values.deploymentOptions.externalOptions.externalPort }}
+      nodePort: 0
+selector: {} 
+---
+apiVersion: v1
+kind: "Endpoints"
+apiVersion: "v1"
+metadata:
+  name: "{{ template "suricata.fullname" . }}-redis-suricata"
+subsets: 
+  -
+    addresses:
+      -
+        ip: "{{ .Values.deploymentOptions.externalOptions.externalHost }}" 
+    ports:
+      -
+        port: {{ .Values.deploymentOptions.externalOptions.externalPort }}
+        name: "redis-suricata"
+{{ end }}
