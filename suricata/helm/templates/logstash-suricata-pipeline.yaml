@@ -1,7 +1,9 @@
+{{ if eq .Values.deploymentOptions.deployment "standalone"  }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: logstash-{{ template "suricata.fullname" . }}-pipeline
+apiVersion: v1
 data:
   suricata.conf: |
     input {
@@ -11,7 +13,7 @@ data:
         data_type => "list"
         codec => json
         batch_count => {{  .Values.logstashConfig.batchCount }}
-        threads => {{  .Values.logstashConfig.threads }}
+        threads => 4
       }
     }
 
@@ -26,3 +28,4 @@ data:
         #password => changeme
       }
     }
+{{ end }}

@@ -20,7 +20,7 @@ spec:
       annotations:
       {{ if .Values.suricataConfig.inline }}
         networks: '[
-        { "name": "{{  .Values.networks.overlay-net }}" },
+        { "name": "{{  .Values.networks.overlaynet }}" },
         { "name": "{{  .Values.networks.net1 }}" },
         { "name": "{{  .Values.networks.net2 }}" }
       ]'
@@ -51,7 +51,7 @@ spec:
           limits:
             cpu: "{{ .Values.suricataConfig.limits.cpu }}"
             memory: "{{ .Values.suricataConfig.limits.memory }}"
-
+      {{ if eq .Values.deploymentOptions.deployment "standalone"  }}
       - name: redis
         image: {{ .Values.image.repository }}/redis
         imagePullPolicy: Always
@@ -62,7 +62,6 @@ spec:
           limits:
             cpu: "{{ .Values.redisConfig.limits.cpu }}"
             memory: "{{ .Values.redisConfig.limits.memory }}"
-
       - name: logstash
         image: {{ .Values.image.repository }}/logstash
         imagePullPolicy: Always
@@ -78,6 +77,7 @@ spec:
             name: logstash-suricata-pipeline
           - mountPath: /usr/share/logstash/config
             name: logstash-suricata-config
+      {{ end }}
 
       volumes:
       - name: suricata-logs
@@ -85,14 +85,16 @@ spec:
       - name: suricata-config
         configMap:
           name: {{ template "suricata.fullname" . }}-config
+      {{ if eq .Values.deploymentOptions.deployment "standalone"  }}
       - name: logstash-suricata-config
         configMap:
           name: logstash-{{ template "suricata.fullname" . }}-config
       - name: logstash-suricata-pipeline
         configMap:
           name: logstash-{{ template "suricata.fullname" . }}-pipeline
-
+      {{ end }}
+      
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       nodeSelector:
-        nodetype: {{ .Values.nodeSelector.nodetype }}
+        nodetype: worker
