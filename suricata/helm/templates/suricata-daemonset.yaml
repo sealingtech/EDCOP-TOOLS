@@ -4,19 +4,19 @@ metadata:
   name: {{ template "suricata.fullname" . }}
   namespace: default
   labels:
-    app: {{ template "suricata.name" . }}
+    app: suricata
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "suricata.name" . }}
+      app: suricata
   template:
     metadata:
       name: {{ template "suricata.name" . }}
       labels:
-        app: {{ template "suricata.name" . }}
+        app: suricata
       annotations:
       {{ if .Values.suricataConfig.inline }}
         networks: '[
@@ -51,7 +51,6 @@ spec:
           limits:
             cpu: "{{ .Values.suricataConfig.limits.cpu }}"
             memory: "{{ .Values.suricataConfig.limits.memory }}"
-      {{ if eq .Values.deploymentOptions.deployment "standalone"  }}
       - name: redis
         image: {{ .Values.image.repository }}/redis
         imagePullPolicy: Always
@@ -62,6 +61,7 @@ spec:
           limits:
             cpu: "{{ .Values.redisConfig.limits.cpu }}"
             memory: "{{ .Values.redisConfig.limits.memory }}"
+      {{ if eq .Values.deploymentOptions.deployment "standalone"  }}
       - name: logstash
         image: {{ .Values.image.repository }}/logstash
         imagePullPolicy: Always
