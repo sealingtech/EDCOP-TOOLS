@@ -1,7 +1,9 @@
+{{ if eq .Values.deploymentOptions.deployment "standalone"  }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: logstash-{{ template "suricata.fullname" . }}-config
+apiVersion: v1
 data:
   jvm.options: |
     ## JVM configuration
@@ -242,3 +244,4 @@ data:
     ###
     ## read -r -d '' PRESTART << EOM
     ## EOM
+{{ end }}
