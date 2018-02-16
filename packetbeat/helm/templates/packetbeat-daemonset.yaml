@@ -19,8 +19,8 @@ spec:
         release: {{ .Release.Name }}
       annotations:
         networks: '[
-        { "name": "{{ .Values.networks.overlay-net }}" },
-        { "name": "{{ .Values.networks.passive-net }}" }
+        { "name": "{{ .Values.networks.overlay }}" },
+        { "name": "{{ .Values.networks.passive }}" }
       ]'
     spec:
       containers:
@@ -31,6 +31,10 @@ spec:
           capabilities:
             add:
               - NET_ADMIN
+        resources:
+          limits:
+            cpu: "{{ .Values.packetbeatConfig.limits.cpu }}"
+            memory: "{{ .Values.packetbeatConfig.limits.memory }}"
 
       - name: redis
         image: {{ .Values.image.repository }}/redis

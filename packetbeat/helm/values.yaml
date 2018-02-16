@@ -3,9 +3,9 @@ image:
   repository: edcop-master:5000
 networks:
   # Overlay is the name of the default cni network
-  overlay-net: calico
-  # passive-net is the name of the sriov interface
-  passive-net: passive
+  overlay: calico
+  # Passive is the name of the sriov interface
+  passive: passive
 volumes:
   
 nodeSelector:

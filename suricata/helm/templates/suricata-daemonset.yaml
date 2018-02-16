@@ -20,7 +20,7 @@ spec:
       annotations:
       {{ if .Values.suricataConfig.inline }}
         networks: '[
-        { "name": "{{  .Values.networks.overlaynet }}" },
+        { "name": "{{  .Values.networks.overlay }}" },
         { "name": "{{  .Values.networks.net1 }}" },
         { "name": "{{  .Values.networks.net2 }}" }
       ]'

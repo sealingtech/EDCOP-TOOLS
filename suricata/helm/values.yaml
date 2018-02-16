@@ -4,7 +4,7 @@ image:
   repository: edcop-master:5000
 networks:
   # Overlay is the name of the default cni network
-  overlaynet: 'calico'
+  overlay: 'calico'
   # Net 1 is the name of the first interface
   net1: 'inline-1'
   # Net 2 is the name of the second interface  This will be ignored when passive is selected

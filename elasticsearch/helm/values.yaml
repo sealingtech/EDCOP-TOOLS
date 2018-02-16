@@ -3,7 +3,7 @@ image:
   repository: edcop-master:5000
 networks:
   # Overlay is the name of the default cni network
-  overlay-net: calico
+  overlay: calico
 volumes:
   # Persistent data location on the host to store Elasticsearch's data
   data: /var/EDCOP/data/esdata
@@ -12,9 +12,24 @@ nodeSelector:
 elasticsearchConfig:
   env:
     clustername: edcop
-    java-opts: -Xms16g -Xmx16g
+    javaopts: -Xms16g -Xmx16g
   limits:
     cpu: 12
     memory: 32Gi
-
+curatorConfig:
+  # Input how often the curator should run in cronjob format
+  cronjob_schedule: 1 0 * * *
+  actions:
+    close:
+      # (True or False) Set to False to enable this feature.
+      disable_action: False
+      # Closes indices older than the specified units
+      unit: days
+      unit_count: 7
+    delete_indices:
+      # (True or False) Set to False to enable this feature.
+      disable_action: False
+      # Deletes indices older than the specified units
+      unit: days
+      unit_count: 14 
     

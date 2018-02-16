@@ -18,8 +18,8 @@ spec:
         release: {{ .Release.Name }}
       annotations:
         networks: '[
-        { "name": "{{ .Values.networks.overlay-net }}" },
-        { "name": "{{ .Values.networks.passive-net }}" }
+        { "name": "{{ .Values.networks.overlay }}" },
+        { "name": "{{ .Values.networks.passive }}" }
       ]'
     spec:
       containers:
