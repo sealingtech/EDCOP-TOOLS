@@ -19,7 +19,7 @@ spec:
         app: {{ template "kibana.name" . }}
       annotations:
         networks: '[
-        { "name": "{{  .Values.networks.overlay-net }}" }
+        { "name": "{{  .Values.networks.overlay }}" }
       ]'
     spec:
       containers:

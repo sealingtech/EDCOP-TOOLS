@@ -3,6 +3,6 @@ image:
   repository: edcop-master:5000
 networks:
   # Overlay is the name of the default cni network
-  overlay-net: calico
+  overlay: calico
 nodeSelector:
   nodetype: master  

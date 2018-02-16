@@ -3,7 +3,7 @@ image:
   repository: edcop-master:5000
 networks:
   # Overlay is the name of the default cni network
-  overlay-net: calico
+  overlay: calico
 volumes:
   # Persistent data location on the host to store Elasticsearch's data
   data: /var/EDCOP/data/esdata
@@ -12,7 +12,7 @@ nodeSelector:
 elasticsearchConfig:
   env:
     clustername: edcop
-    java-opts: -Xms16g -Xmx16g
+    javaopts: -Xms16g -Xmx16g
   limits:
     cpu: 12
     memory: 32Gi
