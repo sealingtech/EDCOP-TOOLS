@@ -45,7 +45,7 @@ suricataConfig:
 logstashConfig:
   #Limits the number of threads that will be used by Logstash
   threads: 2 
-  #Configures the batch count that Logstash will process att a time.
+  #Configures the batch count that Logstash will process at a time.
   batchCount: 250
   #Sets the initial and max JVM heap that will be allocated, generally these two values should be the same.
   initialJvmHeap: 4g
