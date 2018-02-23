@@ -90,8 +90,6 @@ deploymentOptions:
 	nodePort: 30029
 ```
 
-### Cluster Mode
-
 ## Suricata Configuration
 
 Suricata can be deployed in either inline or passive mode depending on how your cluster is setup. Inline mode will route traffic through the box for active threat detection and mitigation, while passive mode simply alerts you to potential threats. For an inline mode setup, the following is required:
@@ -135,12 +133,12 @@ For the cpusets, enter either a single core or range of cpus as shown below:
 suricataConfig:
   ...
   setCpuAffinity: yes
-  recieveCpuset: 0-2
-  workerCpuset: 3-7
+  recieveCpuSet: 0-2
+  workerCpuSet: 3-7
   workerThreads: 1
-  verdictCPUSet: 8-10
+  verdictCpuSet: 8-10
 ```
-*For worker CPU sets, please refer to your NUMA node configuration to prevent cache thrashing.
+*For worker CPU sets, please refer to your NUMA node configuration to prevent cache thrashing.*
 
 ### Resource Limits
 
