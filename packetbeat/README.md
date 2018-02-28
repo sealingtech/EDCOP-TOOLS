@@ -72,7 +72,7 @@ Currently, Packetbeat configuration settings only consist of limiting CPU/memory
 packetbeatConfig:
   limits:
     cpu: 2
-	memory: 4G
+    memory: 4G
 ```
 
 ## Logstash Configuration

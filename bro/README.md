@@ -6,11 +6,11 @@ Table of Contents
 * [Configuration Guide](#configuration-guide)
 	* [Image Repository](#image-repository)
 	* [Networks](#networks)
-	* [Persistent Volume Storage] (#persistent-volume-storage)
+	* [Persistent Storage](#persistent-storage)
 	* [Node Selector](#node-selector)
 	* [Bro Configuration](#bro-configuration)
 		* [Resource Limits](#resource-limits)
-		* [CPU Pinning] (#cpu-pinning)
+		* [CPU Pinning](#cpu-pinning)
 	* [Logstash Configuration](#logstash-configuration)
 	* [Redis Configuration](#redis-configuration)
 	
@@ -49,7 +49,7 @@ inline-1	1d
 inline-2	1d
 ```
 
-## Persistent Volume Storage
+## Persistent Storage
 
 These values tell Kubernetes where Bro's logs should be stored on the 
 host for persistent storage. The *spool* option is for Bro's current 
@@ -94,7 +94,7 @@ You can set limits on Bro to ensure it doesn't use more CPU/memory space than ne
 broConfig:
   limits:
     cpu: 2
-	memory: 4G
+    memory: 4G
 ```
 
 ### CPU Pinning
@@ -105,7 +105,7 @@ Bro should be pinned to a number of CPU cores depending on your NUMA node setup 
 broConfig:
   limits:
     ...
-	pin-cpus: 27,28,29,30,31,32,33,34
+    pin-cpus: 27,28,29,30,31,32,33,34
 ```
 
 ## Logstash Configuration

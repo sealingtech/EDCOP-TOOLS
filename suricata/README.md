@@ -148,7 +148,7 @@ You can set limits on Suricata to ensure it doesn't use more CPU/memory space th
 suricataConfig:
   limits:
     cpu: 2
-	memory: 4G
+    memory: 4G
 ```
 
 ## Logstash Configuration
