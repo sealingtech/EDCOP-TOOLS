@@ -6,8 +6,6 @@ networks:
   overlay: calico
   # Passive is the name of the sriov interface
   passive: passive
-volumes:
-  
 nodeSelector:
   nodetype: worker
 packetbeatConfig:
