@@ -1,6 +1,6 @@
 # EDCOP Kibana Chart values
 image:
-  repository: edcop-master:5000
+  kibana: edcop-master:5000/kibana
 networks:
   # Overlay is the name of the default cni network
   overlay: calico

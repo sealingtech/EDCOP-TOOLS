@@ -15,11 +15,11 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure the image names match the names of the tools (e.g. *kibana*). If not, you will have to change the image names in the *kibana.yaml* file.
+By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure you use the full repository name.
  
 ```
 image:
-  repository: edcop-master
+  kibana: edcop-master:5000/kibana
 ```
 
 ## Networks

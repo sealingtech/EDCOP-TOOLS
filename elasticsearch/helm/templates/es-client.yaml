@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: es-client
-        image: {{ .Values.image.repository }}/elasticsearch
+        image: {{ .Values.images.elasticsearch }}
         env:
         - name: NAMESPACE
           valueFrom:

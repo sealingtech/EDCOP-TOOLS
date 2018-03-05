@@ -18,11 +18,13 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure the image names match the names of the tools, e.g. *packetbeat*, *logstash*, and *redis*. If not, you will have to change the image names in the *packetbeat-daemonset.yaml* file.
+By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing these values, make sure you use the full repository name.
  
 ```
-image:
-  repository: edcop-master
+images:
+  packetbeat: edcop-master:5000/packetbeat
+  logstash: edcop-master:5000/logstash
+  redis: edcop-master:5000/redis
 ```
 
 ## Networks

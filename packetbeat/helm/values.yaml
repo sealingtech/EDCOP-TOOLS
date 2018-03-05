@@ -1,6 +1,8 @@
 # EDCOP Packetbeat Chart values
-image:
-  repository: edcop-master:5000
+images:
+  packetbeat: edcop-master:5000/packetbeat
+  logstash: edcop-master:5000/logstash
+  redis: edcop-master:5000/redis
 networks:
   # Overlay is the name of the default cni network
   overlay: calico

@@ -23,11 +23,12 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure the image names match the names of the tools (e.g. *elasticsearch*). If not, you will have to change the image names in the *es-client.yaml* file.
+By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing these values, make sure you include the full repository name.
  
 ```
-image:
-  repository: edcop-master
+images:
+  elasticsearch: edcop-master:5000/elasticsearch
+  curator: edcop-master:5000/curator
 ```
  
 ## Networks

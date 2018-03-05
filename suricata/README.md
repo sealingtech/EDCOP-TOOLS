@@ -23,11 +23,13 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure the image names match the names of the tools, e.g. *suricata*, *logstash*, and *redis*. If not, you will have to change the image names in the *suricata-daemonset.yaml* file.
+By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure you use the full repository name.
  
 ```
-image:
-  repository: edcop-master
+images:
+  suricata: edcop-master:5000/suricata
+  logstash: edcop-master:5000/logstash
+  redis: edcop-master:5000/redis
 ```
  
 ## Networks

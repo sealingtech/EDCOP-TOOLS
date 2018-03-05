@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: packetbeat
-        image: {{ .Values.image.repository }}/packetbeat
+        image: {{ .Values.images.packetbeat }}
         imagePullPolicy: Always
         securityContext:
           capabilities:
@@ -37,7 +37,7 @@ spec:
             memory: "{{ .Values.packetbeatConfig.limits.memory }}"
 
       - name: redis
-        image: {{ .Values.image.repository }}/redis
+        image: {{ .Values.images.redis }}
         imagePullPolicy: Always
         ports:
         - name: cport-6379
@@ -48,7 +48,7 @@ spec:
             memory: "{{ .Values.redisConfig.limits.memory }}"
           
       - name: logstash
-        image: {{ .Values.image.repository }}/logstash
+        image: {{ .Values.images.logstash }}
         imagePullPolicy: Always
         ports:
         - name: cport-5044

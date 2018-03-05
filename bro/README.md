@@ -21,11 +21,14 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure the image names match the names of the tools, e.g. *bro*, *logstash*, and *redis*. If not, you will have to change the image names in the *bro-daemonset.yaml* file.
+By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing these values, make sure you use the full repository name.
  
 ```
-image:
-  repository: edcop-master
+images:
+  bro: edcop-master:5000/bro
+  logstash: edcop-master:5000/logstash
+  redis: edcop-master:5000/redis
+  filebeat: edcop-master:5000/filebeat
 ```
  
 ## Networks

@@ -25,7 +25,7 @@ spec:
       containers:
       - name: kibana
         imagePullPolicy: Always
-        image: {{ .Values.image.repository }}/kibana
+        image: {{ .Values.image.kibana }}
         ports:
         - containerPort: 5601
       restartPolicy: Always

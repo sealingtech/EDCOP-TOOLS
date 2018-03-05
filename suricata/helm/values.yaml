@@ -1,7 +1,9 @@
 # EDCOP Suricata Chart values
-image:
-  #Repository to pull values from
-  repository: edcop-master:5000
+images:
+  #Repositories to pull images from
+  suricata: edcop-master:5000/suricata
+  logstash: edcop-master:5000/logstash
+  redis: edcop-master:5000/redis
 networks:
   # Overlay is the name of the default cni network
   overlay: 'calico'

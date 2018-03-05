@@ -1,6 +1,7 @@
 # EDCOP Elasticsearch Chart values
-image:
-  repository: edcop-master:5000
+images:
+  elasticsearch: edcop-master:5000/elasticsearch
+  curator: edcop-master:5000/curator
 networks:
   # Overlay is the name of the default cni network
   overlay: calico

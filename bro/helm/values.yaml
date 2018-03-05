@@ -1,6 +1,9 @@
 # EDCOP Bro Chart values
-image:
-  repository: edcop-master:5000
+images:
+  bro: edcop-master:5000/bro
+  logstash: edcop-master:5000/logstash
+  redis: edcop-master:5000/redis
+  filebeat: edcop-master:5000/filebeat
 networks:
   # Overlay is the name of the default cni network
   overlay: calico
