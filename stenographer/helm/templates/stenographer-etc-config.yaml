@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "stenographer.fullname" . }}-etc-config
+data:
+  config: |
+    # Stenographer configuration
+    {
+      "Threads": [
+        {
+          "PacketsDirectory": "/data/stenographer/packets"
+        , "IndexDirectory": "/data/stenographer/index"
+        }
+      ]
+      , "StenotypePath": "/usr/bin/stenotype"
+      , "Interface": "net0"
+      , "Port": 1234
+      , "Host": "127.0.0.1"
+      , "Flags": ["-v"]
+      , "CertPath": "/etc/stenographer/certs"
+    }
+  
+

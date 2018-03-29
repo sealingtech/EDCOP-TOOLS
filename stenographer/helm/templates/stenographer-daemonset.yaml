@@ -1,0 +1,67 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: {{ template "stenographer.fullname" . }}
+  labels:
+    app: {{ template "stenographer.name" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "stenographer.name" . }}
+  template:
+    metadata:
+      name: {{ template "stenographer.name" . }}
+      labels:
+        app: {{ template "stenographer.name" . }}
+        release: {{ .Release.Name }}
+      annotations:
+        networks: '[
+        { "name": "{{ .Values.networks.overlay }}" },
+        { "name": "{{ .Values.networks.passive }}" }
+      ]'
+    spec:
+      containers:
+      - name: stenographer
+        image: {{ .Values.images.stenographer }}
+        imagePullPolicy: Always
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+              - NET_RAW
+              - IPC_LOCK
+        resources:
+          limits:
+            cpu: "{{ .Values.stenographerConfig.limits.cpu }}"
+            memory: "{{ .Values.stenographerConfig.limits.memory }}"
+        volumeMounts:
+        - mountPath: /data/stenographer/packets/
+          name: stenographer-logs
+        - mountPath: /data/stenographer/index/
+          name: stenographer-index
+        - mountPath: /etc/stenogrpher/config
+          name: stenographer-etc-config
+        - mountPath: /etc/security/limits.d/stenographer.conf
+          name: stenographer-limits-config
+
+      volumes:
+      - name: stenographer-logs
+        hostPath:
+          path: {{ .Values.volumes.logs.packets }}
+      - name: stenographer-index
+        hostPath:
+          path: {{ .Values.volumes.logs.index }}
+      - name: stenographer-etc-config
+        configMap:
+          name: {{ template "stenographer.fullname" . }}-etc-config
+      - name: stenographer-limits-config
+        configMap:
+          name: {{ template "stenographer.fullname" . }}-limits-config
+
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: {{ .Values.nodeSelector.nodetype }}
+

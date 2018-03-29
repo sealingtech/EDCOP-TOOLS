@@ -1,0 +1,19 @@
+# EDCOP Stenographer Chart values
+images:
+  stenographer: edcop-master:5000/stenographer
+networks:
+  # Overlay is the name of the default cni network
+  overlay: calico
+  # Passive is the name of the sriov interface
+  passive: passive
+volumes:
+  logs:
+    packets: /var/EDCOP/data/logs/stenographer/packets
+    index: /var/EDCOP/data/logs/stenographer/index
+nodeSelector:
+  nodetype: worker
+stenographerConfig:
+  limits:
+    cpu: 2
+    memory: 4G
+
