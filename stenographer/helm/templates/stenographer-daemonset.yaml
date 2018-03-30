@@ -31,7 +31,7 @@ spec:
             add:
               - NET_ADMIN
               - NET_RAW
-              - IPC_LOCK
+              - IPC_LOCK # Needed for application permissions
         resources:
           limits:
             cpu: "{{ .Values.stenographerConfig.limits.cpu }}"

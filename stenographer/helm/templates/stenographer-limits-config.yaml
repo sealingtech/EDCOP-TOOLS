@@ -15,7 +15,7 @@ data:
     # stenographer with upstart, since it sets its own limits.
     
     # Allow files up to 4G
-    stenographer    -       fsize   4194304
+    stenographer    -       fsize   {{ .Values.stenographerConfig.maxFileSize }}
     
     # Allow unlimited open files
-    stenographer    -       nofile  1000000
+    stenographer    -       nofile  {{ .Values.stenographerConfig.maxOpenFiles }}
