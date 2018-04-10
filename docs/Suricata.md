@@ -30,3 +30,6 @@ helm inspect edcop/suricata > values.yaml
 helm install -f values.yaml edcop/suricata
 ```
 
+Tony Rocks!!!!
+
+
