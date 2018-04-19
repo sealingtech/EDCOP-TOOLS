@@ -17,12 +17,12 @@ spec:
         role: client
       annotations:
         networks: '[
-        { "name": "{{  .Values.networks.overlay-net }}" }
+        { "name": "{{ .Values.networks.overlay }}" }
       ]'
     spec:
       containers:
       - name: es-client
-        image: {{ .Values.image.repository }}/elasticsearch
+        image: {{ .Values.images.elasticsearch }}
         env:
         - name: NAMESPACE
           valueFrom:
@@ -35,7 +35,7 @@ spec:
         - name: NETWORK_HOST
           value: _eth0_,_lo_
         - name: ES_JAVA_OPTS
-          value: "{{ .Values.elasticsearchConfig.env.java-opts }}"
+          value: "{{ .Values.elasticsearchConfig.env.javaopts }}"
         ports:
         - name: cport-9200
           containerPort: 9200

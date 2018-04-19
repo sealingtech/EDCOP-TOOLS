@@ -1,13 +1,13 @@
 # EDCOP Packetbeat Chart values
-image:
-  repository: edcop-master:5000
+images:
+  packetbeat: edcop-master:5000/packetbeat
+  logstash: edcop-master:5000/logstash
+  redis: edcop-master:5000/redis
 networks:
   # Overlay is the name of the default cni network
-  overlay-net: calico
-  # passive-net is the name of the sriov interface
-  passive-net: passive
-volumes:
-  
+  overlay: calico
+  # Passive is the name of the sriov interface
+  passive: passive
 nodeSelector:
   nodetype: worker
 packetbeatConfig:

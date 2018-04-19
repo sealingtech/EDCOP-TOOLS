@@ -19,13 +19,13 @@ spec:
         app: {{ template "kibana.name" . }}
       annotations:
         networks: '[
-        { "name": "{{  .Values.networks.overlay-net }}" }
+        { "name": "{{  .Values.networks.overlay }}" }
       ]'
     spec:
       containers:
       - name: kibana
         imagePullPolicy: Always
-        image: {{ .Values.image.repository }}/kibana
+        image: {{ .Values.image.kibana }}
         ports:
         - containerPort: 5601
       restartPolicy: Always

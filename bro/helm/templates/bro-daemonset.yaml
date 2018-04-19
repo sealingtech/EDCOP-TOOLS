@@ -18,13 +18,13 @@ spec:
         release: {{ .Release.Name }}
       annotations:
         networks: '[
-        { "name": "{{ .Values.networks.overlay-net }}" },
-        { "name": "{{ .Values.networks.passive-net }}" }
+        { "name": "{{ .Values.networks.overlay }}" },
+        { "name": "{{ .Values.networks.passive }}" }
       ]'
     spec:
       containers:
       - name: bro
-        image: {{ .Values.image.repository }}/bro
+        image: {{ .Values.images.bro }}
         imagePullPolicy: Always
         securityContext:
           capabilities:
@@ -46,7 +46,7 @@ spec:
           name: bro-spool
       
       - name: redis
-        image: {{ .Values.image.repository }}/redis
+        image: {{ .Values.images.redis }}
         imagePullPolicy: Always
         ports:
         - name: cport-6379
@@ -57,7 +57,7 @@ spec:
             memory: "{{ .Values.redisConfig.limits.memory }}"
           
       - name: logstash
-        image: {{ .Values.image.repository }}/logstash
+        image: {{ .Values.images.logstash }}
         imagePullPolicy: Always
         ports:
         - name: cport-5044
@@ -73,7 +73,7 @@ spec:
           name: logstash-bro-config
 
       - name: filebeat
-        image: {{ .Values.image.repository }}/filebeat
+        image: {{ .Values.images.filebeat }}
         imagePullPolicy: Always
         securityContext:
           privileged: true

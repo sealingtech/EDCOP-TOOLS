@@ -1,10 +1,12 @@
 # EDCOP Suricata Chart values
-image:
-  #Repository to pull values from
-  repository: edcop-master:5000
+images:
+  #Repositories to pull images from
+  suricata: edcop-master:5000/suricata
+  logstash: edcop-master:5000/logstash
+  redis: edcop-master:5000/redis
 networks:
   # Overlay is the name of the default cni network
-  overlaynet: 'calico'
+  overlay: 'calico'
   # Net 1 is the name of the first interface
   net1: 'inline-1'
   # Net 2 is the name of the second interface  This will be ignored when passive is selected
@@ -45,7 +47,7 @@ suricataConfig:
 logstashConfig:
   #Limits the number of threads that will be used by Logstash
   threads: 2 
-  #Configures the batch count that Logstash will process att a time.
+  #Configures the batch count that Logstash will process at a time.
   batchCount: 250
   #Sets the initial and max JVM heap that will be allocated, generally these two values should be the same.
   initialJvmHeap: 4g

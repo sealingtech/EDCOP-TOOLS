@@ -20,7 +20,7 @@ spec:
       annotations:
       {{ if .Values.suricataConfig.inline }}
         networks: '[
-        { "name": "{{  .Values.networks.overlaynet }}" },
+        { "name": "{{  .Values.networks.overlay }}" },
         { "name": "{{  .Values.networks.net1 }}" },
         { "name": "{{  .Values.networks.net2 }}" }
       ]'
@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: suricata
-        image: {{ .Values.image.repository }}/suricata
+        image: {{ .Values.images.suricata }}
         stdin: true
         command: ["docker-entrypoint.sh"]
         tty: true
@@ -52,7 +52,7 @@ spec:
             cpu: "{{ .Values.suricataConfig.limits.cpu }}"
             memory: "{{ .Values.suricataConfig.limits.memory }}"
       - name: redis
-        image: {{ .Values.image.repository }}/redis
+        image: {{ .Values.images.redis }}
         imagePullPolicy: Always
         ports:
         - name: cport-6379
@@ -63,7 +63,7 @@ spec:
             memory: "{{ .Values.redisConfig.limits.memory }}"
       {{ if eq .Values.deploymentOptions.deployment "standalone"  }}
       - name: logstash
-        image: {{ .Values.image.repository }}/logstash
+        image: {{ .Values.images.logstash }}
         imagePullPolicy: Always
         ports:
         - name: cport-5044
