@@ -66,7 +66,8 @@ This value tells Kubernetes which hosts the daemonset should be deployed to by u
  
 ```
 nodeSelector:
-  nodetype: worker
+  client: worker
+  master: master
 ```
  
 To find out what labels your hosts have, please use the following:

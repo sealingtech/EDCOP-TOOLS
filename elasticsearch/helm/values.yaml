@@ -9,11 +9,12 @@ volumes:
   # Persistent data location on the host to store Elasticsearch's data
   data: /var/EDCOP/data/esdata
 nodeSelector:
-  nodetype: worker
+  client: worker
+  master: master
 elasticsearchConfig:
   env:
     clustername: edcop
-    javaopts: -Xms16g -Xmx16g
+    javaopts: -Xms16g -Xmx16
   limits:
     cpu: 12
     memory: 32Gi
