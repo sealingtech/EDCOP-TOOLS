@@ -14,7 +14,7 @@ nodeSelector:
 elasticsearchConfig:
   env:
     clustername: edcop
-    javaopts: -Xms16g -Xmx16
+    javaopts: -Xms16g -Xmx16g
   limits:
     cpu: 12
     memory: 32Gi
