@@ -1,0 +1,25 @@
+apiVersion: v1
+entries:
+  bro:
+  - apiVersion: v1
+    created: 2018-04-30T15:22:35.09502635-04:00
+    description: EDCOP Bro Chart
+    digest: b35b9fa34bf8ec82b43ebc19fad24bd4b0469171f78819d4bfa7ef827c70b44b
+    home: https://github.com/sealingtech/EDCOP
+    icon: https://www.bro.org/images/bro-eyes.png
+    name: bro
+    urls:
+    - http://repos.sealingtech.org/charts/bro-0.1.0.tgz
+    version: 0.1.0
+  suricata:
+  - apiVersion: v1
+    created: 2018-04-30T15:22:35.097072015-04:00
+    description: EDCOP Suricata Chart
+    digest: 24a685579a30f51bb1db8b0ac3d0fb08b6a8e677efd594b50225941b84b34359
+    home: https://github.com/sealingtech/EDCOP
+    icon: https://idsips.files.wordpress.com/2015/10/suri-400x400.png
+    name: suricata
+    urls:
+    - http://repos.sealingtech.org/charts/suricata-0.1.0.tgz
+    version: 0.1.0
+generated: 2018-04-30T15:22:35.093505374-04:00

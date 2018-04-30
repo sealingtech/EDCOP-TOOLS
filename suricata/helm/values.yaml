@@ -1,9 +1,9 @@
 # EDCOP Suricata Chart values
 images:
   #Repositories to pull images from
-  suricata: edcop-master:5000/suricata
-  logstash: edcop-master:5000/logstash
-  redis: edcop-master:5000/redis
+  suricata: gcr.io/edcop-public/suricata:1
+  logstash: docker.elastic.co/logstash/logstash:6.2.4
+  redis: redis:4.0.9
 networks:
   # Overlay is the name of the default cni network
   overlay: 'calico'
@@ -16,7 +16,7 @@ nodeSelector:
   nodetype: 'worker'
 deploymentOptions:
   #The three options for deployment are standalone, cluster and external.  Please see the documentation on deploy options for definitions and special considerations.
-  deployment: 'external'
+  deployment: 'standalone'
   #Below options are only used in external mode when sending to a Redis queue outside of the cluster
   externalOptions:
     externalHost: 172.31.20.90

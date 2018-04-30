@@ -25,10 +25,10 @@ By default, images are pulled from *edcop-master:5000* which is presumed to be h
  
 ```
 images:
-  bro: edcop-master:5000/bro
-  logstash: edcop-master:5000/logstash
-  redis: edcop-master:5000/redis
-  filebeat: edcop-master:5000/filebeat
+  bro: gcr.io/edcop-public/bro:2
+  logstash: docker.elastic.co/logstash/logstash:6.2.4
+  redis: redis:4.0.9
+  filebeat: docker.elastic.co/beats/filebeat:6.2.4
 ```
  
 ## Networks

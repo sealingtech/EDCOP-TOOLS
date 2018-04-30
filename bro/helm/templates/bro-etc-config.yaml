@@ -165,5 +165,5 @@ data:
     interface=af_packet::net0
     lb_method=custom
     lb_procs=8
-    pin_cpus={{ .Values.broConfig.limits.pin-cpus }}
+    pin_cpus={{ .Values.broConfig.limits.pin_cpus }}
 

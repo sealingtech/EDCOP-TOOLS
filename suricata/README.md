@@ -27,9 +27,9 @@ By default, images are pulled from *edcop-master:5000* which is presumed to be h
  
 ```
 images:
-  suricata: edcop-master:5000/suricata
-  logstash: edcop-master:5000/logstash
-  redis: edcop-master:5000/redis
+  suricata: gcr.io/edcop-public/suricata:1
+  logstash: edocker.elastic.co/logstash/logstash:6.2.4
+  redis: redis:4.0.9
 ```
  
 ## Networks

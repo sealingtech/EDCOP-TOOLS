@@ -86,11 +86,9 @@ spec:
           
       volumes:
       - name: bro-logs
-        hostPath: 
-          path: {{ .Values.volumes.logs.logs }}
+        emptyDir: {}
       - name: bro-spool
-        hostPath:
-          path: {{ .Values.volumes.logs.spool }}       
+        emptyDir: {}    
       - name: bro-etc-config
         configMap:
           name: {{ template "bro.fullname" . }}-etc-config
@@ -99,7 +97,7 @@ spec:
           name: {{ template "bro.fullname" . }}-site-config
       - name: filebeat-bro-config
         configMap:
-          name: filebeat-{{ template "bro.fullname" . }}-config
+          name: {{ template "bro.fullname" . }}-filebeat-config
       - name: logstash-bro-config
         configMap:
           name: logstash-{{ template "bro.fullname" . }}-config

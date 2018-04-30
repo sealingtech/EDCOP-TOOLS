@@ -1,104 +1,88 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
+  name: {{ template "bro.fullname" . }}
   labels:
-    name: host-setup
-  name: host-setup
-  namespace: kube-system
+    app: {{ template "bro.name" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
-      name: host-setup
+      app: {{ template "bro.name" . }}
   template:
     metadata:
+      name: {{ template "bro.name" . }}
       labels:
-        name: host-setup
+        app: {{ template "bro.name" . }}
+        release: {{ .Release.Name }}
+      annotations:
+        networks: '[
+        { "name": "{{ .Values.networks.overlay }}" },
+        { "name": "{{ .Values.networks.passive }}" }
+      ]'
     spec:
-      hostNetwork: true
-      nodeSelector:
-        nodetype: worker
       containers:
-      - name: host-setup
-        image: gcr.io/edcop-public/host-setup:2
+      - name: bro
+        image: {{ .Values.images.bro }}
         imagePullPolicy: Always
         securityContext:
-          privileged: true
           capabilities:
             add:
               - NET_ADMIN
-              - SYS_ADMIN #Needed for modifying network parameters
-        env:
-        - name: inline1interface
-          value: enp216s0f1
-        - name: inline1numofvfs
-          value: "4"
-        - name: inline2interface
-          value: enp216s0f2
-        - name: inline2numofvfs
-          value: "4"
-        - name: passive1interface
-          value: enp216s0f3
-        - name: passive2numofvfs
-          value: "4"
-        - name: STARTUP_SCRIPT
-          value: |
-            #! /bin/bash
-            echo 0 >  /sys/class/net/$inline1interface/device/sriov_numvfs
-            echo $inline1numofvfs >  /sys/class/net/$inline1interface/device/sriov_numvfs
-            echo 0 >  /sys/class/net/$inline2interface/device/sriov_numvfs
-            echo $inline1numofvfs >  /sys/class/net/$inline2interface/device/sriov_numvfs
-            echo  0 >  /sys/class/net/$passive1interface/device/sriov_numvfs
-            echo  $passive2numofvfs >  /sys/class/net/$passive1interface/device/sriov_numvfs
+              - SYS_NICE #Used for CPU pinning
+        resources:
+          limits:
+            cpu: "{{ .Values.broConfig.limits.cpu }}"
+            memory: "{{ .Values.broConfig.limits.memory }}"
+        volumeMounts:
+        - mountPath: /usr/local/bro/etc/
+          name: bro-etc-config
+        - mountPath: /usr/local/bro/share/bro/site/
+          name: bro-site-config
 
-            inline1numofvfsminus=$(expr $inline1numofvfs - 1)
-            inline2numofvfsminus=$(expr $inline2numofvfs - 1)
-            passive1numofvfsminus=$(expr $passive1numofvfs - 1)
-            for x in $(seq 0 $inline1numofvfsminus);do ip link set dev $inline1interface vf $x spoofchk off; done
-            for x in $(seq 0 $inline2numofvfsminus);do ip link set dev $inline2interface vf $x spoofchk off; done
-            for x in $(seq 0 $passive1numofvfsminus);do ip link set dev $passive1interface vf $x spoofchk off; done
-            for x in $(seq 0 $inline1numofvfsminus);do ip link set dev $inline1interface vf $x trust on; done
-            for x in $(seq 0 $inline2numofvfsminus);do ip link set dev $inline2interface vf $x trust on; done
-            for x in $(seq 0 $passive1numofvfsminus);do ip link set dev $passive1interface vf $x trust on; done
+      - name: redis
+        image: {{ .Values.images.redis }}
+        imagePullPolicy: Always
+        ports:
+        - name: cport-6379
+          containerPort: 6379
+        resources:
+          limits:
+            cpu: "{{ .Values.redisConfig.limits.cpu }}"
+            memory: "{{ .Values.redisConfig.limits.memory }}"
 
+      - name: logstash
+        image: {{ .Values.images.logstash }}
+        imagePullPolicy: Always
+        ports:
+        - name: cport-5044
+          containerPort: 5044
+        resources:
+          limits:
+            cpu: "{{ .Values.logstashConfig.limits.cpu }}"
+            memory: "{{ .Values.logstashConfig.limits.memory }}"
+        volumeMounts:
+        - mountPath: /usr/share/logstash/pipeline/
+          name: logstash-bro-pipeline
+        - mountPath: /usr/share/logstash/config/
+          name: logstash-bro-config
 
-            ethtool -L  $inline1interface combined 1
-            ethtool -L  $inline2interface combined 1
-            ethtool -L  $passive1interface combined 1
+      volumes:
+      - name: bro-etc-config
+        configMap:
+          name: {{ template "bro.fullname" . }}-etc-config
+      - name: bro-site-config
+        configMap:
+          name: {{ template "bro.fullname" . }}-site-config
+      - name: logstash-bro-config
+        configMap:
+          name: logstash-{{ template "bro.fullname" . }}-config
+      - name: logstash-bro-pipeline
+        configMap:
+          name: logstash-{{ template "bro.fullname" . }}-pipeline
 
-            ethtool -C $inline1interface adaptive-rx on rx-usecs 100
-            ethtool -C $inline2interface adaptive-rx on rx-usecs 100
-            ethtool -C $passive1interface adaptive-rx on rx-usecs 100
-
-            ethtool -G $inline1interface rx 512
-            ethtool -G $inline2interface rx 512
-            ethtool -G $passive1interface rx 512
-
-
-
-            for i in rx tx tso ufo gso gro rxhash ntuple sg txvlan rxvlan; do ethtool -K $inline1interface $i off 2>&1 > /dev/null; done;
-
-            for i in rx tx tso ufo gso gro rxhash ntuple sg txvlan rxvlan; do ethtool -K $inline2interface $i off 2>&1 > /dev/null; done;
-
-            for i in rx tx tso ufo gso gro rxhash ntuple sg txvlan rxvlan; do ethtool -K $passive1interface $i off 2>&1 > /dev/null; done;
-
-
-            for NIC in $(ls -d /sys/class/net/$inline1interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC rx 128; done
-            for NIC in $(ls -d /sys/class/net/$inline2interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC rx 128; done
-            for NIC in $(ls -d /sys/class/net/$passive1interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC rx 128; done
-            for NIC in $(ls -d /sys/class/net/$inline1interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC tx 128; done
-            for NIC in $(ls -d /sys/class/net/$inline2interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC tx 128; done
-            for NIC in $(ls -d /sys/class/net/$passive1interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC tx 128; done
-
-
-
-            systemctl stop irqbalance
-
-            cd i40e-2.4.3/scripts
-            ./set_irq_affinity $inline1interface 8
-            ./set_irq_affinity $inline2interface 8
-            ./set_irq_affinity $passive1interface 8
-
-
-
-            #needed for Elastic
-            sysctl -w vm.max_map_count=262144
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: {{ .Values.nodeSelector.nodetype }}

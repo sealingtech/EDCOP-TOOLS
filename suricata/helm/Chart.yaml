@@ -5,4 +5,5 @@ version: 0.1.0
 description: EDCOP Suricata Chart
 details:
   This Chart provides an inline Suricata daemonset for use with the EDCOP project.
+icon: https://idsips.files.wordpress.com/2015/10/suri-400x400.png
 
