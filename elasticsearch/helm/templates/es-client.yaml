@@ -37,7 +37,7 @@ spec:
         - name: ES_JAVA_OPTS
           value: "{{ .Values.elasticsearchConfig.env.javaopts }}"
         - name: DISCOVERY_SERVICE
-          value: {{ template "elasticsearch.fullname" . }}-discovery
+          value: es-discovery
         ports:
         - name: cport-9200
           containerPort: 9200
@@ -54,6 +54,9 @@ spec:
         - mountPath: /usr/share/elasticsearch/config/jvm.options
           subPath: jvm.options
           name: elasticsearch-jvm
+        - mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+          subPath: elasticsearch.yml
+          name: elasticsearch-config
 
       volumes:
       - name: esdata
@@ -62,7 +65,9 @@ spec:
       - name: elasticsearch-jvm
         configMap:
           name: {{ template "elasticsearch.fullname" . }}-jvm
-
+      - name: elasticsearch-config
+        configMap:
+          name: {{ template "elasticsearch.fullname" . }}-config
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       nodeSelector:

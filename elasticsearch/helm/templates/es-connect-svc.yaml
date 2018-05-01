@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: es-discovery
+  namespace: default
+  labels:
+    component: {{ template "elasticsearch.name" . }}
+    role: master
+spec:
+  ports:
+  - name: tcp-9300
+    protocol: TCP
+    port: 9300 
+    targetPort: 9300
+  selector:
+    component: {{ template "elasticsearch.name" . }}
+    role: master

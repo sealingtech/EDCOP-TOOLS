@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-service
+  namespace: default
+  labels:
+    component: {{ template "elasticsearch.name" . }}
+spec:
+  ports:
+  - name: tcp-9200
+    protocol: TCP
+    port: 9200 
+    targetPort: 9200
+  selector:
+    component: {{ template "elasticsearch.name" . }}

@@ -1,5 +1,6 @@
 # EDCOP Elasticsearch Chart values
 images:
+  # Base image (es): docker.elastic.co/elasticsearch/elasticsearch:6.1.4
   elasticsearch: edcop-master:5000/elasticsearch
   curator: edcop-master:5000/curator
 networks:
