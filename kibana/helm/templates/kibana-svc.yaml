@@ -12,6 +12,5 @@ spec:
     port: 5601
     targetPort: 5601
   selector:
-    app: {{ template "kibana.fullname" . }}
-  sessionAffinity: None
+    app: {{ template "kibana.name" . }}
 
