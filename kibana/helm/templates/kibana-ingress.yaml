@@ -8,12 +8,12 @@ metadata:
    traefik.frontend.rule.type: PathPrefixStrip
    # ingress.kubernetes.io/auth-type: "basic"
    # ingress.kubernetes.io/auth-secret: "ingress-auth"
-    spec:
-     rules:
-      - host: {{ .Values.ingress.host }}
-        http:
-          paths:
-          - path: /kibana
-            backend:
-              serviceName: kibana-svc
-              servicePort: 5601
+spec:
+ rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /kibana
+        backend:
+          serviceName: kibana-svc
+          servicePort: 5601
