@@ -1,5 +1,6 @@
 # EDCOP Elasticsearch Chart values
 images:
+  # Base image (es): docker.elastic.co/elasticsearch/elasticsearch:6.1.4
   elasticsearch: edcop-master:5000/elasticsearch
   curator: edcop-master:5000/curator
 networks:
@@ -9,7 +10,8 @@ volumes:
   # Persistent data location on the host to store Elasticsearch's data
   data: /var/EDCOP/data/esdata
 nodeSelector:
-  nodetype: worker
+  client: worker
+  master: master
 elasticsearchConfig:
   env:
     clustername: edcop

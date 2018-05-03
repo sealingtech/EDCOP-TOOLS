@@ -16,7 +16,7 @@ spec:
         spec:
           containers:
           - name: curator
-            image: {{ .Values.image.curator }}
+            image: {{ .Values.images.curator }}
             imagePullPolicy: Always
             args:
             - curator

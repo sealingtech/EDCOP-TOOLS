@@ -28,6 +28,15 @@ spec:
         image: {{ .Values.image.kibana }}
         ports:
         - containerPort: 5601
+        volumeMounts:
+        - mountPath: /usr/share/kibana/config/kibana.yml
+          subPath: kibana.yml
+          name: kibana-config
+
+      volumes:
+      - name: kibana-config
+        configMap:
+          name: {{ template "kibana.fullname" . }}-config
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       nodeSelector:

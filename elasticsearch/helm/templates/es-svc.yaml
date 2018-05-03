@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "elasticsearch.fullname" . }}
+  name: data-service
   namespace: default
   labels:
     component: {{ template "elasticsearch.name" . }}
