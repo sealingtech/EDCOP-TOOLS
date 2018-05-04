@@ -1,8 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
- name: kibana-web-ui
- namespace: kube-system
+ name: {{ template "kibana.fullname" . }}-ingress
  annotations:
    kubernetes.io/ingress.class: traefik
    traefik.frontend.rule.type: PathPrefixStrip
@@ -15,5 +14,5 @@ spec:
       paths:
       - path: /kibana
         backend:
-          serviceName: kibana-svc
+          serviceName: {{ template "kibana.fullname" . }}-kibana-svc
           servicePort: 5601

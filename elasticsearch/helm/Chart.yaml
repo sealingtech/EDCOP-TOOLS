@@ -5,3 +5,4 @@ version: 0.1.0
 description: EDCOP Elasticsearch Chart
 details:
   This Chart provides an Elasticsearch daemonset deployed onto worker nodes within the EDCOP project. 
+icon: http://www.elastic.co/assets/bltd74b9a6e0e479359/icon-white-circle-elasticsearch.png

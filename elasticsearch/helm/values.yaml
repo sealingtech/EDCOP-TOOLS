@@ -1,8 +1,8 @@
 # EDCOP Elasticsearch Chart values
 images:
   # Base image (es): docker.elastic.co/elasticsearch/elasticsearch:6.1.4
-  elasticsearch: edcop-master:5000/elasticsearch
-  curator: edcop-master:5000/curator
+  elasticsearch: docker.elastic.co/elasticsearch/elasticsearch:6.1.4
+  curator: bobrik/curator
 networks:
   # Overlay is the name of the default cni network
   overlay: calico
@@ -17,7 +17,7 @@ elasticsearchConfig:
     clustername: edcop
     javaopts: -Xms16g -Xmx16g
   limits:
-    cpu: 12
+    cpu: 4 
     memory: 32Gi
 curatorConfig:
   # Input how often the curator should run in cronjob format

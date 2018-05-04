@@ -1,7 +1,7 @@
 # EDCOP Kibana Chart values
 image:
   # Basic image: docker.elastic.co/kibana/kibana:6.1.4
-  kibana: edcop-master:5000/kibana
+  kibana: docker.elastic.co/kibana/kibana:6.1.4
 networks:
   # Overlay is the name of the default cni network
   overlay: calico
@@ -9,4 +9,4 @@ nodeSelector:
   nodetype: master
 ingress:
   # Enter the FQDN of your host
-  host: <$FQDN>  
+  host: physical.edcop.io  
