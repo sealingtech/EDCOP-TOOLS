@@ -30,6 +30,9 @@ spec:
         - name: cport-5144
           containerPort: 5144
         resources:
+          requests:
+            cpu: "{{ .Values.logstashConfig.requests.cpu }}"
+            memory: "{{ .Values.logstashConfig.requests.memory }}"
           limits:
             cpu: "{{ .Values.logstashConfig.limits.cpu }}"
             memory: "{{ .Values.logstashConfig.limits.memory }}"

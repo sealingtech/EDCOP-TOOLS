@@ -11,6 +11,10 @@ networks:
 nodeSelector:
   nodetype: worker
 packetbeatConfig:
+  # Requests are set to accommodate resource limited VMs
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 4G
@@ -21,10 +25,16 @@ logstashConfig:
   maxJvmHeap: 4g
   pipelineOutputWorkers: 2 
   pipelineBatchSize: 150  
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G
 redisConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G

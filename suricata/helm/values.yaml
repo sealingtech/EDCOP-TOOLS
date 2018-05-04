@@ -39,6 +39,10 @@ suricataConfig:
   workerCpuSet: 1
   workerThreads: 1
   verdictCpuSet: 1
+  # Requests are set to accomodate limited resource VMs
+  requests:
+    cpu: 100m
+    memory: 64Mi           
   #These limit the number of CPU cores and memory the sensor can use.
   limits:
     cpu: 2
@@ -55,12 +59,18 @@ logstashConfig:
   #Sets the number of workers for pulling Redis events
   pipelineOutputWorkers: 2 
   #Sets the amount of events grabbed from Redis at one time.
-  pipelineBatchSize: 150  
+  pipelineBatchSize: 150 
+  requests:
+    cpu: 100m
+    memory: 64Mi 
   limits:
     cpu: 2
     memory: 8G
 #These values will be ignored if standalone is set to true as Redis will not be built
 redisConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   #limits the CPU and Memory of Redis.
   limits:
     cpu: 2

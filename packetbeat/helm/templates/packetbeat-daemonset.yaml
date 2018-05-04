@@ -32,6 +32,9 @@ spec:
             add:
               - NET_ADMIN
         resources:
+          requests:
+            cpu: "{{ .Values.packetbeatConfig.requests.cpu }}"
+            memory: "{{ .Values.packetbeatConfig.requests.memory }}"
           limits:
             cpu: "{{ .Values.packetbeatConfig.limits.cpu }}"
             memory: "{{ .Values.packetbeatConfig.limits.memory }}"
@@ -47,6 +50,9 @@ spec:
         - name: cport-6379
           containerPort: 6379
         resources:
+          requests:
+            cpu: "{{ .Values.redisConfig.requests.cpu }}"
+            memory: "{{ .Values.redisConfig.requests.memory }}"
           limits:
             cpu: "{{ .Values.redisConfig.limits.cpu }}"
             memory: "{{ .Values.redisConfig.limits.memory }}"
@@ -58,6 +64,9 @@ spec:
         - name: cport-5044
           containerPort: 5044   
         resources:
+          requests:
+            cpu: "{{ .Values.logstashConfig.requests.cpu }}"
+            memory: "{{ .Values.logstashConfig.requests.memory }}"
           limits:
             cpu: "{{ .Values.logstashConfig.limits.cpu }}"
             memory: "{{ .Values.logstashConfig.limits.memory }}"
