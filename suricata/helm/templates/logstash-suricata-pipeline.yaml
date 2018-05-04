@@ -18,7 +18,7 @@ data:
 
     output {
       elasticsearch {
-        hosts => "elasticsearch:9200"
+        hosts => "data-service:9200"
         manage_template => false
         index => "suricata-%{+YYYY.MM.dd}"
         document_type => "event"

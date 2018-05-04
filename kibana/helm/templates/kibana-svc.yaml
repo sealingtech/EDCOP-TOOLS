@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: kibana-svc
+  name: {{ template "kibana.fullname" . }}-kibana-svc
   namespace: default
   labels:
     app: {{ template "kibana.name" . }}

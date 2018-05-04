@@ -5,3 +5,4 @@ version: 0.1.0
 description: EDCOP Kibana Chart
 details:
   This Chart provides a Kibana deployment for use with the EDCOP project.
+icon: https://seeklogo.com/images/K/kibana-logo-3CB40921E7-seeklogo.com.png

@@ -618,7 +618,7 @@ data:
 
       # The name of the Redis list or channel the events are published to. The
       # default is filebeat.
-      key: filebeat
+      key: bro 
 
       # The password to authenticate with. The default is no authentication.
       #password:
