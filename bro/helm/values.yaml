@@ -12,6 +12,10 @@ networks:
 nodeSelector:
   nodetype: worker
 broConfig:
+  # Requests are set to accommodate limited resource VMs
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 8
     memory: 16G
@@ -25,10 +29,16 @@ logstashConfig:
   maxJvmHeap: 4g 
   pipelineOutputWorkers: 2 
   pipelineBatchSize: 150  
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G
 redisConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G

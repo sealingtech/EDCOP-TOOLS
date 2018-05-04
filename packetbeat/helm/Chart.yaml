@@ -5,4 +5,4 @@ version: 0.1.0
 description: EDCOP Packetbeat Chart
 details:
   This Chart provides a Packetbeat daemonset with part of the ELK stack for use with the EDCOP project.
-
+icon: https://cdn.freebiesupply.com/logos/large/2x/elastic-beats-logo-png-transparent.png

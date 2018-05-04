@@ -15,6 +15,10 @@ nodeSelector:
 stenographerConfig:
   maxFileSize: 4194304
   maxOpenFiles: 1000000
+  # Requests are set to accommodate limited resource VMs
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 4G

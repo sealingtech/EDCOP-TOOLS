@@ -1,7 +1,7 @@
 # EDCOP Elasticsearch Chart values
 images:
-  # Base image (es): docker.elastic.co/elasticsearch/elasticsearch:6.1.4
-  elasticsearch: docker.elastic.co/elasticsearch/elasticsearch:6.1.4
+  # Base image (es): docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+  elasticsearch: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
   curator: bobrik/curator
 networks:
   # Overlay is the name of the default cni network
@@ -16,6 +16,10 @@ elasticsearchConfig:
   env:
     clustername: edcop
     javaopts: -Xms16g -Xmx16g
+  # Requests are set to accommodate limited resource VMs
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 4 
     memory: 32Gi

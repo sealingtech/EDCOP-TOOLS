@@ -1,0 +1,27 @@
+# EDCOP Syslog Chart values
+images:
+  # Base image: docker.elastic.co/elasticsearch/logstash:6.2.4 
+  logstash: docker.elastic.co/elasticsearch/logstash:6.2.4
+networks:
+  # Overlay is the name of the default cni network
+  overlay: calico
+logstashConfig:
+  #Limits the number of threads that will be used by Logstash
+  threads: 2
+  #Configures the batch count that Logstash will process at a time.
+  batchCount: 250
+  #Sets the initial and max JVM heap that will be allocated, generally these two values should be the same.
+  initialJvmHeap: 4g
+  maxJvmHeap: 4g
+  #Sets the number of workers for pulling Redis events
+  pipelineOutputWorkers: 2
+  #Sets the amount of events grabbed from Redis at one time.
+  pipelineBatchSize: 150
+  # Requests are set to accommodate limited resource VMs
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 2
+    memory: 8G
+                                  

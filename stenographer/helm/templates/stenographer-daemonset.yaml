@@ -33,6 +33,9 @@ spec:
               - NET_RAW
               - IPC_LOCK # Needed for application permissions
         resources:
+          requests:
+            cpu: "{{ .Values.stenographerConfig.requests.cpu }}"
+            memory: "{{ .Values.stenographerConfig.requests.memory }}"
           limits:
             cpu: "{{ .Values.stenographerConfig.limits.cpu }}"
             memory: "{{ .Values.stenographerConfig.limits.memory }}"
