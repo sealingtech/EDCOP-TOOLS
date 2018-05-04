@@ -1,7 +1,7 @@
 # EDCOP Kibana Chart values
 image:
-  # Basic image: docker.elastic.co/kibana/kibana:6.1.4
-  kibana: docker.elastic.co/kibana/kibana:6.1.4
+  # Basic image: docker.elastic.co/kibana/kibana:6.2.4
+  kibana: docker.elastic.co/kibana/kibana:6.2.4
 networks:
   # Overlay is the name of the default cni network
   overlay: calico

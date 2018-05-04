@@ -1,4 +1,4 @@
-FROM docker.elastic.co/beats/packetbeat:5.6.0
+FROM docker.elastic.co/beats/packetbeat:6.2.4
 COPY packetbeat.yml /usr/share/packetbeat/packetbeat.yml
 USER root
 RUN chown packetbeat /usr/share/packetbeat/packetbeat.yml && \

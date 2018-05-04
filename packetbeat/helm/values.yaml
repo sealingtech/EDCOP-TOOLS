@@ -1,8 +1,8 @@
 # EDCOP Packetbeat Chart values
 images:
-  packetbeat: edcop-master:5000/packetbeat
-  logstash: edcop-master:5000/logstash
-  redis: edcop-master:5000/redis
+  packetbeat: docker.elastic.co/beats/packetbeat:6.2.4
+  logstash: docker.elastic.co/logstash/logstash:6.2.4 
+  redis: redis:4.0.9
 networks:
   # Overlay is the name of the default cni network
   overlay: calico

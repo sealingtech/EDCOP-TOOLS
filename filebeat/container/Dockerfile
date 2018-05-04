@@ -1,4 +1,4 @@
-FROM docker.elastic.co/beats/filebeat:6.1.1
+FROM docker.elastic.co/beats/filebeat:6.2.4
 
 VOLUME /var/EDCOP/logs
 

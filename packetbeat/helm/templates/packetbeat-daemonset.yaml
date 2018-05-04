@@ -35,6 +35,10 @@ spec:
           limits:
             cpu: "{{ .Values.packetbeatConfig.limits.cpu }}"
             memory: "{{ .Values.packetbeatConfig.limits.memory }}"
+        volumeMounts:
+        - mountPath: /usr/share/packetbeat/config/packetbeat.yml
+          subPath: packetbeat.yml
+          name: packetbeat-config
 
       - name: redis
         image: {{ .Values.images.redis }}
@@ -70,6 +74,9 @@ spec:
       - name: logstash-packetbeat-pipeline
         configMap:
           name: logstash-{{ template "packetbeat.fullname" . }}-pipeline
+      - name: packetbeat-config
+        configMap:
+          name: {{ template "packetbeat.fullname" . }}-config
 
       restartPolicy: Always
       dnsPolicy: ClusterFirst

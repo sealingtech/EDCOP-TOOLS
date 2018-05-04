@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "syslog.name" . }} 
+  namespace: default
+  labels:
+    app: {{ template "syslog.name" . }}
+spec:
+  type: NodePort
+  ports:
+  - name: tcp-5144
+    protocol: TCP
+    port: 5144
+    targetPort: 5144
+  - name: udp-5144
+    protocol: UDP 
+    port: 5144
+    targetPort: 5144
+  selector:
+    app: {{ template "syslog.name" . }}
+

@@ -1,7 +1,7 @@
 # EDCOP Elasticsearch Chart values
 images:
-  # Base image (es): docker.elastic.co/elasticsearch/elasticsearch:6.1.4
-  elasticsearch: docker.elastic.co/elasticsearch/elasticsearch:6.1.4
+  # Base image (es): docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+  elasticsearch: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
   curator: bobrik/curator
 networks:
   # Overlay is the name of the default cni network

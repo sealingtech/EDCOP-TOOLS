@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:6.1.4
+FROM docker.elastic.co/elasticsearch/elasticsearch:6.2.4
 ADD elasticsearch.yml /usr/share/elasticsearch/config/
 
 USER root
@@ -7,7 +7,7 @@ RUN yum -y update && \
 	chown elasticsearch:elasticsearch config/elasticsearch.yml && \
 	yum -y clean all
 
-ENV DISCOVERY_SERVICE elasticsearch-discovery
+ENV DISCOVERY_SERVICE es-discovery
 ENV MEMORY_LOCK false
 
 USER elasticsearch
