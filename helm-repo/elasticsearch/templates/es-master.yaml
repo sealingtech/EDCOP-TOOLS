@@ -1,0 +1,75 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "elasticsearch.fullname" . }}-master
+  labels:
+    app: {{ template "elasticsearch.name" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    component: {{ template "elasticsearch.name" . }}
+    role: master
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: {{ template "elasticsearch.name" . }}-master
+      labels:
+        component: {{ template "elasticsearch.name" . }}
+        role: master
+      annotations:
+        networks: '[
+        { "name": "{{ .Values.networks.overlay }}" }
+      ]'
+    spec:
+      containers:
+      - name: es-master
+        image: {{ .Values.images.elasticsearch }}
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: CLUSTER_NAME
+          value: {{ .Values.elasticsearchConfig.env.clustername }}
+        - name: NODE_MASTER
+          value: "true"
+        - name: NETWORK_HOST
+          value: _eth0_,_lo_
+        - name: ES_JAVA_OPTS
+          value: "{{ .Values.elasticsearchConfig.env.javaopts }}"
+        - name: DISCOVERY_SERVICE
+          value: es-discovery
+        ports:
+        - name: cport-9200
+          containerPort: 9200
+        - name: cport-9300
+          containerPort: 9300
+        resources:
+          limits:
+            cpu: "{{ .Values.elasticsearchConfig.limits.cpu }}"
+            memory: "{{ .Values.elasticsearchConfig.limits.memory }}"
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /usr/share/elasticsearch/data
+          name: esdata
+        - mountPath: /usr/share/elasticsearch/config/jvm.options
+          subPath: jvm.options
+          name: elasticsearch-jvm
+        - mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+          subPath: elasticsearch.yml
+          name: elasticsearch-config
+
+      volumes:
+      - name: esdata
+        hostPath:
+          path: {{ .Values.volumes.data }}
+      - name: elasticsearch-jvm
+        configMap:
+          name: {{ template "elasticsearch.fullname" . }}-jvm
+      - name: elasticsearch-config
+        configMap:
+          name: {{ template "elasticsearch.fullname" . }}-config
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: {{ .Values.nodeSelector.master }}

@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "elasticsearch.fullname" . }}-curator-config
+data:
+  actions.yml: |
+    ---
+    # Remember, leave a key empty if there is no value.  None will be a string,
+    # not a python "NoneType"
+    #
+    # Also remember that all examples have 'disable_action' set to True.  If you
+    # want to use this action as a template, be sure to set this to False after
+    # copying it.
+    actions:
+      1: 
+        action: delete_indices
+        description: Delete indices older than the specified number of days. 
+        options:
+          ignore_empty_list: True
+          timeout_override:
+          continue_if_exception: False
+          disable_action: {{ .Values.curatorConfig.actions.delete_indices.disable_action }}
+        filters:
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%m.%d'
+          unit: {{ .Values.curatorConfig.actions.delete_indices.unit }}
+          unit_count: {{ .Values.curatorConfig.actions.delete_indices.unit_count }}
+          field: 
+          stats_result: 
+          epoch:
+          exclude: False
+      2:
+        action: close
+        description: Close indices older than the specificed number of days.  
+        options:
+          ignore_empty_list: True
+          timeout_override:
+          continue_if_exception: False
+          disable_action: {{ .Values.curatorConfig.actions.close.disable_action }}
+        filters:
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%m.%d'
+          unit: {{ .Values.curatorConfig.actions.close.unit }}
+          unit_count: {{ .Values.curatorConfig.actions.close.unit_count }}
+          field:
+          stats_result:
+          epoch:
+          exclude: False
+
+  config.yml: |
+    ---
+    # Remember, leave a key empty if there is no value.  None will be a string,
+    # not a Python "NoneType"
+    client: 
+      hosts:
+        - data-service
+      port: 9200
+      url_prefix:
+      use_ssl: False
+      certificate:
+      client_cert:
+      client_key:
+      ssl_no_validate: False
+      http_auth:
+      timeout: 30
+      master_only: False
+
+    logging:
+      loglevel: INFO
+      logfile:
+      logformat: default
+      blacklist: ['elasticsearch', 'urllib3']

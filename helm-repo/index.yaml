@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   bro:
   - apiVersion: v1
-    created: 2018-05-04T11:26:22.319980316-04:00
+    created: 2018-05-07T16:03:11.272239613-04:00
     description: EDCOP Bro Chart
-    digest: fbb00f314b5d92b4a4eaa47f742c51864833820d3e3d13d0fd33606733778659
+    digest: b0a9f8c30c703eab18b02db6e37f966cbac1fd7bff2e59333cf6b98f8a12f7b7
     home: https://github.com/sealingtech/EDCOP
     icon: https://www.bro.org/images/bro-eyes.png
     name: bro
@@ -13,9 +13,9 @@ entries:
     version: 0.1.0
   elasticsearch:
   - apiVersion: v1
-    created: 2018-05-04T11:26:22.320447102-04:00
+    created: 2018-05-07T16:03:11.273007482-04:00
     description: EDCOP Elasticsearch Chart
-    digest: 9d42b736dd4482134480478c043ebd4fa6a754197e149236ce16cbb6727efd97
+    digest: ba1bad306ec3e1870b11a804c4098a904f517bd70c645489836da377719009ed
     home: https://github.com/sealingtech/EDCOP
     icon: http://www.elastic.co/assets/bltd74b9a6e0e479359/icon-white-circle-elasticsearch.png
     name: elasticsearch
@@ -24,9 +24,9 @@ entries:
     version: 0.1.0
   kibana:
   - apiVersion: v1
-    created: 2018-05-04T11:26:22.3207105-04:00
+    created: 2018-05-07T16:03:11.273474485-04:00
     description: EDCOP Kibana Chart
-    digest: ab69cd1f84fdb290fd2a404fedb13e864d1fb3ee336573c20ee2a2f98fc8ea9b
+    digest: f5afebe21cf39fa6033aeab270ba99d3bfd2f5bdfeb126e57f7951d9c7d1615e
     home: https://github.com/sealingtech/EDCOP
     icon: https://seeklogo.com/images/K/kibana-logo-3CB40921E7-seeklogo.com.png
     name: kibana
@@ -35,13 +35,13 @@ entries:
     version: 0.1.0
   suricata:
   - apiVersion: v1
-    created: 2018-05-04T11:26:22.32224095-04:00
+    created: 2018-05-07T16:03:11.275339546-04:00
     description: EDCOP Suricata Chart
-    digest: e296c5a4ce7be8b75588fa609060ac3cf30350afbed55aacbdc4f01ac4b27d5d
+    digest: 389240180c52b2544d0f4d5f583f13cf61d28a92da767e79680d975f4a26e413
     home: https://github.com/sealingtech/EDCOP
     icon: https://idsips.files.wordpress.com/2015/10/suri-400x400.png
     name: suricata
     urls:
     - http://repos.sealingtech.org/charts/suricata-0.1.0.tgz
     version: 0.1.0
-generated: 2018-05-04T11:26:22.318687298-04:00
+generated: 2018-05-07T16:03:11.270798958-04:00
