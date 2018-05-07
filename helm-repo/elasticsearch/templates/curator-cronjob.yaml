@@ -1,0 +1,33 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "elasticsearch.fullname" . }}-curator
+  labels:
+    app: {{ template "elasticsearch.name" . }}-curator
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  schedule: {{ .Values.curatorConfig.cronjob_schedule }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: {{ template "elasticsearch.name" . }}-curator
+        spec:
+          containers:
+          - name: curator
+            image: {{ .Values.images.curator }}
+            imagePullPolicy: Always
+            args:
+            - curator
+            - --config
+            - /etc/config/config.yml
+            - /etc/config/actions.yml
+            volumeMounts:
+              - name: curator-config
+                mountPath: /etc/config
+          volumes:
+            - name: curator-config
+              configMap:
+                name: {{ template "elasticsearch.fullname" . }}-curator-config
+          restartPolicy: OnFailure 

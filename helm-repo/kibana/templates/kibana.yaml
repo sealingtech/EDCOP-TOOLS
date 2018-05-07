@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "kibana.fullname" . }}
+  namespace: default
+  labels:
+    app: {{ template "kibana.name" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "kibana.name" . }}
+  template:
+    metadata:
+      name: {{ template "kibana.name" . }}
+      labels:
+        app: {{ template "kibana.name" . }}
+      annotations:
+        networks: '[
+        { "name": "{{  .Values.networks.overlay }}" }
+      ]'
+    spec:
+      containers:
+      - name: kibana
+        imagePullPolicy: Always
+        image: {{ .Values.image.kibana }}
+        ports:
+        - containerPort: 5601
+        volumeMounts:
+        - mountPath: /usr/share/kibana/config/kibana.yml
+          subPath: kibana.yml
+          name: kibana-config
+
+      volumes:
+      - name: kibana-config
+        configMap:
+          name: {{ template "kibana.fullname" . }}-config
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: {{ .Values.nodeSelector.nodetype }}

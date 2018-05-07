@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "kibana.fullname" . }}-kibana-svc
+  namespace: default
+  labels:
+    app: {{ template "kibana.name" . }}
+spec:
+  ports:
+  - name: tcp-5601-5601
+    protocol: TCP
+    port: 5601
+    targetPort: 5601
+  selector:
+    app: {{ template "kibana.name" . }}
+

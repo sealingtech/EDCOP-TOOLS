@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+ name: {{ template "kibana.fullname" . }}-ingress
+ annotations:
+   kubernetes.io/ingress.class: traefik
+   traefik.frontend.rule.type: PathPrefixStrip
+   # ingress.kubernetes.io/auth-type: "basic"
+   # ingress.kubernetes.io/auth-secret: "ingress-auth"
+spec:
+ rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /kibana
+        backend:
+          serviceName: {{ template "kibana.fullname" . }}-kibana-svc
+          servicePort: 5601
