@@ -1,0 +1,109 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  labels:
+    name: host-setup
+    app: host-setup
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: host-setup
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: host-setup
+  template:
+    metadata:
+      labels:
+        name: host-setup
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        nodetype: {{ .Values.nodeSelector.nodetype }}
+      containers:
+      - name: host-setup
+        image: gcr.io/edcop-public/host-setup:2
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        env:
+        - name: inline1interface
+          value: {{ .Values.networkInterfaces.inline1interface.deviceName }}
+        - name: inline1numofvfs
+          value: "{{ .Values.networkInterfaces.inline1interface.numOfVirtualFunctions }}"
+        - name: inline1irqcore
+          value: "{{ .Values.networkInterfaces.inline1interface.irqCoreAssignment }}"          
+        - name: inline2interface
+          value: {{ .Values.networkInterfaces.inline2interface.deviceName }}
+        - name: inline2numofvfs
+          value: "{{ .Values.networkInterfaces.inline2interface.numOfVirtualFunctions }}"
+        - name: inline2irqcore
+          value: "{{ .Values.networkInterfaces.inline2interface.irqCoreAssignment }}"  
+        - name: passive1interface
+          value: {{ .Values.networkInterfaces.passive1interface.deviceName }}
+        - name: passive1numofvfs
+          value: "{{ .Values.networkInterfaces.passive1interface.numOfVirtualFunctions }}"
+        - name: passive1irqcore
+          value: "{{ .Values.networkInterfaces.passive1interface.irqCoreAssignment }}"  
+        - name: STARTUP_SCRIPT
+          value: |
+            #! /bin/bash
+            echo 0 >  /sys/class/net/$inline1interface/device/sriov_numvfs
+            echo $inline1numofvfs >  /sys/class/net/$inline1interface/device/sriov_numvfs
+            echo 0 >  /sys/class/net/$inline2interface/device/sriov_numvfs
+            echo $inline2numofvfs >  /sys/class/net/$inline2interface/device/sriov_numvfs
+            echo  0 >  /sys/class/net/$passive1interface/device/sriov_numvfs
+            echo  $passive1numofvfs >  /sys/class/net/$passive1interface/device/sriov_numvfs
+
+            inline1numofvfsminus=$(expr $inline1numofvfs - 1)
+            inline2numofvfsminus=$(expr $inline2numofvfs - 1)
+            passive1numofvfsminus=$(expr $passive1numofvfs - 1)
+            for x in $(seq 0 $inline1numofvfsminus);do ip link set dev $inline1interface vf $x spoofchk off; done
+            for x in $(seq 0 $inline2numofvfsminus);do ip link set dev $inline2interface vf $x spoofchk off; done
+            for x in $(seq 0 $passive1numofvfsminus);do ip link set dev $passive1interface vf $x spoofchk off; done
+            for x in $(seq 0 $inline1numofvfsminus);do ip link set dev $inline1interface vf $x trust on; done
+            for x in $(seq 0 $inline2numofvfsminus);do ip link set dev $inline2interface vf $x trust on; done
+            for x in $(seq 0 $passive1numofvfsminus);do ip link set dev $passive1interface vf $x trust on; done
+
+
+            ethtool -L  $inline1interface combined 1
+            ethtool -L  $inline2interface combined 1
+            ethtool -L  $passive1interface combined 1
+
+            ethtool -C $inline1interface adaptive-rx on rx-usecs 100
+            ethtool -C $inline2interface adaptive-rx on rx-usecs 100
+            ethtool -C $passive1interface adaptive-rx on rx-usecs 100
+
+            ethtool -G $inline1interface rx 512
+            ethtool -G $inline2interface rx 512
+            ethtool -G $passive1interface rx 512
+
+
+
+            for i in rx tx tso ufo gso gro rxhash ntuple sg txvlan rxvlan; do ethtool -K $inline1interface $i off 2>&1 > /dev/null; done;
+
+            for i in rx tx tso ufo gso gro rxhash ntuple sg txvlan rxvlan; do ethtool -K $inline2interface $i off 2>&1 > /dev/null; done;
+
+            for i in rx tx tso ufo gso gro rxhash ntuple sg txvlan rxvlan; do ethtool -K $passive1interface $i off 2>&1 > /dev/null; done;
+
+
+            for NIC in $(ls -d /sys/class/net/$inline1interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC rx 128; done
+            for NIC in $(ls -d /sys/class/net/$inline2interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC rx 128; done
+            for NIC in $(ls -d /sys/class/net/$passive1interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC rx 128; done
+            for NIC in $(ls -d /sys/class/net/$inline1interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC tx 128; done
+            for NIC in $(ls -d /sys/class/net/$inline2interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC tx 128; done
+            for NIC in $(ls -d /sys/class/net/$passive1interface/device/virtfn*/net/* | cut -f9 -d'/'); do ethtool -G $NIC tx 128; done
+
+
+
+            systemctl stop irqbalance
+
+            cd i40e-2.4.3/scripts
+            ./set_irq_affinity $inline1interface $inline1irqcore
+            ./set_irq_affinity $inline2interface $inline2irqcore
+            ./set_irq_affinity $passive1interface $passive1irqcore
+
+
+
+            #needed for Elastic
+            sysctl -w vm.max_map_count=262144

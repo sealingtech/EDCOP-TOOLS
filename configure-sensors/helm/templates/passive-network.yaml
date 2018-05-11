@@ -1,11 +1,11 @@
-apiVersion: "kubernetes.com/v1"
+ßapiVersion: "kubernetes.com/v1"
 kind: Network
 metadata:
   name: passive
 plugin: sriov
 args: '[
        {
-                "if0": "pas0",
+                "if0": "{{ .Values.networkInterfaces.passive1interface.deviceName }}",
                 "ipam": {
                   "type": "host-local",
                   "subnet": "10.51.0.0/16",

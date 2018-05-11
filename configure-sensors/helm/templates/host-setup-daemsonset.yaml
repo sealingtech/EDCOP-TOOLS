@@ -2,46 +2,49 @@ apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
   labels:
-    name: host-setup
+    name: configure-sensors
+    app: configure-sensors
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
   name: host-setup
   namespace: kube-system
 spec:
   selector:
     matchLabels:
-      name: host-setup
+      name: configure-sensors
   template:
     metadata:
       labels:
-        name: host-setup
+        name: configure-sensors
     spec:
       hostNetwork: true
       nodeSelector:
-        nodetype: worker
+        nodetype: {{ .Values.nodeSelector.nodetype }}
       containers:
-      - name: host-setup
-        image: gcr.io/edcop-public/host-setup:2
+      - name: configure-sensors
+        image: {{ .Values.images.hostsetup }}
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
         env:
         - name: inline1interface
-          value: enp216s0f1
+          value: {{ .Values.networkInterfaces.inline1interface.deviceName }}
         - name: inline1numofvfs
-          value: "4"
+          value: "{{ .Values.networkInterfaces.inline1interface.numOfVirtualFunctions }}"
         - name: inline1irqcore
-          value: "8"          
+          value: "{{ .Values.networkInterfaces.inline1interface.irqCoreAssignment }}"          
         - name: inline2interface
-          value: enp216s0f2
+          value: {{ .Values.networkInterfaces.inline2interface.deviceName }}
         - name: inline2numofvfs
-          value: "4"
+          value: "{{ .Values.networkInterfaces.inline2interface.numOfVirtualFunctions }}"
         - name: inline2irqcore
-          value: "8" 
+          value: "{{ .Values.networkInterfaces.inline2interface.irqCoreAssignment }}"  
         - name: passive1interface
-          value: enp216s0f3
+          value: {{ .Values.networkInterfaces.passive1interface.deviceName }}
         - name: passive1numofvfs
-          value: "4"
+          value: "{{ .Values.networkInterfaces.passive1interface.numOfVirtualFunctions }}"
         - name: passive1irqcore
-          value: "8" 
+          value: "{{ .Values.networkInterfaces.passive1interface.irqCoreAssignment }}"  
         - name: STARTUP_SCRIPT
           value: |
             #! /bin/bash

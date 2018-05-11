@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   bro:
   - apiVersion: v1
-    created: 2018-05-07T16:03:11.272239613-04:00
+    created: 2018-05-11T09:52:47.211413338-04:00
     description: EDCOP Bro Chart
     digest: b0a9f8c30c703eab18b02db6e37f966cbac1fd7bff2e59333cf6b98f8a12f7b7
     home: https://github.com/sealingtech/EDCOP
@@ -13,18 +13,28 @@ entries:
     version: 0.1.0
   elasticsearch:
   - apiVersion: v1
-    created: 2018-05-07T16:03:11.273007482-04:00
+    created: 2018-05-11T09:52:47.213100434-04:00
     description: EDCOP Elasticsearch Chart
-    digest: ba1bad306ec3e1870b11a804c4098a904f517bd70c645489836da377719009ed
+    digest: 8fe6e9aa83e7c025bef3657b65e25edc78d7751b967b9a19b87ac8efcc01dd51
     home: https://github.com/sealingtech/EDCOP
     icon: http://www.elastic.co/assets/bltd74b9a6e0e479359/icon-white-circle-elasticsearch.png
     name: elasticsearch
     urls:
     - http://repos.sealingtech.org/charts/elasticsearch-0.1.0.tgz
     version: 0.1.0
+  host-setup:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2018-05-11T09:52:47.214326023-04:00
+    description: Configure host-specific performance tunning options
+    digest: b1d35806790e65513cc93c02a2d420716e2d3620b5e1db81078198280674584b
+    name: host-setup
+    urls:
+    - http://repos.sealingtech.org/charts/host-setup-0.1.0.tgz
+    version: 0.1.0
   kibana:
   - apiVersion: v1
-    created: 2018-05-07T16:03:11.273474485-04:00
+    created: 2018-05-11T09:52:47.215551104-04:00
     description: EDCOP Kibana Chart
     digest: f5afebe21cf39fa6033aeab270ba99d3bfd2f5bdfeb126e57f7951d9c7d1615e
     home: https://github.com/sealingtech/EDCOP
@@ -35,13 +45,24 @@ entries:
     version: 0.1.0
   suricata:
   - apiVersion: v1
-    created: 2018-05-07T16:03:11.275339546-04:00
+    created: 2018-05-11T09:52:47.218059811-04:00
     description: EDCOP Suricata Chart
-    digest: 389240180c52b2544d0f4d5f583f13cf61d28a92da767e79680d975f4a26e413
+    digest: a65eda0c4e3a94a69b54cadc9a5f6428f26426921aad62fdd9ce5bc1393115df
     home: https://github.com/sealingtech/EDCOP
     icon: https://idsips.files.wordpress.com/2015/10/suri-400x400.png
     name: suricata
     urls:
     - http://repos.sealingtech.org/charts/suricata-0.1.0.tgz
     version: 0.1.0
-generated: 2018-05-07T16:03:11.270798958-04:00
+  xpack:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2018-05-11T09:52:47.21919202-04:00
+    description: Install X-pack license into the cluster
+    digest: 7fae505279ddc5bda771e335866b2753d8f5bc4e1d32bff2e7ee9145ade30346
+    icon: https://www.elastic.co/assets/bltb959db87a89ff92a/elastic-x-pack.png
+    name: xpack
+    urls:
+    - http://repos.sealingtech.org/charts/xpack-0.1.0.tgz
+    version: 0.1.0
+generated: 2018-05-11T09:52:47.208908592-04:00

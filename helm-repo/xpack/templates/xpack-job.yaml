@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: Xpack-License
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+      - name: Xpack-License
+        image: docker.io/mapmark659/licenserino
+        env:
+        - name: CURL
+          value: "/usr/bin/curl"
+        - name: license
+          value: 
+        - name: site
+          value: "http://data-service:9200/_xpack/license"
+        - name: STARTUP_SCRIPT
+          value: |
+            #! /bin/bash
+            $CURL -X POST $site  -H 'Content-Type: application/json' -d ' $license  ' 
+      restartPolicy: Never
+  backoffLimit: 1

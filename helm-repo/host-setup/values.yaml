@@ -1,0 +1,15 @@
+networkInterfaces:
+    inline1interface:
+        deviceName: enp216s0f1
+        numOfVirtualFunctions: 4
+        irqCoreAssignment: 8
+    inline2interface:
+        deviceName: enp216s0f2
+        numOfVirtualFunctions: 4
+        irqCoreAssignment: 8
+    passive1interface:
+        deviceName: enp216s0f3
+        numOfVirtualFunctions: 4
+        irqCoreAssignment: 8
+nodeSelector:
+  nodetype: worker
