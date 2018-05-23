@@ -5,7 +5,7 @@ metadata:
 plugin: sriov
 args: '[
        {
-                "if0": "pas0",
+                "if0": "{{ .Values.networkInterfaces.passive1interface.deviceName }}",
                 "ipam": {
                   "type": "host-local",
                   "subnet": "10.51.0.0/16",

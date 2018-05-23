@@ -1,0 +1,20 @@
+images:
+    hostsetup: gcr.io/edcop-public/host-setup:2
+networkInterfaces: 
+    inline1interface:
+        #Configure the interface names
+        deviceName: enp216s0f1
+        #Configure the number of virtual functions to be created on the interface
+        numOfVirtualFunctions: 4
+        #Configure the core that will handle interrupts for the network interface
+        irqCoreAssignment: 8
+    inline2interface:
+        deviceName: enp216s0f2
+        numOfVirtualFunctions: 4
+        irqCoreAssignment: 8
+    passive1interface:
+        deviceName: enp216s0f3
+        numOfVirtualFunctions: 4
+        irqCoreAssignment: 8
+nodeSelector:
+  nodetype: worker

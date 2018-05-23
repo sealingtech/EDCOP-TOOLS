@@ -8,7 +8,7 @@ networks:
   overlay: calico
 volumes:
   # Persistent data location on the host to store Elasticsearch's data
-  data: /var/EDCOP/data/esdata
+  data: /EDCOP/bulk/esdata
 nodeSelector:
   client: worker
   master: master

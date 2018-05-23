@@ -26,7 +26,7 @@ spec:
       ]'
       {{ else }}
         networks: '[
-        { "name": "{{  .Values.networks.overlaynet }}" },
+        { "name": "{{  .Values.networks.overlay }}" },
         { "name": "{{  .Values.networks.net1 }}" }
       ]'
       {{ end }}
