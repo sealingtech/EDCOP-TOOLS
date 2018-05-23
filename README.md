@@ -10,6 +10,6 @@ If you want to begin, start deployment, begin here:
 Not that these tools are not optimized for your specific set of hardware.  To get the best performance, please refer to this guide:
 [Optimization Guide](docs/optimization_guide.rst)
 
-Each of these tools are designed to be starting points for building a common shared platform.  If you would like to build tools we have a few design patterns to follow.  View the architecture guide here:
+Each of these tools are designed to be starting points for building a common shared platform.  If you would like to build tools we have a few design patterns to follow.  View the [architecture guide](docs/edcop-tools-architecture.rst).
 
 
