@@ -96,6 +96,9 @@ You can set limits on Stenographer to ensure it doesn't use more CPU/memory spac
 
 ```
 stenographerConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 4G

@@ -95,6 +95,9 @@ You can set limits on Bro to ensure it doesn't use more CPU/memory space than ne
 
 ```
 broConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 4G
@@ -124,6 +127,9 @@ logstashConfig:
   maxJvmHeap: 4g
   pipelineOutputWorkers: 2 
   pipelineBatchSize: 150  
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G
@@ -135,6 +141,9 @@ Redis is also included in the Daemonset for the same reasons Logstash is. Curren
 
 ```
 redisConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G

@@ -6,7 +6,7 @@
     }
   ]
   , "StenotypePath": "/usr/bin/stenotype"
-  , "Interface": "net0"
+  , "Interface": "eth0"
   , "Port": 1234
   , "Host": "127.0.0.1"
   , "Flags": ["-v"]

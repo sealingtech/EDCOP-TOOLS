@@ -1,0 +1,73 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{ template "moloch.fullname" . }}
+  labels:
+    app: {{ template "moloch.name" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    component: {{ template "moloch.name" . }}
+spec:
+  template:
+    serviceName: "moloch-svc"
+    replicas: {{ .Values.molochConfig.workerNodes }}
+    metadata:
+      name: {{ template "moloch.name" . }}
+      labels:
+        component: {{ template "moloch.name" . }}
+      annotations:
+        networks: '[
+        { "name": "{{ .Values.networks.overlay }}" }
+        { "name": "{{ .Values.networks.passive }}" }
+      ]'
+    spec:
+      containers:
+      - name: moloch
+        image: {{ .Values.images.moloch }}
+        imagePullPolicy: Always
+        securityContext:
+          capabilities:
+              add:
+                - NET_ADMIN
+                - NET_RAW
+        env:
+        - name: ES_HOST
+          value: data-service
+        - name: NETWORK_INTERFACE
+          value: {{ .Values.networks.passive }}
+        - name: CLUSTER_PW
+          value: {{ .Values.molochConfig.env.clusterpw }}
+        - name: ADMIN_PW
+          value: {{ .Values.molochConfig.env.adminpw }}
+        ports:
+        - name: cport-8005
+          containerPort: 8005
+        resources:
+          requests:
+            cpu: "{{ .Values.molochConfig.requests.cpu }}"
+            memory: "{{ .Values.molochConfig.requests.memory }}"
+          limits:
+            cpu: "{{ .Values.molochConfig.limits.cpu }}"
+            memory: "{{ .Values.molochConfig.limits.memory }}"
+        volumeMounts:
+        - mountPath: /data/moloch/logs
+          name: molochlogs
+        - mountPath: /data/moloch/raw
+          name: molochraw
+        - mounthPath: /data/moloch/etc/config.ini
+          subPath: config.ini
+          name: moloch-config
+      volumes:
+      - name: molochlogs
+        hostPath:
+          path: {{ .Values.volumes.logs }}
+      - name: molochraw
+        hostPath:
+          path: {{ .Values.volumes.raw }}
+      - name: moloch-config
+        configMap:
+          name: {{ template "moloch.fullname" . }}-config 
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: {{ .Values.nodeSelector.client }}

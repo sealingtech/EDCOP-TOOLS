@@ -1,5 +1,5 @@
-apiVersion: extensions/v1beta1
-kind: DaemonSet
+apiVersion: apps/v1beta1
+kind: StatefulSet
 metadata:
   name: {{ template "elasticsearch.fullname" . }}
   labels:
@@ -10,6 +10,8 @@ metadata:
     role: client
 spec:
   template:
+    serviceName: "data-service"
+    replicas: {{ .Values.elasticsearchConfig.workerNodes }}
     metadata:
       name: {{ template "elasticsearch.name" . }}
       labels:
@@ -23,6 +25,8 @@ spec:
       containers:
       - name: es-client
         image: {{ .Values.images.elasticsearch }}
+        securityContext:
+          runAsUser: {{ .Values.elasticsearchConfig.runAsUser }}
         env:
         - name: NAMESPACE
           valueFrom:

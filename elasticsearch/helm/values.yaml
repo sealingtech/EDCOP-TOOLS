@@ -13,6 +13,10 @@ nodeSelector:
   client: worker
   master: master
 elasticsearchConfig:
+  # runAsUser refers to the UID of the user who owns the persistent data location specified above
+  runAsUser: 2000
+  # Nodes refers to the number of worker nodes you have
+  workerNodes: 3
   env:
     clustername: edcop
     javaopts: -Xms16g -Xmx16g
@@ -26,6 +30,9 @@ elasticsearchConfig:
 curatorConfig:
   # Input how often the curator should run in cronjob format
   cronjob_schedule: 1 0 * * *
+  # Input how many failed/successful pods should be kept after completion (0 for none)
+  failedPodsLimit: 1
+  successfulJobsLimit: 1     
   actions:
     close:
       # (True or False) Set to False to enable this feature.
