@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "moloch.fullname" . }}
@@ -6,15 +6,17 @@ metadata:
     app: {{ template "moloch.name" . }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-    component: {{ template "moloch.name" . }}
 spec:
+  serviceName: "moloch-svc"
+  replicas: {{ .Values.molochConfig.workerNodes }}
+  selctor:
+    matchLabels:
+      app: {{ template "moloch.name" }}
   template:
-    serviceName: "moloch-svc"
-    replicas: {{ .Values.molochConfig.workerNodes }}
     metadata:
       name: {{ template "moloch.name" . }}
       labels:
-        component: {{ template "moloch.name" . }}
+        app: {{ template "moloch.name" . }}
       annotations:
         networks: '[
         { "name": "{{ .Values.networks.overlay }}" }
