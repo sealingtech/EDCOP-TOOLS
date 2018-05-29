@@ -5,20 +5,24 @@ RUN yum -y update && yum -y install epel-release && \
 	wget https://files.molo.ch/builds/centos-7/moloch-1.1.0-1.x86_64.rpm && \
 	rpm -i moloch-1.1.0-1.x86_64.rpm
 
-ADD scripts/docker-entrypoint.sh /data/moloch/docker-entrypoint.sh
+ADD scripts /data/moloch/
 
-ENV ES_HOST elasticsearch
-ENV NETWORK_INTERFACE eth0
-ENV CLUSTER_PW secretpw
-ENV ADMIN_PW supersecretpw
+ENV ES_HOST=elasticsearch \
+	NETWORK_INTERFACE=eth0 \
+	CLUSTER_PW=secretpw \
+	ADMIN_PW=supersecretpw 
 
 RUN chmod +x /data/moloch/*.sh && \
 	chmod +x /data/moloch/db/db.pl /data/moloch/*/*.sh && \
+	/data/moloch/configmoloch.sh && \
 	cd /data/moloch/viewer && \
 	ln -s /data/moloch/bin/node /usr/bin/nodejs && \
-	/data/moloch/bin/npm update && \
-	/data/moloch/bin/npm install . && \
+	npm update && \
+	npm install . && \
 	yum clean -y all
+
+ADD etc/config.ini /data/moloch/etc/config.ini
+RUN chmod 755 /data/moloch/etc/config.ini
 
 EXPOSE 8005
 

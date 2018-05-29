@@ -1,13 +1,5 @@
 #!/bin/bash
-# Script to initialize + configure moloch, add a user, and run the services
-
-# Configure Moloch
-/data/moloch/bin/Configure << EOF
-$NETWORK_INTERFACE
-no
-$ES_HOST:9200
-$CLUSTER_PW
-EOF
+# Script to initialize Moloch, add a user, and run the services
 
 # Check to see if Elasticsearch is reachable
 echo "Trying to reach Elasticsearch..."
@@ -17,8 +9,8 @@ until $(curl --output /dev/null --fail --silent -X GET "$ES_HOST:9200/_cat/healt
 done
 
 # Check to see if Moloch has been installed before to prevent data loss
-STATUS5=$(curl -X --head --silent "$ES_HOST:9200/sequence_v1" | jq --raw-output '.status')
-STATUS6=$(curl -X --head --silent "$ES_HOST:9200/sequence_v2" | jq --raw-output '.status')
+STATUS5=$(curl -X --head "$ES_HOST:9200/sequence_v1" | jq --raw-output '.status')
+STATUS6=$(curl -X --head "$ES_HOST:9200/sequence_v2" | jq --raw-output '.status')
 
 # Initialize Moloch if this is the first install
 if [ "$STATUS5" = "404" ] && [ "$STATUS6" = "404" ]
