@@ -8,6 +8,8 @@ metadata:
     release: {{ .Release.Name }}
 spec:
   schedule: {{ .Values.curatorConfig.cronjob_schedule }}
+  successfulJobsHistoryLimit: {{ .Values.curatorConfig.successfulJobsLimit }}
+  failedJobsHistoryLimit: {{ .Values.curatorConfig.failedPodsLimit }}
   jobTemplate:
     spec:
       template:
@@ -31,3 +33,6 @@ spec:
               configMap:
                 name: {{ template "elasticsearch.fullname" . }}-curator-config
           restartPolicy: OnFailure 
+          nodeSelector:
+            nodetype: {{ .Values.nodeSelector.master }}
+
