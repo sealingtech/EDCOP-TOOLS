@@ -9,9 +9,9 @@ metadata:
 spec:
   serviceName: "moloch-svc"
   replicas: {{ .Values.molochConfig.workerNodes }}
-  selctor:
+  selector:
     matchLabels:
-      app: {{ template "moloch.name" }}
+      app: {{ template "moloch.name" . }}
   template:
     metadata:
       name: {{ template "moloch.name" . }}

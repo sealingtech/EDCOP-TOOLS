@@ -11,8 +11,10 @@ volumes:
   raw: /bulk/EDCOP/moloch/raw
 nodeSelector:
   worker: worker
-molochConfig:
-  
+ingress:
+  # Enter the FQDN of your host
+  host: physical.edcop.io
+molochConfig:  
   # Nodes refers to the number of worker nodes you have
   workerNodes: 3
   # These settings impact Moloch's overall performance
