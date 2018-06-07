@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   bro:
   - apiVersion: v1
-    created: 2018-05-18T16:30:53.070579647-04:00
+    created: 2018-05-30T10:44:37.569181131-04:00
     description: EDCOP Bro Chart
     digest: b0a9f8c30c703eab18b02db6e37f966cbac1fd7bff2e59333cf6b98f8a12f7b7
     home: https://github.com/sealingtech/EDCOP
@@ -13,9 +13,9 @@ entries:
     version: 0.1.0
   elasticsearch:
   - apiVersion: v1
-    created: 2018-05-18T16:30:53.072265322-04:00
+    created: 2018-05-30T10:44:37.571246394-04:00
     description: EDCOP Elasticsearch Chart
-    digest: 8fe6e9aa83e7c025bef3657b65e25edc78d7751b967b9a19b87ac8efcc01dd51
+    digest: 28bc1c1e3649b83b9f73ec6a463273d74c2e534eaf1d5bcb16460452d9790c09
     home: https://github.com/sealingtech/EDCOP
     icon: http://www.elastic.co/assets/bltd74b9a6e0e479359/icon-white-circle-elasticsearch.png
     name: elasticsearch
@@ -25,7 +25,7 @@ entries:
   host-setup:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2018-05-18T16:30:53.073724772-04:00
+    created: 2018-05-30T10:44:37.573085-04:00
     description: Configure host-specific performance tunning options
     digest: b1d35806790e65513cc93c02a2d420716e2d3620b5e1db81078198280674584b
     name: host-setup
@@ -34,9 +34,9 @@ entries:
     version: 0.1.0
   kibana:
   - apiVersion: v1
-    created: 2018-05-18T16:30:53.074861684-04:00
+    created: 2018-05-30T10:44:37.574628983-04:00
     description: EDCOP Kibana Chart
-    digest: f5afebe21cf39fa6033aeab270ba99d3bfd2f5bdfeb126e57f7951d9c7d1615e
+    digest: 4e25ae34a1bc210207368d02361f3b6c74b3b233dde8cc5bb58f560b08ba2e93
     home: https://github.com/sealingtech/EDCOP
     icon: https://seeklogo.com/images/K/kibana-logo-3CB40921E7-seeklogo.com.png
     name: kibana
@@ -45,7 +45,7 @@ entries:
     version: 0.1.0
   suricata:
   - apiVersion: v1
-    created: 2018-05-18T16:30:53.077244465-04:00
+    created: 2018-05-30T10:44:37.577220092-04:00
     description: EDCOP Suricata Chart
     digest: a65eda0c4e3a94a69b54cadc9a5f6428f26426921aad62fdd9ce5bc1393115df
     home: https://github.com/sealingtech/EDCOP
@@ -57,7 +57,7 @@ entries:
   xpack:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2018-05-18T16:30:53.07834787-04:00
+    created: 2018-05-30T10:44:37.578367423-04:00
     description: Install X-pack license into the cluster
     digest: 7fae505279ddc5bda771e335866b2753d8f5bc4e1d32bff2e7ee9145ade30346
     icon: https://www.elastic.co/assets/bltb959db87a89ff92a/elastic-x-pack.png
@@ -65,4 +65,4 @@ entries:
     urls:
     - http://repos.sealingtech.org/charts/xpack-0.1.0.tgz
     version: 0.1.0
-generated: 2018-05-18T16:30:53.068094853-04:00
+generated: 2018-05-30T10:44:37.56558715-04:00
