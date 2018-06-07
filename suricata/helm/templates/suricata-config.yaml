@@ -520,24 +520,24 @@ data:
     af-packet:
       - interface: net0
         threads: {{  .Values.suricataConfig.net0Threads }}
-        defrag: yes
+        defrag: no
         cluster-type: cluster_flow
         cluster-id: 98
         copy-mode: ips
         copy-iface: net1
         buffer-size: 64535
         use-mmap: yes
-        tpacket-v3: yes
+        tpacket-v3: no
       - interface: net1
         threads: {{  .Values.suricataConfig.net1Threads }} 
         cluster-id: 97
-        defrag: yes
+        defrag: no
         cluster-type: cluster_flow
         copy-mode: ips
         copy-iface: net0
         buffer-size: 64535
         use-mmap: yes
-        tpacket-v3: yes
+        tpacket-v3: no
     {{ else }}
     af-packet:
       - interface: net0
