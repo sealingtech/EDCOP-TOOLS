@@ -72,4 +72,4 @@ spec:
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       nodeSelector:
-        nodetype: {{ .Values.nodeSelector.master }}
+        {{ .Values.nodeSelector.label }} : infrastructure

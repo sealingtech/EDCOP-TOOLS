@@ -81,4 +81,4 @@ spec:
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       nodeSelector:
-        nodetype: {{ .Values.nodeSelector.client }}
+        {{ .Values.nodeSelector.label }} : data

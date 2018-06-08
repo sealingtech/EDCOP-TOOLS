@@ -90,4 +90,4 @@ spec:
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       nodeSelector:
-        nodetype: {{ .Values.nodeSelector.nodetype }}
+          {{ .Values.nodeSelector.label }} : true

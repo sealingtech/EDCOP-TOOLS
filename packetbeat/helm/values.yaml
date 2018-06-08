@@ -9,7 +9,7 @@ networks:
   # Passive is the name of the sriov interface
   passive: passive
 nodeSelector:
-  nodetype: worker
+  label: sensor
 packetbeatConfig:
   # Requests are set to accommodate resource limited VMs
   requests:

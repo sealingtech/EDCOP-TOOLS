@@ -6,7 +6,7 @@ networks:
   # Overlay is the name of the default cni network
   overlay: calico
 nodeSelector:
-  nodetype: master
+  label: infrastructure
 ingress:
   # Enter the FQDN of your host
   host: physical.edcop.io  

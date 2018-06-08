@@ -16,5 +16,3 @@ networkInterfaces:
         deviceName: enp216s0f3
         numOfVirtualFunctions: 4
         irqCoreAssignment: 8
-nodeSelector:
-  nodetype: worker
