@@ -19,11 +19,11 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing these values, make sure you use the full repository name.
+By default, images are pulled from miked235/stenographer, which is a customized stenographer image based on centos7.
  
 ```
 images:
-  stenographer: edcop-master:5000/stenographer
+  stenographer: miked235/stenographer
 ```
  
 ## Networks
@@ -71,9 +71,9 @@ To find out what labels your hosts have, please use the following:
 ```
 # kubectl get nodes --show-labels
 NAME		STATUS		ROLES		AGE		VERSION		LABELS
-master 		Ready		master		1d		v1.9.1		...,nodetype=master
-minion-1	Ready		<none>		1d		v1.9.1		...,nodetype=minion
-minion-2	Ready		<none>		1d		v1.9.1		...,nodetype=minion
+master 		Ready		master		1d		v1.10.0		...,nodetype=master
+minion-1	Ready		<none>		1d		v1.10.0		...,nodetype=minion
+minion-2	Ready		<none>		1d		v1.10.0		...,nodetype=minion
 ```
 
 ## Stenographer Configuration
@@ -96,6 +96,9 @@ You can set limits on Stenographer to ensure it doesn't use more CPU/memory spac
 
 ```
 stenographerConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 4G

@@ -23,7 +23,7 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure you use the full repository name.
+By default, images are pulled from EDCOP's official repository as well as the official repositories for Logstash and Redis.
  
 ```
 images:
@@ -36,13 +36,6 @@ images:
 
 Suricata uses 2 or 3 interfaces depending on whether it is in passive or inline mode. If you choose passive mode, net2 will be ignored and net1 will be the name of the passive interface.
 By default, these interfaces are named *calico*, *passive*, *inline-1*, and *inline-2*.
-
-```
-networks:
-  overlay: calico
-  net1: passive
-  net2: 
-```
 
 ```
 networks:
@@ -74,9 +67,9 @@ To find out what labels your hosts have, please use the following:
 ```
 # kubectl get nodes --show-labels
 NAME		STATUS		ROLES		AGE		VERSION		LABELS
-master 		Ready		master		1d		v1.9.1		...,nodetype=master
-minion-1	Ready		<none>		1d		v1.9.1		...,nodetype=minion
-minion-2	Ready		<none>		1d		v1.9.1		...,nodetype=minion
+master 		Ready		master		1d		v1.10.0		...,nodetype=master
+minion-1	Ready		<none>		1d		v1.10.0		...,nodetype=minion
+minion-2	Ready		<none>		1d		v1.10.0		...,nodetype=minion
 ```
 
 ## Deployment Options
@@ -148,6 +141,9 @@ You can set limits on Suricata to ensure it doesn't use more CPU/memory space th
 
 ```
 suricataConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 4G
@@ -166,6 +162,9 @@ logstashConfig:
   maxJvmHeap: 4g
   pipelineOutputWorkers: 2 
   pipelineBatchSize: 150  
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G
@@ -177,6 +176,9 @@ Redis is also included in the Daemonset (except for external mode) for the same 
 
 ```
 redisConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G
