@@ -11,6 +11,7 @@ volumes:
   raw: /bulk/EDCOP/moloch/raw
 nodeSelector:
   worker: worker
+  viewer: master
 ingress:
   # Enter the FQDN of your host
   host: physical.edcop.io

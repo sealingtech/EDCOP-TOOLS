@@ -55,10 +55,10 @@ data:
 
     # The base path for Moloch web access.  Must end with a / or bad things will happen
     # Default: "/"
-    # webBasePath = /moloch/
+    webBasePath = /moloch/
 
     # Semicolon ';' seperated list of interfaces to listen on for traffic
-    interface={{ .Values.networks.passive }}
+    interface=net0
 
     # The bpf filter of traffic to ignore
     #bpf=not port 9200
