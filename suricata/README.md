@@ -40,13 +40,6 @@ By default, these interfaces are named *calico*, *passive*, *inline-1*, and *inl
 ```
 networks:
   overlay: calico
-  net1: passive
-  net2: 
-```
-
-```
-networks:
-  overlay: calico
   net1: inline-1
   net2: inline-2
 ```
@@ -148,6 +141,9 @@ You can set limits on Suricata to ensure it doesn't use more CPU/memory space th
 
 ```
 suricataConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 4G
@@ -166,6 +162,9 @@ logstashConfig:
   maxJvmHeap: 4g
   pipelineOutputWorkers: 2 
   pipelineBatchSize: 150  
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G
@@ -177,6 +176,9 @@ Redis is also included in the Daemonset (except for external mode) for the same 
 
 ```
 redisConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G

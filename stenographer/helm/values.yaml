@@ -1,6 +1,6 @@
 # EDCOP Stenographer Chart values
 images:
-  stenographer: edcop-master:5000/stenographer
+  stenographer: miked235/stenographer
 networks:
   # Overlay is the name of the default cni network
   overlay: calico

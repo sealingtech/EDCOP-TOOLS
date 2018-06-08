@@ -24,6 +24,8 @@ spec:
       containers:
       - name: es-master
         image: {{ .Values.images.elasticsearch }}
+        securityContext:
+          runAsUser: {{ .Values.elasticsearchConfig.runAsUser }}
         env:
         - name: NAMESPACE
           valueFrom:

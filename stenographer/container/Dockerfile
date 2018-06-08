@@ -14,9 +14,9 @@ RUN go get github.com/google/stenographer && \
     make -C stenotype && \
     adduser --system --no-create-home stenographer && \
     #sudo cp -v configs/limits.conf /etc/security/limits.d/stenographer.conf && \
-    mkdir /etc/stenographer /etc/stenographer/certs /data /data/stenographer /data/stenographer/logs \
-    /data/stenographer/index && \
-    chown -R root:root /etc/stenographer/certs
+    mkdir /etc/stenographer /etc/stenographer/certs /data /data/stenographer /data/stenographer/logs /data/stenographer/index && \
+    chown -R root:root /etc/stenographer/certs && \
+    chown -R stenographer:stenographer /data/stenographer
 
 # Copy over default config    
 COPY config /etc/stenographer/config
@@ -33,6 +33,9 @@ RUN chmod 644 /etc/stenographer/config && \
 
 # Run as user stenographer
 USER stenographer
+
+# Make sure the port matches the config
+EXPOSE 1234
 
 CMD ["stenographer", "-syslog=false"]
 

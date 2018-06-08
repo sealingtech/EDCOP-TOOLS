@@ -18,13 +18,13 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing these values, make sure you use the full repository name.
+By default, images are pulled from each application's respective official repository. If you're changing these values, make sure you use the full repository name and ensure your ELK stack versions match.
  
 ```
 images:
-  packetbeat: edcop-master:5000/packetbeat
-  logstash: edcop-master:5000/logstash
-  redis: edcop-master:5000/redis
+  packetbeat: docker.elastic.co/beats/packetbeat:6.2.4
+  logstash: docker.elastic.co/logstash/logstash:6.2.4
+  redis: redis:4.0.9
 ```
 
 ## Networks
@@ -72,6 +72,9 @@ Currently, Packetbeat configuration settings only consist of limiting CPU/memory
 
 ```
 packetbeatConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 4G
@@ -90,6 +93,9 @@ logstashConfig:
   maxJvmHeap: 4g
   pipelineOutputWorkers: 2 
   pipelineBatchSize: 150  
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G
@@ -101,6 +107,9 @@ Redis is also included in the Daemonset for the same reasons Logstash is. Curren
 
 ```
 redisConfig:
+  requests:
+    cpu: 100m
+    memory: 64Mi
   limits:
     cpu: 2
     memory: 8G
