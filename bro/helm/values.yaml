@@ -10,7 +10,7 @@ networks:
   # Passive is the name of the sriov interface
   passive: passive 
 nodeSelector:
-  label: sensor
+  nodetype: worker
 broConfig:
   # Requests are set to accommodate limited resource VMs
   requests:

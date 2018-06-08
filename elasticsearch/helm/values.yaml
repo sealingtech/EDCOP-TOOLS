@@ -10,7 +10,8 @@ volumes:
   # Persistent data location on the host to store Elasticsearch's data
   data: /EDCOP/bulk/esdata
 nodeSelector:
-  label: label
+  client: worker
+  master: master
 elasticsearchConfig:
   # runAsUser refers to the UID of the user who owns the persistent data location specified above
   runAsUser: 2000
