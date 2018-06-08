@@ -7,6 +7,7 @@ Table of Contents
 	* [Image Repository](#image-repository)
 	* [Networks](#networks)
 	* [Node Selector](#node-selector)
+	* [Ingress](#ingress)
 	
 # Configuration Guide
 
@@ -55,7 +56,15 @@ To find out what labels your hosts have, please use the following:
 ```
 # kubectl get nodes --show-labels
 NAME		STATUS		ROLES		AGE		VERSION		LABELS
-master 		Ready		master		1d		v1.9.1		...,nodetype=master
-minion-1	Ready		<none>		1d		v1.9.1		...,nodetype=minion
-minion-2	Ready		<none>		1d		v1.9.1		...,nodetype=minion
+master 		Ready		master		1d		v1.10.0		...,nodetype=master
+minion-1	Ready		<none>		1d		v1.10.0		...,nodetype=minion
+minion-2	Ready		<none>		1d		v1.10.0		...,nodetype=minion
 ```
+
+## Ingress
+
+In order to serve web traffic to the GUIs provided by the tools, we use Traefik in conjuction with Kubernetes ingress objects. This value should be the FQDN of your EDCOP host. By default, Kibana will be available at $FQDN/kibana/
+
+```
+ingress:
+  host: physial.edcop.io

@@ -23,7 +23,7 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure you use the full repository name.
+By default, images are pulled from EDCOP's official repository as well as the official repositories for Logstash and Redis.
  
 ```
 images:
@@ -67,9 +67,9 @@ To find out what labels your hosts have, please use the following:
 ```
 # kubectl get nodes --show-labels
 NAME		STATUS		ROLES		AGE		VERSION		LABELS
-master 		Ready		master		1d		v1.9.1		...,nodetype=master
-minion-1	Ready		<none>		1d		v1.9.1		...,nodetype=minion
-minion-2	Ready		<none>		1d		v1.9.1		...,nodetype=minion
+master 		Ready		master		1d		v1.10.0		...,nodetype=master
+minion-1	Ready		<none>		1d		v1.10.0		...,nodetype=minion
+minion-2	Ready		<none>		1d		v1.10.0		...,nodetype=minion
 ```
 
 ## Deployment Options

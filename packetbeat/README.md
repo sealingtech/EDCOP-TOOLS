@@ -61,9 +61,9 @@ To find out what labels your hosts have, please use the following:
 ```
 # kubectl get nodes --show-labels
 NAME		STATUS		ROLES		AGE		VERSION		LABELS
-master 		Ready		master		1d		v1.9.1		...,nodetype=master
-minion-1	Ready		<none>		1d		v1.9.1		...,nodetype=minion
-minion-2	Ready		<none>		1d		v1.9.1		...,nodetype=minion
+master 		Ready		master		1d		v1.10.0		...,nodetype=master
+minion-1	Ready		<none>		1d		v1.10.0		...,nodetype=minion
+minion-2	Ready		<none>		1d		v1.10.0		...,nodetype=minion
 ```
 
 ## Packetbeat Configuration

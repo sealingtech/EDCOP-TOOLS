@@ -54,11 +54,11 @@ inline-2	1d
 
 ## Persistent Volume Storage
 
-These values tell Kubernetes where Elasticsearch's index data should be stored on the host for persistent storage. By default, this value is set to */var/EDCOP/data/esdata* but should be changed according to your logical volume setup. 
+These values tell Kubernetes where Elasticsearch's index data should be stored on the host for persistent storage. By default, this value is set to */EDCOP/bulk/esdata* but should be changed according to your logical volume setup. 
 
 ```
 volumes:
-  data: /var/EDCOP/data/esdata
+  data: /EDCOP/bulk/esdata
 ```
 	  
 ## Node Selector
@@ -75,9 +75,9 @@ To find out what labels your hosts have, please use the following:
 ```
 # kubectl get nodes --show-labels
 NAME		STATUS		ROLES		AGE		VERSION		LABELS
-master 		Ready		master		1d		v1.9.1		...,nodetype=master
-minion-1	Ready		<none>		1d		v1.9.1		...,nodetype=minion
-minion-2	Ready		<none>		1d		v1.9.1		...,nodetype=minion
+master 		Ready		master		1d		v1.10.0		...,nodetype=master
+minion-1	Ready		<none>		1d		v1.10.0		...,nodetype=minion
+minion-2	Ready		<none>		1d		v1.10.0		...,nodetype=minion
 ```
 
 ## Elasticsearch Configuration
