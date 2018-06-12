@@ -1,4 +1,4 @@
-# EDCOP Bro Guide
+# EDCOP Wireshark Guide
 
 Table of Contents
 -----------------
@@ -7,24 +7,23 @@ Table of Contents
 	* [Image Repository](#image-repository)
 	* [Networks](#networks)
 	* [Node Selector](#node-selector)
-	* [Bro Configuration](#bro-configuration)
+	* [Wireshark Configuration](#wireshark-configuration)
 		* [Resource Limits](#resource-limits)
-		* [CPU Pinning](#cpu-pinning)
 	* [Logstash Configuration](#logstash-configuration)
 	* [Redis Configuration](#redis-configuration)
 	
 # Configuration Guide
 
-Within this configuration guide, you will find instructions for modifying Bro's helm chart. All changes should be made in the *values.yaml* file.
+Within this configuration guide, you will find instructions for modifying Wireshark's helm chart. All changes should be made in the *values.yaml* file.
 Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, Bro is pulled from EDCOP's official repo and the rest of the applications use their respective official images hosted on Docker's hub. If you're changing these values, make sure you use the full repository name.
+By default, images are pulled from official images hosted on Docker's hub alongside our custom Wireshark image. If you're changing these values, make sure you use the full repository name.
  
 ```
 images:
-  bro: gcr.io/edcop-public/bro:2
+  wireshark: miked235/wireshark
   logstash: docker.elastic.co/logstash/logstash:6.2.4
   redis: redis:4.0.9
   filebeat: docker.elastic.co/beats/filebeat:6.2.4
@@ -32,7 +31,7 @@ images:
  
 ## Networks
 
-Bro only uses 2 interfaces because it can only be deployed in passive mode. By default, these interfaces are named *calico* and *passive*. 
+Wireshark only uses 2 interfaces because it can only be deployed in passive mode. By default, these networks are named *calico* and *passive*. 
 
 ```
 networks:
@@ -50,7 +49,7 @@ passive		1d
 inline-1	1d
 inline-2	1d
 ```
-	  
+
 ## Node Selector
 
 This value tells Kubernetes which hosts the daemonset should be deployed to by using labels given to the hosts. Hosts without the defined label will not receive pods. 
@@ -69,16 +68,24 @@ minion-1	Ready		<none>		1d		v1.10.0		...,nodetype=minion
 minion-2	Ready		<none>		1d		v1.10.0		...,nodetype=minion
 ```
 
-## Bro Configuration
+## Wireshark Configuration
 
-Bro is used as a passive network security monitoring tool, so no advanced configuration is required for accepting traffic. Clusters that run Bro will need 2 networks: an overlay and passive tap network. 
+Wireshark is used as a passive network inspection tool, so no advanced configuration is required for accepting traffic. Wireshark is intended to be a troubleshooting only tool and should not be used in place of an IDS/FPCAP solution. 
+
+You can specify what kind of traffic you're interested in by giving Wireshark various commandline arguments. You can refer to https://www.wireshark.org/docs/man-pages/tshark.html for information on custom command flags:
+
+```
+wiresharkConfig:
+  env:
+    args: "-j ip"  
+```
 
 ### Resource Limits
 
-You can set limits on Bro to ensure it doesn't use more CPU/memory space than necessary. Finding the right balance can be tricky, so some testing may be required. 
+You can set limits on Wireshark to ensure it doesn't use more CPU/memory space than necessary: 
 
 ```
-broConfig:
+wiresharkConfig:
   requests:
     cpu: 100m
     memory: 64Mi
@@ -87,20 +94,9 @@ broConfig:
     memory: 4G
 ```
 
-### CPU Pinning
-
-Bro should be pinned to a number of CPU cores depending on your NUMA node setup to prevent cache thrashing and boost performance. Cores should be entered as a comma separated list in ascending order without spaces. 
-
-```
-broConfig:
-  limits:
-    ...
-    pin-cpus: 27,28,29,30,31,32,33,34
-```
-
 ## Logstash Configuration
 
-Logstash is currently included in the Daemonset to streamline the rules required for the data it ingests. Having one Logstash instance per node would clutter rules and cause congestion with log filtering, which would harm our events/second speed. This instance will only deal with Bro's logs and doesn't need complicated filters to figure out which tool the logs came from.
+Logstash is currently included in the Daemonset to streamline the rules required for the data it ingests. Having one Logstash instance per node would clutter rules and cause congestion with log filtering, which would harm our events/second speed. This instance will only deal with Wireshark's logs and doesn't need complicated filters to figure out which tool the logs came from.
 Please make sure to read the [Logstash Performance Tuning Guide](https://www.elastic.co/guide/en/logstash/current/performance-troubleshooting.html) for a better understanding of managing Logstash's resources. 
 
 ```

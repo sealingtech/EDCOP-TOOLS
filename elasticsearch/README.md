@@ -24,7 +24,7 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing these values, make sure you include the full repository name.
+By default, Elasticsearch is pulled from Elastic's official repository and the Curator is pulled from a customized image hosted on Docker's hub. If you're changing these values, make sure you include the full repository name.
  
 ```
 images:

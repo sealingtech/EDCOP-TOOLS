@@ -16,11 +16,11 @@ Please share any bugs or features requests via GitHub issues.
  
 ## Image Repository
 
-By default, images are pulled from *edcop-master:5000* which is presumed to be hosted on the master node. If you're changing this value, make sure you use the full repository name.
+By default, images are pulled from Elastic's official repository. If you're changing this value, make sure you use the full repository name.
  
 ```
 image:
-  kibana: edcop-master:5000/kibana
+  kibana: docker.elastic.co/kibana/kibana:6.2.4
 ```
 
 ## Networks

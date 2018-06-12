@@ -1,0 +1,9 @@
+piVersion: v1
+name: wireshark
+home: https://github.com/sealingtech/EDCOP
+version: 0.1.0
+description: EDCOP Wireshark Chart
+details:
+  This Chart provides a Wireshark daemonset for use with the EDCOP project.
+icon: https://www.wireshark.org/assets/theme-2015/images/wireshark_logo@2x.png
+

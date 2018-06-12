@@ -1,0 +1,127 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: {{ template "wireshark.fullname" . }}
+  labels:
+    app: {{ template "wireshark.name" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "wireshark.name" . }}
+  template:
+    metadata:
+      name: {{ template "wireshark.name" . }}
+      labels:
+        app: {{ template "wireshark.name" . }}
+        release: {{ .Release.Name }}
+      annotations:
+        networks: '[
+        { "name": "{{ .Values.networks.overlay }}" },
+        { "name": "{{ .Values.networks.passive }}" }
+      ]'
+    spec:
+      containers:
+      - name: wireshark
+        image: {{ .Values.images.wireshark }}
+        imagePullPolicy: Always
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+              - NET_RAW 
+        env:
+        - name: NETWORK_INTERFACE
+          value: net0
+        - name: ARGS
+          value: "{{ .Values.wiresharkConfig.env.args }}"
+        resources:
+          requests:
+            cpu: "{{ .Values.wiresharkConfig.requests.cpu }}"
+            memory: "{{ .Values.wiresharkConfig.requests.memory }}"  
+          limits:
+            cpu: "{{ .Values.wiresharkConfig.limits.cpu }}"
+            memory: "{{ .Values.wiresharkConfig.limits.memory }}"
+        volumeMounts:
+        - mountPath: /data/wireshark
+          name: wireshark-packets
+      
+      - name: redis
+        image: {{ .Values.images.redis }}
+        imagePullPolicy: Always
+        ports:
+        - name: cport-6379
+          containerPort: 6379
+        resources:
+          requests:
+            cpu: "{{ .Values.redisConfig.requests.cpu }}"
+            memory: "{{ .Values.redisConfig.requests.memory }}"
+          limits:
+            cpu: "{{ .Values.redisConfig.limits.cpu }}"
+            memory: "{{ .Values.redisConfig.limits.memory }}"
+          
+      - name: logstash
+        image: {{ .Values.images.logstash }}
+        imagePullPolicy: Always
+        ports:
+        - name: cport-5044
+          containerPort: 5044
+        resources:
+          requests:
+            cpu: "{{ .Values.logstashConfig.requests.cpu }}"
+            memory: "{{ .Values.logstashConfig.requests.memory }}"
+          limits:
+            cpu: "{{ .Values.logstashConfig.limits.cpu }}"
+            memory: "{{ .Values.logstashConfig.limits.memory }}"
+        volumeMounts:
+        - mountPath: /usr/share/logstash/pipeline/
+          name: logstash-wireshark-pipeline
+        - mountPath: /usr/share/logstash/config/
+          name: logstash-wireshark-config
+
+      - name: filebeat
+        image: {{ .Values.images.filebeat }}
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /wireshark/
+          name: wireshark-packets
+        - mountPath: /usr/share/filebeat/filebeat.yml
+          subPath: filebeat.yml
+          name: filebeat-wireshark-config
+
+      initContainers:
+      - name: wireshark-index
+        image: centos
+        command: 
+        - chmod
+        - "+x"
+        - "/scripts/wireshark-index.sh"
+        - "&&"
+        - "/scripts/wireshark-index.sh"
+        volumeMounts:
+        - name: wireshark-index-script    
+          mountPath: /scripts/wireshark-index.sh
+          subPath: wireshark-index.sh
+
+      volumes:
+      - name: wireshark-packets
+        emptyDir:     
+          medium: "Memory"
+      - name: filebeat-wireshark-config
+        configMap:
+          name: {{ template "wireshark.fullname" . }}-filebeat-config
+      - name: logstash-wireshark-config
+        configMap:
+          name: logstash-{{ template "wireshark.fullname" . }}-config
+      - name: logstash-wireshark-pipeline
+        configMap:
+          name: logstash-{{ template "wireshark.fullname" . }}-pipeline
+      - name: wireshark-index-script
+        configMap:
+          name: {{ template "wireshark.fullname" . }}-index-script    
+
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        nodetype: {{ .Values.nodeSelector.nodetype }}
