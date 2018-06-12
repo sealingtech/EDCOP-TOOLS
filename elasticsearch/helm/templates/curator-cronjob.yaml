@@ -7,7 +7,7 @@ metadata:
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
 spec:
-  schedule: {{ .Values.curatorConfig.cronjob_schedule }}
+  schedule: "{{ .Values.curatorConfig.cronjob_schedule }}"
   successfulJobsHistoryLimit: {{ .Values.curatorConfig.successfulJobsLimit }}
   failedJobsHistoryLimit: {{ .Values.curatorConfig.failedPodsLimit }}
   jobTemplate:
@@ -20,8 +20,8 @@ spec:
           - name: curator
             image: {{ .Values.images.curator }}
             imagePullPolicy: Always
+            command: ["curator"]
             args:
-            - curator
             - --config
             - /etc/config/config.yml
             - /etc/config/actions.yml
