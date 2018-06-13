@@ -1,0 +1,32 @@
+{{ if .Values.snapshotConfig.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "elasticsearch.fullname" . }}-snapshot-init-job
+  labels:
+    app: {{ template "elasticsearch.name" . }}-snapshot
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  template:
+    metadata:
+      name: {{ template "elasticsearch.name" . }}-snapshot-job
+      annotations:
+        "helm.sh/hook": "post-install"  # Run after all other services start
+  containers:
+  - name: snapshot-init-job
+    image: centos
+    imagePullPolicy: Always
+    command: ["/snapshot-init.sh"]
+    volumeMounts:
+    - name: snapshot-init-script
+      mountPath: /snapshot-init.sh
+      subPath: snapshot-init.sh
+  volumes:
+  - name: snapshot-init-script
+    configMap:
+      name: {{ template "elasticsearch.fullname" . }}-snapshot-init-script
+      defaultMode: 0744
+  restartPolicy: OnFailure
+{{ end }}
+

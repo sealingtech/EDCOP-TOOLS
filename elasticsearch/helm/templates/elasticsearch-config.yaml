@@ -99,5 +99,8 @@ data:
     xpack.security.enabled: false
     xpack.watcher.enabled: false
     xpack.monitoring.enabled: true
+    # --------------------------------- Snapshots ----------------------------------
+    # Location of NFS storage for snapshots
+    path.repo: ["/var/EDCOP/snapshots"]
 
 

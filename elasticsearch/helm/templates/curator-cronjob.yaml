@@ -1,3 +1,4 @@
+{{ if .Values.curatorConfig.enabled }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -29,10 +30,10 @@ spec:
               - name: curator-config
                 mountPath: /etc/config
           volumes:
-            - name: curator-config
-              configMap:
-                name: {{ template "elasticsearch.fullname" . }}-curator-config
+          - name: curator-config
+            configMap:
+              name: {{ template "elasticsearch.fullname" . }}-curator-config
           restartPolicy: OnFailure 
           nodeSelector:
             nodetype: {{ .Values.nodeSelector.master }}
-
+{{ end }}

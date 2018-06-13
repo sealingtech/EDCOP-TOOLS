@@ -1,0 +1,35 @@
+{{ if .Values.snapshotConfig.enabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "elasticsearch.fullname" . }}-snapshot
+  labels:
+    app: {{ template "elasticsearch.name" . }}-snapshot
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  schedule: "{{ .Values.snapshotConfig.cronjob_schedule }}"
+  successfulJobsHistoryLimit: {{ .Values.snapshotConfig.successfulJobsLimit }}
+  failedJobsHistoryLimit: {{ .Values.snapshotConfig.failedPodsLimit }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: {{ template "elasticsearch.name" . }}-snapshot
+        spec:
+          containers:
+          - name: snapshot
+            image: centos
+            imagePullPolicy: Always
+            command: ["/snapshot.sh"]
+            volumeMounts:
+              - name: snapshot-config
+                mountPath: /snapshot.sh
+                subPath: snapshot.sh
+          volumes:
+          - name: snapshot-script
+            configMap:
+              name: {{ template "elasticsearch.fullname" . }}-snapshot-script
+              defaultMode: 0744
+          restartPolicy: OnFailure 
+{{ end }}

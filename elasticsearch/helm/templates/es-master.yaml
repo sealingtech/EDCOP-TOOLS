@@ -60,6 +60,8 @@ spec:
         - mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
           subPath: elasticsearch.yml
           name: elasticsearch-config
+        - mountPath: /var/EDCOP/snapshots
+          name: elasticsearch-snapshots
 
       volumes:
       - name: esdata
@@ -71,6 +73,9 @@ spec:
       - name: elasticsearch-config
         configMap:
           name: {{ template "elasticsearch.fullname" . }}-config
+      - name: elasticsearch-snapshots
+        persistentVolumeClaim:
+          claimName: {{ template "elasticsearch.name" . }}-snapshots
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       nodeSelector:

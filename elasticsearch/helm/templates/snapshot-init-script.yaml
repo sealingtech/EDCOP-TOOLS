@@ -1,0 +1,44 @@
+{{ if .Values.snapshotConfig.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "elasticsearch.fullname" . }}-snapshot-init-script
+data:
+  snapshot-init.sh: |
+    #!/bin/bash
+    # Script to create Elasticsearch's snapshot index if it's not there already
+   
+    # Need jq for checking 
+    yum install -y epel-release 
+    yum install -y jq
+
+    # Wait for Elasticsearch to start
+    echo "Waiting for Elasticsearch to start..."
+    ESSTATUS=""
+    until [ "$ESSTATUS" == "green" ]; do
+      ESSTATUS=$(curl -X --head "data-service:9200/_cluster/health?wait_for_status=green" | jq --raw-output '.status')
+    done
+    
+    # Check to see if the index exists
+    echo "Checking to see if Snapshot index exists..."
+    INDEXSTATUS=$(curl -X --head "data-service:9200/_snapshot/es_6x_snapshots" | jq --raw-output '.status')
+
+    # If not, create the index
+    if [ "$INDEXSTATUS" = "404" ]
+    then
+      echo "Snapshot index not found, creating..."
+      curl -X PUT "data-service:9200/_snapshot/es_6x_snapshots" -H 'Content-Type: application/json' -d'
+      {
+        "type": "fs",
+        "settings": {
+          "location": "/var/EDCOP/snapshots",
+          "compress": true
+        }
+      }
+      '
+    else
+      echo "Snapshot index already exists, exiting..."
+      exit
+    fi
+{{ end }}
+

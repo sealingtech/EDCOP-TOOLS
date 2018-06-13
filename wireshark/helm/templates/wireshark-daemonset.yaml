@@ -119,7 +119,8 @@ spec:
           name: logstash-{{ template "wireshark.fullname" . }}-pipeline
       - name: wireshark-index-script
         configMap:
-          name: {{ template "wireshark.fullname" . }}-index-script    
+          name: {{ template "wireshark.fullname" . }}-index-script
+          defaultMode: 0744    
 
       restartPolicy: Always
       dnsPolicy: ClusterFirst

@@ -1,0 +1,17 @@
+{{ if .Values.snapshotConfig.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations: {}
+  labels:
+    created-by: {{ template "elasticsearch.name" . }} 
+    name: {{ template "elasticsearch.name" . }}-snapshots
+  name: {{ template "elasticsearch.name" . }}-snapshots
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.snapshotConfig.pvc.storage }}
+{{ end }}

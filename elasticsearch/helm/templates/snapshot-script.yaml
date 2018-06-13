@@ -1,0 +1,26 @@
+{{ if .Values.snapshotConfig.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "elasticsearch.fullname" . }}-snapshot-script
+data:
+  snapshot.sh: |
+    #!/bin/bash
+    # Script to create Elasticsearch snapshots
+    
+    # Need jq for checking 
+    yum install -y epel-release
+    yum install -y jq
+
+    # Check to make sure Elasticsearch is alive
+    echo "Checking to see if Elasticsearch is started..."
+    ESSTATUS=""
+    until [ "$ESSTATUS" == "green" ]; do
+      ESSTATUS=$(curl -X --head "data-service:9200/_cluster/health?wait_for_status=green" | jq --raw-output '.status')
+    done
+
+    DATE=`date +%m-%d-%Y`
+    DATE="${DATE//-/_}"
+    
+    curl -X PUT "data-service:9200/_snapshot/es_6x_snapshots/snapshot_$DATE?wait_for_completion=true"
+{{ end }}
