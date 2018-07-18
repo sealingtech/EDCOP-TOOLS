@@ -1,4 +1,4 @@
-# edcop-tools
+# edcop-tools - DEPRECATED: tools now have their own repos under sealingtech/EDCOP-$TOOL
 EDCOP-Tools are meant to be deployed on the EDCOP platform.  EDCOP-Tools is a compilation of DCO tools which are built on Docker and Kubernetes.  The goal of this project is to build an easily deployable and manageable DCO infrastructure which is fully integrated using DevOps practices.  This is still an early prototype at this phase.
  
  View the website
